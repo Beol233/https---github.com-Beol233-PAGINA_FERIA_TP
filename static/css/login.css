@@ -1,4 +1,8 @@
-* {
-    padding: 0px;
-    border: 0px;
+
+header h1{
+    color: #AE2D0A;
+}    
+main{
+    align-items: center;
+    text-align: center;
 }
