@@ -1,8 +1,26 @@
 
 header h1{
     color: #AE2D0A;
+}
+
+body {
+    background-color:#FFF5EF;
+}
+header {
+     align-items: center;
+     text-align: center;
 }    
 main{
     align-items: center;
     text-align: center;
+span {
+    color: #735453;
+}
+}
+.registro_completo {
+     background-color: #FFFFFF;
+     display: flex;
+}
+.tipo-de-usuario {
+    
 }
