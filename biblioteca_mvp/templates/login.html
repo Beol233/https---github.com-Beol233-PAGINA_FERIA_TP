@@ -14,36 +14,50 @@
         <p>TU RINCON DE LECTURA</p>
     </header>
     <main>
-        <section class="registro_completo">
+        <form action="/login" method="post" class="registro_completo">
             <h2>Bienvenidos de nuevo</h2>
             <span>Selecciona tu perfil y accede a tu coleccion personal</span>
-            <section class="tipo-de-usuario">
-                <h2>Tipo de usuario</h2>
-                <select name="tipo_usuario" id="tdu">
-                    <option value="ALUMNO">ALUMNO</option>
-                    <option value="PROFESOR">PROFESOR</option>
-                    <option value="ADMIN">ADMIN</option>
-                </select>
-            </section>
-            <section class="nombre-contraseña">
-                <div>
-                    <label for="nombre">Usuario o Correo electrónico</label>
-                    <input type="text" id="nombre" name="nombre">
+            <div class="tipo-de-usuario">
+                <label for="tipo_usuario">Tipo de usuario</label>
+                <div class="tipo_usuario">
+                    <button type="submit">ALUMNO</button>
+                    <button type="submit">PROFESOR</button>
+                    <Button type="submit">ADMIN</Button>
+                </div>
+            </div>
+            <div class="nombre-contraseña">
+                <div class="campo">
+                    <label for="usuario">Usuario o Correo electrónico</label>
+                    <input type="text" id="usuario" name="usuario" placeholder="Nomnbre de usuario">
 
                 </div>
-                <div>
-                    <label for="nombre">Contraseña </label> <a href="">¿Olvidaste tu contraseña?</a>
-                    <input type="text" id="nombre" name="nombre">
+                <div class="campo">
+                    <div class="t-contrasena">
+                        <label for="password">Contraseña </label>
+                        <a href="#">¿Olvidaste tu contraseña?</a>
+                    </div>
+                    <input type="password" name="password" id="password" placeholder="************">
                 </div>
-                <input type="checkbox" name="" id="">
-            </section>
-        </section>
-        <button type="button">Iniciar sesion -></button>
+                <div class="recordar">
+                    <input type="checkbox" id="recordar" name="recordar">
+                    <label for="recordar">Recordar mi sesion</label>
+                </div>
+                <button class="btn-iniciar" type="button">Iniciar sesion -></button>
+            </div>
+        </form>
+        <div class="img-inicio">
+             <img src="/static/img/libro_portada.jpg" alt="Biblioteca">
+        </div>
+        <div class="mensaje">
+            <h2>Descubre tu libro favorito</h2>
+            <p>Miles de libros te esperan para descubrir, aprender y descubrir</p>
+        </div>
     </main>
     <hr>
     <footer>
         <span>¿No tienes cuenta?</span> <a href="">Registrate ahora</a>
     </footer>
 </body>
+<script src="login.js"></script>
 
 </html>
