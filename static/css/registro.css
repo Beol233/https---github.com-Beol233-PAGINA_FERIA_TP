@@ -1,0 +1,19 @@
+.registro-completo {
+   
+    display: flex;
+    flex-direction: column;
+    width: 400px;
+   
+
+}
+body {
+    background-color: #FFF5EF;
+}
+.registro-usuario {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    background-color:white;
+    border-radius: 6px;
+}
