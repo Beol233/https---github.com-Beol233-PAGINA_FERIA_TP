@@ -1,11 +1,52 @@
 header{
     display: flex;
     width: 80%;
+    height: 200px;
     background-color: rgb(75, 146, 253);
+    gap: 10px;
+    font-size: 30px;
 }
-
+.header_botton{
+    height: 30px;
+    width: 60px;
+    background: none;
+    border: none;
+    font-family: Arial, Helvetica, sans-serif;
+    text-align: center;
+    margin-left: 50px;
+    font-size: 20px
+}
+header form{
+    margin-left: 20px;
+}
 .barra_lateral{
-    width: 20%;
+    width: 25%;
     background-color: aqua;
 }
-body {display: flex;}   
+body {
+    display: flex;
+
+}
+label {
+    font-size: 20px;
+}   
+form i{
+font-size: 15px;
+}
+button a i{
+    margin-left: 29px;
+}
+.icono_barra{
+    height: 30px;
+    width: 60px;
+    background: none;
+    border: none;
+    font-family: Arial, Helvetica, sans-serif;
+    text-align: end;
+    font-size: 20px;
+    align-items: end;
+}
+
+.titulo_barraLateral{
+    
+}
