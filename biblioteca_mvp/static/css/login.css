@@ -1,3 +1,168 @@
+header h1 {
+    color: #AE2D0A;
+}
+
+body {
+    background-color: #FFF5EF;
+}
+
+header {
+text-align: center;
+}
+
 main {
-    background-color: rgb(255, 29, 29);
+    display: flex;
+   
+   gap: 60px;
+   margin-top: 50px;
+
+}
+
+main span {
+    color: #9c7978;
+}
+
+.registro_completo {
+    border-top: 6px solid #AE2D0A;
+    width: 380px;
+    padding: 35px;
+    background-color: #FFFFFF;
+    display: flex;
+    flex-direction: column;
+    border-radius: 6px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, .1);
+}
+
+.nombre-contraseña {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.tipo-de-usuario {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+    flex-direction: column;
+    margin-top: 20px;
+    gap: 11px;
+}
+
+.tipo-de-usuario label {
+    font-weight: bold;
+    font-size: 15px;
+}
+
+.tipo_usuario {
+    display: flex;
+    gap: 14px;
+}
+
+.tipo-de-usuario button {
+    flex: 1;
+    padding: 10px;
+    border: 1px solid #b74120;
+    border-radius:5px ;
+    background-color: white;
+    color: #c44826;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0,5;
+}
+
+.tipo_usuario button:hover {
+    background-color:#a4523b ;
+}
+
+.campo {
+    display: flex;
+    flex-direction: column;
+}
+
+.campo label {
+    font-weight: bold;
+    margin-bottom: 9px;
+}
+
+.campo input {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #b97f7f;
+}
+
+.t-contrasena {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 5px;
+}
+
+.t-contrasena a {
+    text-decoration: none;
+    color: #f16944;
+    font-size: 15px;
+}
+
+.recordar {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 15px;
+}
+.btn-iniciar {
+    flex: 1;
+    padding: 10px;
+    border: 1px solid #eb5026;
+    border-radius:5px ;
+    background-color: white;
+    color: #d04018;
+    font-weight: bold;
+
+}
+button:hover {
+    color: white;
+    background-color: #d94921;
+}
+footer span {
+
+}
+footer {
+    text-align: center;
+}
+footer span {
+font-weight: 600;
+
+}
+footer a {
+
+text-decoration: none;
+color: #a07c7b;
+}
+.imagen-login img {
+   width: 550px;
+    height: 650px;
+    object-fit: cover;
+    border-radius: 15px;
+}
+.mensaje {
+    border-top: 6px solid #AE2D0A;
+    width: 300px;
+    background-color: white;
+    padding: 25px;
+    border-radius: 15px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, .1);
+    text-align: center;
+}
+.mensaje h2 {
+    color: #9c7978;
+    font-size: 40px;
+    margin-bottom: 40px;
+
+}
+
+.mensaje p {
+    color: #735453;
+    font-size:25px;
+    line-height: 1.8;
 }
