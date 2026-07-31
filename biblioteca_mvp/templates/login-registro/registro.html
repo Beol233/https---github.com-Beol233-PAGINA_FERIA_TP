@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Registro</title>
-    <link rel="stylesheet" href="/static/css/registro.css">
+    <link rel="stylesheet" href="/biblioteca_mvp/static/css/registro.css">
 </head>
 
 <body>
@@ -14,30 +14,30 @@
     </header>
     <main class="parte-principal">
         <div class="imagen-grande">
-            <img src="/static/img/harrypote.jpg" alt="">
+            <img src="/biblioteca_mvp/static/img/harrypote.jpg" alt="">
         </div>
         <div class="registro-usuario">
             <form action="" class="registro-completo">
                 <span class="rgs">Bienvenidos a registrarse</span>
                 <div class="campo">
                     <label for="nombre">Nombre</label>
-                    <input type="text" id="nombre" name="nombre">
+                    <input type="text" id="nombre" name="nombre" required>
                 </div>
                 <div class="campo">
                     <label for="apellido">Apellido paterno</label>
-                    <input type="text" id="apellido" name="apellido">
+                    <input type="text" id="apellido" name="apellido" required>
                 </div>
                 <div class="campo">
                     <label for="contraseña">Contraseña</label>
-                    <input type="password" name="contraseña" id="contraseña">
+                    <input type="password" name="contraseña" id="contraseña" required>
                 </div>
                 <div class="campo">
                     <label for="confirmar">Confirmar contraseña</label>
-                    <input type="password" name="confirmar" id="confirmar">
+                    <input type="password" name="confirmar" id="confirmar" required>
                 </div>
                 <div class="campo">
                     <label for="gmail">Gmail</label>
-                    <input type="text" id="gmail" name="gmail">
+                    <input type="text" id="gmail" name="gmail" required>
                 </div>
                 <div class="recordar">
                     <input type="checkbox" name="recordar" id="recordar">
