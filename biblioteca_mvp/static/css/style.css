@@ -3,20 +3,34 @@ body {
     margin: 0px;
 
 }
+*{
+    margin: 0;
+    padding: 0;
+
+}
 .barra_lateral {
     width: 20%;
+    height: 100vh;
+    padding: 30px, 10px;
     background-color: #AE2d0a;
     border-right: 1px solid #f0e6df;
 }
+.contenido_principal {
+    width: 80%;
+    display: flex;
+    flex-direction: column;
+}
+
 header{
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 20px 40px ;
+    padding: 15px 30px ;
     background: aqua;
 }
 header h1 {
     color:#AE2d0a;
+    font-size: 20px;
 }
 .header_botton {
     border: none;
