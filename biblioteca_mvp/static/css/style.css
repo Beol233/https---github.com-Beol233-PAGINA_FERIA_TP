@@ -1,3 +1,13 @@
+body {
+    display: flex;
+    margin: 0px;
+
+}
+.barra_lateral {
+    width: 20%;
+    background-color: #AE2d0a;
+    border-right: 1px solid #f0e6df;
+}
 header{
     display: flex;
     align-items: center;
