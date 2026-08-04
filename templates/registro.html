@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Registro</title>
-    <link rel="stylesheet" href="/biblioteca_mvp/static/css/registro.css">
+    <link rel="stylesheet" href="/static/css/registro.css">
 </head>
 
 <body>
@@ -14,7 +14,8 @@
     </header>
     <main class="parte-principal">
         <div class="imagen-grande">
-            <img src="/biblioteca_mvp/static/img/harrypote.jpg" alt="">
+            <img src="{{ url_for('static', filename='harrypote.jpg') }}" alt="Harry Potter" class="imagen-portada">
+
         </div>
         <div class="registro-usuario">
             <form action="" class="registro-completo">
