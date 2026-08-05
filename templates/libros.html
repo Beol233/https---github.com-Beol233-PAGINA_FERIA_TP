@@ -1,44 +1,210 @@
+
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Libros</title>
+
     <link rel="stylesheet" href="/static/css/libros.css">
+<<<<<<< HEAD
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
     <title>libros</title>
     <link rel="stylesheet" href="/static/css/">
+=======
+    <link rel="stylesheet" href="/static/css/style.css">
+
+    <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+
+    <script src="https://unpkg.com/@zxing/library@latest"></script>
+>>>>>>> c51a438b09b3a490866dce0af7a35fcc191bfd54
 </head>
 
 <body>
-    <div class=" barra_lateral">
-        <h1 class="titulo_barraLateral">libroteca</h1>
-        <p>tu rincón de lectura</p>
 
+    <div class="barra_lateral">
+        <h1 class="titulo_barraLateral">Libroteca</h1>
+        <p>Tu rincón de lectura</p>
     </div>
+
     <div class="contenido_principal">
+
         <header>
-            <h1>colección</h1>
-            <button class="header_botton"><a href="">Colección</a></button>
-            <button class="header_botton"><a href="">Préstamos</a></button>
-            <button class="header_botton"><a href="">Lector <br> 3D</a></button>
+
+            <h1>Colección</h1>
+
+            <button class="header_botton">
+                <a href="#">Colección</a>
+            </button>
+
+            <button class="header_botton">
+                <a href="#">Préstamos</a>
+            </button>
+
+            <button class="icono_barra" id="btnEscaner">
+                <i class="bi bi-upc-scan"></i>
+            </button>
+
             <form action="/buscar" method="get" role="search">
+
                 <label for="busqueda">Buscar:</label>
+<<<<<<< HEAD
                 <div class="contenedor_btn">
                     <i class="bi bi-search" id="icono_busqueda"></i>
                     <input type="search" class="btn_busqueda_libro" id="busqueda" name="q"
                         placeholder="¿Qué estás buscando?" aria-label="Buscar en el sitio">
                 </div>
 
+=======
+
+                <i class="bi bi-search"></i>
+
+                <input
+                    type="search"
+                    id="busqueda"
+                    name="q"
+                    placeholder="¿Qué estás buscando?"
+                    aria-label="Buscar">
+>>>>>>> c51a438b09b3a490866dce0af7a35fcc191bfd54
 
             </form>
-            <button class="icono_barra"> <a href=""><i class="bi bi-upc-scan"></i></a></button>
 
-            <button class="icono_barra"><a href=""><i class="bi bi-person-circle"></i></a></button>
+            <button class="icono_barra">
+                <i class="bi bi-person-circle"></i>
+            </button>
 
         </header>
+<<<<<<< HEAD
     </div>
 
 </body>
+=======
+>>>>>>> c51a438b09b3a490866dce0af7a35fcc191bfd54
 
+        <!-- Cámara -->
+        <div id="contenedorCamara" style="display:none; margin-top:30px;">
+
+            <h2>Escanear código de barras</h2>
+
+            <video
+                id="video"
+                width="700"
+                style="border:2px solid #333;"
+                autoplay>
+            </video>
+
+            <p id="resultado" style="font-size:20px;font-weight:bold;"></p>
+
+        </div>
+
+    </div>
+
+<script>
+
+const lector = new ZXing.BrowserMultiFormatReader();
+
+const boton = document.getElementById("btnEscaner");
+const contenedor = document.getElementById("contenedorCamara");
+const video = document.getElementById("video");
+const resultado = document.getElementById("resultado");
+
+let escaneando = false;
+
+boton.addEventListener("click", async () => {
+
+    if (escaneando) {
+
+        lector.reset();
+
+        video.srcObject = null;
+
+        contenedor.style.display = "none";
+
+        escaneando = false;
+
+        return;
+    }
+
+    contenedor.style.display = "block";
+
+    escaneando = true;
+
+    try {
+
+        const dispositivos = await lector.listVideoInputDevices();
+
+        if (dispositivos.length === 0) {
+
+            alert("No se encontró ninguna cámara.");
+
+            return;
+        }
+
+        lector.decodeFromVideoDevice(
+            dispositivos[0].deviceId,
+            video,
+            async (resultadoZX, error) => {
+
+                if (resultadoZX) {
+
+                    lector.reset();
+
+                    escaneando = false;
+
+                    resultado.innerHTML =
+                        "<strong>Código:</strong> " + resultadoZX.text;
+
+                    const respuesta = await fetch("/buscar_codigo", {
+
+                        method: "POST",
+
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+
+                        body: JSON.stringify({
+                            codigo: resultadoZX.text
+                        })
+
+                    });
+
+                    const libro = await respuesta.json();
+
+                    if (libro.encontrado) {
+
+                        alert(
+                            "Libro encontrado\n\n" +
+                            "Título: " + libro.titulo +
+                            "\nAutor: " + libro.autor +
+                            "\nEditorial: " + libro.editorial
+                        );
+
+                    } else {
+
+                        alert("Libro no registrado.");
+
+                    }
+
+                }
+
+            }
+        );
+
+    } catch (e) {
+
+        console.error(e);
+
+        alert("Error al abrir la cámara.");
+
+    }
+
+});
+
+</script>
+
+</body>
 </html>
+```

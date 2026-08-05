@@ -1,0 +1,150 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Libroteca - Panel</title>
+    <link rel="stylesheet" href="estilos.css">
+</head>
+<body>
+
+<div class="contenedor">
+
+    <!-- Menú lateral -->
+    <aside class="sidebar">
+        <div class="logo">
+            <h1>Libroteca</h1>
+            <p>Tu rincón de lectura</p>
+        </div>
+
+        <nav>
+            <a href="#">📚 Colección</a>
+            <a href="#" class="activo">📖 Préstamos</a>
+            <a href="#">📷 QR Scanner</a>
+            <a href="#">🧾 Historial</a>
+            <a href="#">⚙️ Ajustes</a>
+        </nav>
+
+        <button class="btn-nuevo">+ Nueva lectura</button>
+    </aside>
+
+    <!-- Contenido principal -->
+    <main class="contenido">
+
+        <!-- Barra superior -->
+        <header class="topbar">
+            <h2>Panel de Gestión</h2>
+
+            <div class="topbar-derecha">
+                <input type="text" placeholder="Buscar préstamo o estudiante">
+                <span>🔔</span>
+                <span>👤</span>
+            </div>
+        </header>
+
+        <!-- Tarjetas -->
+        <section class="resumen">
+            <div class="card grande">
+                <h3>Resumen semanal</h3>
+                <p>Has gestionado <strong>42 movimientos</strong> de catálogo en los últimos 7 días.</p>
+
+                <div class="estadisticas">
+                    <div>
+                        <h4>12</h4>
+                        <span>Activos</span>
+                    </div>
+                    <div>
+                        <h4>08</h4>
+                        <span>Atrasados</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card alerta">
+                <span class="etiqueta">PRÓXIMO VENCIMIENTO</span>
+                <h3>Crónica de una muerte anunciada</h3>
+                <p>Mañana, 10:00 AM</p>
+                <button>Ver ficha</button>
+            </div>
+        </section>
+
+        <!-- Tabla -->
+        <section class="tabla">
+            <div class="tabla-header">
+                <h3>Préstamos activos</h3>
+            </div>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Estudiante</th>
+                        <th>Libro</th>
+                        <th>Fecha</th>
+                        <th>Estado</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Alejandro Martínez</td>
+                        <td>Cien años de soledad</td>
+                        <td>12 May 2026</td>
+                        <td><span class="estado dia">Al día</span></td>
+                        <td><a href="#">Devolver</a></td>
+                    </tr>
+
+                    <tr>
+                        <td>Sofía Villanueva</td>
+                        <td>Rayuela</td>
+                        <td>10 May 2026</td>
+                        <td><span class="estado demora">Atrasado</span></td>
+                        <td><a href="#">Recordar</a></td>
+                    </tr>
+
+                    <tr>
+                        <td>Ricardo Castillo</td>
+                        <td>La ciudad y los perros</td>
+                        <td>15 May 2026</td>
+                        <td><span class="estado nuevo">Nuevo</span></td>
+                        <td><a href="#">Extender</a></td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <!-- Parte inferior -->
+        <section class="inferior">
+            <div class="card libros">
+                <h3>Libros más pedidos</h3>
+
+                <div class="libro-item">
+                    <span class="numero">01</span>
+                    <div>
+                        <strong>Don Quijote de la Mancha</strong>
+                        <p>15 préstamos este mes</p>
+                    </div>
+                </div>
+
+                <div class="libro-item">
+                    <span class="numero">02</span>
+                    <div>
+                        <strong>Pedro Páramo</strong>
+                        <p>12 préstamos este mes</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="frase">
+                <div class="overlay">
+                    <h2>“La lectura es para la mente lo que el ejercicio es para el cuerpo.”</h2>
+                    <p>— Joseph Addison</p>
+                </div>
+            </div>
+        </section>
+
+    </main>
+</div>
+
+</body>
+</html>

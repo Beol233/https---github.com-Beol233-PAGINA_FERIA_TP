@@ -15,15 +15,16 @@
         <p>TU RINCON DE LECTURA</p>
     </header>
     <main>
-        <form action="/login" method="post" class="registro_completo">
+        <form action="/login" method="post" class="registro_completo" >
             <h2>Bienvenidos de nuevo</h2>
             <span>Selecciona tu perfil y accede a tu coleccion personal</span>
             <div class="tipo-de-usuario">
                 <label for="tipo_usuario">Tipo de usuario</label>
                 <div class="tipo_usuario">
-                    <button type="submit">ALUMNO</button>
-                    <button type="submit">PROFESOR</button>
-                    <Button type="submit">ADMIN</Button>
+                    <input type="hidden" name="tipo_usuario" id="tipo_usuario">
+                    <button type="button" class="btn-usuario" data-tipo="alumno">ALUMNO</button>
+                    <button type="button" class="btn-usuario" data-tipo="profesor">PROFESOR</button>
+                    <Button type="button" class="btn-usuario" data-tipo="admin">ADMIN</Button>
                 </div>
             </div>
             <div class="nombre-contraseña">
@@ -43,12 +44,12 @@
                     <input type="checkbox" id="recordar" name="recordar">
                     <label for="recordar">Recordar mi sesion</label>
                 </div>
-                <button class="btn-iniciar" type="button">Iniciar sesion -></button>
+                <button class="btn-iniciar" type="submit">Iniciar sesion -></button>
             </div> 
         </form>
         <div class="img-inicio">
-              <img src="{{ url_for('static', filename='libro_portada.jpg') }}" alt="Harry Potter" class="imagen-portada">
-             <img src="/static/img/libro_portada.jpg" alt="Biblioteca">
+              <img src="{{ url_for('static', filename='img/libro_portada.jpg') }}" alt="portada" class="imagen-portada">
+           
         </div>
         <div class="mensaje">
             <h2>Descubre tu libro favorito</h2>
@@ -57,9 +58,24 @@
     </main>
     <hr>
     <footer>
-        <span>¿No tienes cuenta?</span> <a href="registro.html">Registrate ahora</a>
+        <span>¿No tienes cuenta?</span> <a href="/template/registro.html">Registrate ahora</a>
     </footer>
 </body>
-<script src="login.js"></script>
+<script>
+    const botones = document.querySelectorAll(".btn-usuario");
+    botones.forEach(boton => {
+        boton.addEventListener("click", function(event){ 
+            event.preventDefault();
+        
+
+        botones.forEach(btn => {
+            btn.classList.remove("activo");
+        });
+       
+        this.classList.add("activo");
+    });
+});
+
+</script>
 
 </html>

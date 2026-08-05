@@ -22,7 +22,9 @@ body {
     display: flex;
     flex-direction: column;
 }
-
+#icono_busqueda {
+        
+}
 header{
     display: flex;
     align-items: center;
@@ -85,21 +87,21 @@ button a i{
     align-items: end;
 }
 
-.titulo_barraLateral{
+.contenedor_btn {
+    position: relative;
+    width: 100%;
+    max-width: 400px;
+    min-width: 280px;
+    display: inline-block;
+}
 
-}
-.mostrar {
-    background-color: #FFF8F5
-}
-header h1 {
-    font-size: 50px;
-}
-header .header_botton {
+.btn_busqueda_libro{
+width: 100% ;
+  padding: 10px 10px 10px 32px; 
+    font-size: 16px;
+    border: 1px solid #dcdcdc;
+    border-radius: 20px;         
+    background-color: #fff;
     
-}
-header .header_botton a:hover{
-color:#AE2d0a;
 
 }
-
-
