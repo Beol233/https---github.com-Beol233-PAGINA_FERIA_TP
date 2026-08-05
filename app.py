@@ -65,7 +65,16 @@ def buscar_codigo():
     return jsonify({
         "encontrado": False
     })
+    
+@app.route("/login", methods=["POST"])
+def login():
+        tipo = request.form.get("tipo_usuario")
+        usuario = request.form.get("usuario")
 
+        print("TIPO:", tipo)
+        print("USUARIO:", usuario)
+
+        return "Funcionó"
 
 if __name__ == "__main__":
     app.run(debug=True)
