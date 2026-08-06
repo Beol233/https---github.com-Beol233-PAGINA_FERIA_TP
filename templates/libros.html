@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="es">
 
@@ -18,9 +17,12 @@
 
     <link rel="stylesheet"
         href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+<<<<<<< HEAD
 
     <script src="https://unpkg.com/@zxing/library@latest"></script>
 >>>>>>> c51a438b09b3a490866dce0af7a35fcc191bfd54
+=======
+>>>>>>> eeabcd7add958ed0c63abf240b2d48b6fc58e56c
 </head>
 
 <body>
@@ -37,7 +39,7 @@
             <h1>Colección</h1>
 
             <button class="header_botton">
-                <a href="#">Colección</a>
+                <a href="/templates/libros.html">Colección</a>
             </button>
 
             <button class="header_botton">
@@ -84,17 +86,22 @@
 =======
 >>>>>>> c51a438b09b3a490866dce0af7a35fcc191bfd54
 
-        <!-- Cámara -->
-        <div id="contenedorCamara" style="display:none; margin-top:30px;">
+        <!-- Escáner -->
+        <div id="contenedorScanner" style="display:none; margin-top:30px;">
 
-            <h2>Escanear código de barras</h2>
+            <h2>Escanee un código de barras</h2>
 
-            <video
-                id="video"
-                width="700"
-                style="border:2px solid #333;"
-                autoplay>
-            </video>
+            <p>
+                Pase el lector por el código de barras.
+            </p>
+
+            <!-- Input oculto que recibe el código del escáner -->
+            <input
+                type="text"
+                id="scanner"
+                autocomplete="off"
+                autofocus
+                style="position:absolute; left:-9999px;">
 
             <p id="resultado" style="font-size:20px;font-weight:bold;"></p>
 
@@ -104,102 +111,103 @@
 
 <script>
 
-const lector = new ZXing.BrowserMultiFormatReader();
-
 const boton = document.getElementById("btnEscaner");
-const contenedor = document.getElementById("contenedorCamara");
-const video = document.getElementById("video");
+const contenedor = document.getElementById("contenedorScanner");
+const scanner = document.getElementById("scanner");
 const resultado = document.getElementById("resultado");
 
-let escaneando = false;
+let activo = false;
 
-boton.addEventListener("click", async () => {
+// Mostrar/Ocultar lector
+boton.addEventListener("click", () => {
 
-    if (escaneando) {
+    activo = !activo;
 
-        lector.reset();
+    if (activo) {
 
-        video.srcObject = null;
+        contenedor.style.display = "block";
+
+        resultado.innerHTML = "Esperando lectura...";
+
+        scanner.focus();
+
+    } else {
 
         contenedor.style.display = "none";
 
-        escaneando = false;
+        scanner.value = "";
 
-        return;
     }
 
-    contenedor.style.display = "block";
+});
 
-    escaneando = true;
+// Mantener el foco en el input oculto
+window.addEventListener("click", () => {
 
-    try {
+    if (activo) {
+        scanner.focus();
+    }
 
-        const dispositivos = await lector.listVideoInputDevices();
+});
 
-        if (dispositivos.length === 0) {
+// Cuando el escáner envía ENTER
+scanner.addEventListener("keydown", async function(e){
 
-            alert("No se encontró ninguna cámara.");
+    if(e.key !== "Enter") return;
 
-            return;
+    e.preventDefault();
+
+    const codigo = scanner.value.trim();
+
+    scanner.value = "";
+
+    if(codigo === "") return;
+
+    resultado.innerHTML =
+        "<strong>Código:</strong> " + codigo;
+
+    try{
+
+        const respuesta = await fetch("/buscar_codigo",{
+
+            method:"POST",
+
+            headers:{
+                "Content-Type":"application/json"
+            },
+
+            body:JSON.stringify({
+                codigo:codigo
+            })
+
+        });
+
+        const libro = await respuesta.json();
+
+        if(libro.encontrado){
+
+            alert(
+                "Libro encontrado\n\n" +
+                "Título: " + libro.titulo +
+                "\nAutor: " + libro.autor +
+                "\nEditorial: " + libro.editorial
+            );
+
+        }else{
+
+            alert("Libro no registrado.");
+
         }
 
-        lector.decodeFromVideoDevice(
-            dispositivos[0].deviceId,
-            video,
-            async (resultadoZX, error) => {
+    }catch(error){
 
-                if (resultadoZX) {
+        console.error(error);
 
-                    lector.reset();
-
-                    escaneando = false;
-
-                    resultado.innerHTML =
-                        "<strong>Código:</strong> " + resultadoZX.text;
-
-                    const respuesta = await fetch("/buscar_codigo", {
-
-                        method: "POST",
-
-                        headers: {
-                            "Content-Type": "application/json"
-                        },
-
-                        body: JSON.stringify({
-                            codigo: resultadoZX.text
-                        })
-
-                    });
-
-                    const libro = await respuesta.json();
-
-                    if (libro.encontrado) {
-
-                        alert(
-                            "Libro encontrado\n\n" +
-                            "Título: " + libro.titulo +
-                            "\nAutor: " + libro.autor +
-                            "\nEditorial: " + libro.editorial
-                        );
-
-                    } else {
-
-                        alert("Libro no registrado.");
-
-                    }
-
-                }
-
-            }
-        );
-
-    } catch (e) {
-
-        console.error(e);
-
-        alert("Error al abrir la cámara.");
+        alert("Error al consultar el servidor.");
 
     }
+
+    scanner.focus();
 
 });
 
@@ -207,4 +215,3 @@ boton.addEventListener("click", async () => {
 
 </body>
 </html>
-```

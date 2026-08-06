@@ -7,26 +7,17 @@
     <title>registro de usuario</title>
     <link rel="stylesheet" href="/static/css/login.css">
     <link rel="stylesheet" href="/static/css/style.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
 </head>
 
 <body>
     <header>
         <h1>Libroteca</h1>
-        <p>TU RINCON DE LECTURA</p>
+        <h3>TU RINCON DE LECTURA</h3>
     </header>
-    <main>
+    <main style="display: flex; justify-content:center">
         <form action="/login" method="post" class="registro_completo" >
             <h2>Bienvenidos de nuevo</h2>
-            <span>Selecciona tu perfil y accede a tu coleccion personal</span>
-            <div class="tipo-de-usuario">
-                <label for="tipo_usuario">Tipo de usuario</label>
-                <div class="tipo_usuario">
-                    <input type="hidden" name="tipo_usuario" id="tipo_usuario">
-                    <button type="button" class="btn-usuario" data-tipo="alumno">ALUMNO</button>
-                    <button type="button" class="btn-usuario" data-tipo="profesor">PROFESOR</button>
-                    <Button type="button" class="btn-usuario" data-tipo="admin">ADMIN</Button>
-                </div>
-            </div>
             <div class="nombre-contraseña">
                 <div class="campo">
                     <label for="usuario">Usuario o Correo electrónico</label>
@@ -44,7 +35,7 @@
                     <input type="checkbox" id="recordar" name="recordar">
                     <label for="recordar">Recordar mi sesion</label>
                 </div>
-                <button class="btn-iniciar" type="submit">Iniciar sesion -></button>
+                <button class="btn-iniciar" type="submit" style="display: flex;justify-content: center;align-items: center; gap: 10px;">Iniciar Sesión    <i class="bi bi-arrow-right" ></i></button>
             </div> 
         </form>
         <div class="img-inicio">
@@ -58,24 +49,8 @@
     </main>
     <hr>
     <footer>
-        <span>¿No tienes cuenta?</span> <a href="/template/registro.html">Registrate ahora</a>
+        <span>¿No tienes cuenta?</span> <a href="/templates/registro.html">Registrate ahora</a>
     </footer>
 </body>
-<script>
-    const botones = document.querySelectorAll(".btn-usuario");
-    botones.forEach(boton => {
-        boton.addEventListener("click", function(event){ 
-            event.preventDefault();
-        
-
-        botones.forEach(btn => {
-            btn.classList.remove("activo");
-        });
-       
-        this.classList.add("activo");
-    });
-});
-
-</script>
 
 </html>

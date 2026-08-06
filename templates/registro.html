@@ -19,8 +19,18 @@
 
         </div>
         <div class="registro-usuario">
-            <form action="" class="registro-completo">
+            <form method="post" class="registro-completo">
                 <span class="rgs">Bienvenidos a registrarse</span>
+                <span>Selecciona tu perfil y accede a tu coleccion personal</span>
+                <div class="tipo-de-usuario">
+                    <label for="tipo_usuario">Tipo de usuario</label>
+                    <div class="tipo_usuario">
+                        <input type="hidden" name="tipo_usuario" id="tipo_usuario">
+                        <button type="button" class="btn-usuario" data-tipo="alumno">ALUMNO</button>
+                        <button type="button" class="btn-usuario" data-tipo="profesor">PROFESOR</button>
+                        <Button type="button" class="btn-usuario" data-tipo="admin">ADMIN</Button>
+                    </div>
+                </div>
                 <div class="campo">
                     <label for="nombre">Nombre</label>
                     <input type="text" id="nombre" name="nombre" required>
@@ -54,6 +64,23 @@
     <footer>
 
     </footer>
+    <script>
+    const botones = document.querySelectorAll(".btn-usuario");
+    botones.forEach(boton => {
+        boton.addEventListener("click", function(event){ 
+            event.preventDefault();
+        
+
+        botones.forEach(btn => {
+            btn.classList.remove("activo");
+        });
+       
+        this.classList.add("activo");
+    });
+});
+
+</script>
+
 </body>
 
 </html>
