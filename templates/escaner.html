@@ -25,22 +25,22 @@
 
         <nav>
 
-            <a href="#">
+            <a href="{{ url_for('libros') }}">
                 <i class="fa-regular fa-book"></i>
                 <span>Colección</span>
             </a>
 
-            <a class="active" href="#">
+            <a class="active" href="{{ url_for('escaner') }}">
                 <i class="fa-solid fa-barcode"></i>
                 <span>Código de Barras</span>
             </a>
 
-            <a href="#">
+            <a href="{{ url_for('prestamos') }}">
                 <i class="fa-solid fa-handshake"></i>
                 <span>Préstamos</span>
             </a>
 
-            <a href="#">
+            <a href="{{ url_for('lector3d') }}">
                 <i class="fa-solid fa-cube"></i>
                 <span>Lector 3D</span>
             </a>
@@ -89,7 +89,7 @@
             <!-- Escáner -->
             <div class="scanner">
 
-                <video id="camera" autoplay></video>
+                <video id="camera" autoplay playsinline></video>
 
                 <div class="scanner-buttons">
 
