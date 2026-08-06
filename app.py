@@ -76,5 +76,22 @@ def login():
 
         return "Funcionó"
 
+
+
+
+
+@app.route("/escaner")
+def escaner():
+    return render_template("escaner.html")
+
+
+
+
+@app.route("/prestamos")
+def prestamos():
+    return render_template("prestamo.html")
+
+
+
 if __name__ == "__main__":
     app.run(debug=True)
