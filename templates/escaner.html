@@ -86,29 +86,76 @@
         <!-- Área principal -->
         <section class="workspace">
 
-            <!-- Escáner -->
-            <div class="scanner">
+    <!-- Escáner -->
+    <div class="scanner">
 
-                <video id="camera" autoplay playsinline></video>
+        <div id="contenedorScanner">
 
-                <div class="scanner-buttons">
+            <h2>Escanee un código de barras</h2>
 
-                    <button>
-                        <i class="fa-solid fa-bolt"></i>
-                    </button>
+            <p>
+                Pase el lector por el código de barras.
+            </p>
 
-                    <button>
-                        <i class="fa-solid fa-magnifying-glass"></i>
-                    </button>
+            <input
+                type="text"
+                id="scanner"
+                autocomplete="off"
+                autofocus
+                style="position:absolute; left:-9999px;">
 
-                    <button>
-                        <i class="fa-solid fa-camera-rotate"></i>
-                    </button>
+            <h3>Código escaneado</h3>
 
-                </div>
+            <p id="resultado">
+                Esperando lectura...
+                </p>
+
+        </div>
+
+    </div>
+
+    <!-- Historial -->
+    <aside class="history">
+
+        <h3>Escaneos Recientes</h3>
+
+        <div class="book-item">
+
+            <img src="{{ url_for('static', filename='img/libro1.jpg') }}" alt="Libro 1">
+
+            <div>
+                <h4>La Sombra del Viento</h4>
+                <p>Carlos Ruiz Zafón</p>
+                <small>Añadido hace 2 min</small>
 
             </div>
 
+        </div>
+
+        <div class="book-item">
+
+            <img src="{{ url_for('static', filename='img/libro2.jpg') }}" alt="Libro 2">
+
+            <div>
+                <h4>Breve Historia del Libro</h4>
+                <p>Paulus Svendsen</p>
+                <small>Verificando...</small>
+
+            </div>
+
+        </div>
+
+        <button class="upload">
+
+            <i class="fa-solid fa-file-arrow-up"></i>
+
+            Cargar desde archivo
+
+        </button>
+
+    </aside>
+
+</section>
             <!-- Historial -->
             <aside class="history">
 
@@ -194,6 +241,6 @@
     </main>
 
 </div>
-
+ <script src="/static/js/escaner.js"></script>
 </body>
 </html>
