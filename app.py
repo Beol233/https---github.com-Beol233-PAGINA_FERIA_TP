@@ -1,11 +1,11 @@
-from flask import Flask, render_template, request, jsonify,redirect
+from flask import Flask, render_template, request, jsonify,#redirect,redirect,url_for,flash,session
 from flask_bcrypt import Bcrypt 
 from mysqlconnection import connectToMySQL
 
 app = Flask(__name__)
 bcrypt = Bcrypt(app)
-
-
+#app.secret_key = "fjwefwein"
+#BD_NAME
 def buscar_libro(codigo):
     query = """
         SELECT titulo, autor, editorial
@@ -30,19 +30,18 @@ def buscar_libro(codigo):
 
     return None
 
-
+#ruta inicial
 @app.route("/")
 def inicio():
-    if "user_id" in session:
-        return render_template("")
+#Duda si tendria que ir a login o a registro    
     return render_template("login.html")
 
-
+#ruta hacia los libors
 @app.route("/libros")
 def libros():
     return render_template("libros.html")
 
-
+#ruta para el lector del codigo del libro
 @app.route("/buscar_codigo", methods=["POST"])
 def buscar_codigo():
 
@@ -70,16 +69,7 @@ def buscar_codigo():
         "encontrado": False
     })
 
-# @app.route("/login", methods=["POST"])
-# def login():
-    
-#         tipo = request.form.get("tipo_usuario")
-#         usuario = request.form.get("usuario")
-
-#         print("TIPO:", tipo)
-#         print("USUARIO:", usuario)
-
-#         return "Funcionó"
+#ruta de logearse
 @app.route("/login", methods ["GET", "POST"])
 def login():
     if  request.method == "POST"
@@ -109,38 +99,63 @@ def login():
 
     return render_template("login.html")
 
+
+
+#Registro que solo da la entrada a el html
 @app.route("/registro")
 
 def registro():
     return render_template("registro.html")
 
+
+#esta ruta solo procesa los datos que manda el formulario de registro
 @app.route("/registro" methods=[POST])
 
 def registro_process():
     #ruta solo para procesar los datos del formulario de registro 
     
-    usuario = request.form["usuario"].strip.()
-    
-    password = request.form["password"]
-    
-    if not usuario or not password:
+    usuario = request.form["nombre"].strip()
+    #nombre = request.form["apellido"].strip()
+    #apellido = request.form["gmail"].strip()
+    #gmail = request.form["gmail"].strip()
+    #tipo_usuario = request.form.get["tipo_usuatio"]
+    #password = request.form["password"]
+    #confirmar = request.form["confirmar"]
+    if not nombre or not apellido or not gmail or not password or not confirmar:
     
         flash("Rellena Los datos que te piden")
-    
         return redirect(url_for("registro"))
     
+   #tipo de usuario a seleccioar
+   if tipo_usuario not in ["alumno", "profesor", "admin"]
+   flash("Seleccione un tipo de usuario")
+   
+   
+   mysql connectToMySQL(BD_NAME)
+   existing = mysql.query_db (
+       """ Select id from users Where gmail = %(gmail)s""",
+   )
+   {
+       "gmail":gmail
+   }
+   if existing:
+       flash("Este Gmail ya esta registrado.")
+       return redirect(url_for("registro"))
+   
+   
+   
     # Chequeamos que el usuario no exista ya.
     # OJO: cada vez que queremos hacer una consulta, generamos una
     # conexión nueva con connectToMySQL, porque la clase MySQLConnection
     # cierra la conexión automáticamente después de cada query_db().
-    mysql = connectToMySQL(BD)
-    existing = mysql.query_db(
-        "Select id from users where usuario = %(usuario)s",
-        {"usuario":usuario}
-    )
-    if existing
-        flash("Este usuario ya esta registro intenta con otro")
-        return redirect(url_for(registro))
+                           #mysql = connectToMySQL(BD)
+                           #existing = mysql.query_db(
+                           #    "Select id from users where usuario = %(usuario)s",
+                           #    {"usuario":usuario}
+                           #)
+                           #if existing
+                           #    flash("Este usuario ya esta registro intenta con otro")
+                           #    return redirect(url_for(registro))
     
     # AQUÍ está lo importante: NUNCA guardamos la contraseña tal cual.
     # bcrypt.hashpw genera el hash. gensalt() crea un "salt" random para
@@ -158,7 +173,7 @@ def registro_process():
     
     flash("Su cuanta esta creada. Ahora puedes iniciar session")
     return redirect(url_for("login"))
-
+#lagout que es para que se elimine el usuario y contraseña recien puestos
 @app.route("/lagout")
 def lagout():
     session.clear()
