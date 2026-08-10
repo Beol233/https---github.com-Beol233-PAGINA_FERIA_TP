@@ -22,6 +22,15 @@
             <form method="post" class="registro-completo" action="{{url_for('registro_process')}}">
                 <span class="rgs">Bienvenidos a registrarse</span>
                 <span >Selecciona tu perfil y accede a tu coleccion personal</span>
+                {% with mensajes = get_flashed_messages() %}
+                    {% if mensajes %}
+                        <ul class="mensajes-flash">
+                            {% for mensaje in mensajes %}
+                                <li>{{ mensaje }}</li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+                {% endwith %}
                 <!--Tipo de usuario-->
                 <div class="tipo-de-usuario">
                     
@@ -57,9 +66,9 @@
                     <label for="confirmar">Confirmar contraseña</label>
                     <input type="password" name="confirmar" id="confirmar" required>
                 </div>
-                <!--Gmial-->
+                <!--Correo-->
                 <div class="campo">
-                    <label for="gmail">Gmail</label>
+                    <label for="correo">Correo electrónico</label>
                     <input type="email" id="correo" name="correo" required>
                 </div>
                 <!--recordar datos-->
@@ -77,22 +86,30 @@
 
     </footer>
     <script>
+    // OJO: antes esta línea no existía. Sin ella, "tipoUsuario" no
+    // estaba definido en ningún lado y el click en ALUMNO/PROFESOR/ADMIN
+    // lanzaba un error de JavaScript (se veía en la consola del navegador,
+    // F12 -> Console) y nunca llegaba a llenar el input oculto. Por eso
+    // el formulario siempre se enviaba con tipo_usuario vacío, y por eso
+    // app.py siempre respondía "Seleccione un tipo de usuario" aunque
+    // sí se hubiera hecho clic en un botón.
+    const tipoUsuario = document.getElementById("tipo_usuario");
     const botones = document.querySelectorAll(".btn-usuario");
+
     botones.forEach(boton => {
-        boton.addEventListener("click", function(event){ 
+        boton.addEventListener("click", function(event){
             event.preventDefault();
-        
 
-        botones.forEach(btn => {
-            btn.classList.remove("activo");
+            botones.forEach(btn => {
+                btn.classList.remove("activo");
+            });
+
+            this.classList.add("activo");
+
+            // También era un typo: "datasat" -> "dataset"
+            tipoUsuario.value = this.dataset.tipo;
         });
-       
-        this.classList.add("activo");
-
-        tipoUsuario.value = this.datasat.tipo
     });
-});
-
 </script>
 
 </body>

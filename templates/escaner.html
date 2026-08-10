@@ -25,17 +25,17 @@
 
         <nav>
 
-            <a href="/templates/libros.html">
+            <a href="{{ url_for('libros') }}">
                 <i class="fa-regular fa-book"></i>
                 <span>Colección</span>
             </a>
 
-            <a class="active" href="/templates/escaner.html">
+            <a class="active" href="{{ url_for('escaner') }}">
                 <i class="fa-solid fa-barcode"></i>
                 <span>Código de Barras</span>
             </a>
 
-            <a href="/templates/prestamo.html">
+            <a href="{{ url_for('prestamos') }}">
                 <i class="fa-solid fa-handshake"></i>
                 <span>Préstamos</span>
             </a>
