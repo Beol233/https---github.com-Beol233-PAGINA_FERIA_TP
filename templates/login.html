@@ -18,10 +18,19 @@
     <main style="display: flex; justify-content:center">
         <form action="/login" method="post" class="registro_completo" >
             <h2>Bienvenidos de nuevo</h2>
+            {% with mensajes = get_flashed_messages() %}
+                {% if mensajes %}
+                    <ul class="mensajes-flash">
+                        {% for mensaje in mensajes %}
+                            <li>{{ mensaje }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            {% endwith %}
             <div class="nombre-contraseña">
                 <div class="campo">
-                    <label for="usuario">Usuario o Correo electrónico</label>
-                    <input type="text" id="usuario" name="usuario" placeholder="Nomnbre de usuario">
+                    <label for="correo">Correo electrónico</label>
+                    <input type="email" id="correo" name="correo" placeholder="tu@correo.com">
 
                 </div>
                 <div class="campo">
@@ -49,7 +58,7 @@
     </main>
     <hr>
     <footer>
-        <span>¿No tienes cuenta?</span> <a href="/templates/registro.html">Registrate ahora</a>
+        <span>¿No tienes cuenta?</span> <a href="{{ url_for('registro') }}">Registrate ahora</a>
     </footer>
 </body>
 
