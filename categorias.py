@@ -21,3 +21,5 @@ def get_all(cls):
         Categorias.append(cls(categoria))
 
     return Categorias
+
+gvffg
