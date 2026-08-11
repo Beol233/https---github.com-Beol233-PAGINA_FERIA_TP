@@ -24,4 +24,4 @@ class libro:
         for libros in resultados:
             libros.append(cls(libros))
             
-        return libros
+        return libros   

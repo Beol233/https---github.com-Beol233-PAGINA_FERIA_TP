@@ -1,6 +1,6 @@
 from mysqlconnection import connectToMySQL
 
-class Prestamo:
+class Prestamos:
    def __init__( self , data ):
        self.id = data['id']
        self.usuario_id = data['usuario_id']
