@@ -22,4 +22,3 @@ def get_all(cls):
 
     return Categorias
 
-gvffg
