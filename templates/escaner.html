@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Escáner de Libros</title>
+
+    <link rel="stylesheet" href="/static/css/escaner.css">
+
+    <link rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+</head>
+
+<body>
+
+<div class="app">
+
+    <!-- Barra lateral -->
+    <header class="sidebar">
+
+        <div class="logo">
+            <h1 class="titulo">Libroteca</h1>
+            <p class="subtitulo">Tu rincón de lectura</p>
+        </div>
+
+        <nav>
+
+            <a href="{{ url_for('libros') }}">
+                <i class="fa-regular fa-book"></i>
+                <span>Colección</span>
+            </a>
+
+            <a class="active" href="{{ url_for('escaner') }}">
+                <i class="fa-solid fa-barcode"></i>
+                <span>Código de Barras</span>
+            </a>
+
+            <a href="{{ url_for('prestamos') }}">
+                <i class="fa-solid fa-handshake"></i>
+                <span>Préstamos</span>
+            </a>
+
+        </nav>
+
+        <button class="new-reading">
+            Nueva Lectura
+        </button>
+
+    </header>
+
+    <!-- Contenido -->
+    <main class="content">
+
+        <section class="header">
+
+            <div>
+
+                <h2>Escáner de Libros</h2>
+
+                <p>
+                    Digitaliza tu biblioteca física al instante.
+                    Escanea el código de barras de cualquier libro para
+                    añadirlo a tu colección o consultar su disponibilidad.
+                </p>
+
+            </div>
+
+            <div class="camera-status">
+
+                Estado de Cámara:
+
+                <span>
+                    <b></b>
+                    ACTIVA
+                </span>
+
+            </div>
+
+        </section>
+
+        <!-- Área principal -->
+        <section class="workspace">
+
+    <!-- Escáner -->
+    <div class="scanner">
+
+        <div id="contenedorScanner">
+
+            <h2>Escanee un código de barras</h2>
+
+            <p>
+                Pase el lector por el código de barras.
+            </p>
+
+            <input
+                type="text"
+                id="scanner"
+                autocomplete="off"
+                autofocus
+                style="position:absolute; left:-9999px;">
+
+            <h3>Código escaneado</h3>
+
+            <p id="resultado">
+                Esperando lectura...
+                </p>
+
+        </div>
+
+    </div>
+
+    <!-- Historial -->
+    <aside class="history">
+
+        <h3>Escaneos Recientes</h3>
+
+        <div class="book-item">
+
+            <img src="{{ url_for('static', filename='img/libro1.jpg') }}" alt="Libro 1">
+
+            <div>
+                <h4>La Sombra del Viento</h4>
+                <p>Carlos Ruiz Zafón</p>
+                <small>Añadido hace 2 min</small>
+
+            </div>
+
+        </div>
+
+        <div class="book-item">
+
+            <img src="{{ url_for('static', filename='img/libro2.jpg') }}" alt="Libro 2">
+
+            <div>
+                <h4>Breve Historia del Libro</h4>
+                <p>Paulus Svendsen</p>
+                <small>Verificando...</small>
+
+            </div>
+
+        </div>
+
+        <button class="upload">
+
+            <i class="fa-solid fa-file-arrow-up"></i>
+
+            Cargar desde archivo
+
+        </button>
+
+    </aside>
+
+</section>
+            <!-- Historial -->
+            <aside class="history">
+
+                <h3>Escaneos Recientes</h3>
+
+                <div class="book-item">
+
+                    <img src="{{ url_for('static', filename='img/libro1.jpg') }}" alt="Libro 1">
+
+                    <div>
+                        <h4>La Sombra del Viento</h4>
+                        <p>Carlos Ruiz Zafón</p>
+                        <small>Añadido hace 2 min</small>
+                    </div>
+
+                </div>
+
+                <div class="book-item">
+
+                    <img src="{{ url_for('static', filename='img/libro2.jpg') }}" alt="Libro 2">
+
+                    <div>
+                        <h4>Breve Historia del Libro</h4>
+                        <p>Paulus Svendsen</p>
+                        <small>Verificando...</small>
+                    </div>
+
+                </div>
+
+                <button class="upload">
+
+                    <i class="fa-solid fa-file-arrow-up"></i>
+
+                    Cargar desde archivo
+
+                </button>
+
+            </aside>
+
+        </section>
+
+        <!-- Consejos -->
+        <section class="tips">
+
+            <div>
+
+                <strong>1</strong>
+
+                <h4>Buena Luz</h4>
+
+                <p>
+                    Ilumina bien el código para una lectura rápida.
+                </p>
+
+            </div>
+
+            <div>
+
+                <strong>2</strong>
+
+                <h4>Evita Reflejos</h4>
+
+                <p>
+                    Inclina ligeramente el libro si produce reflejos.
+                </p>
+
+            </div>
+
+            <div>
+
+                <strong>3</strong>
+
+                <h4>Distancia Ideal</h4>
+
+                <p>
+                    Mantén el libro a unos 20 cm de la cámara.
+                </p>
+
+            </div>
+
+        </section>
+
+    </main>
+
+</div>
+ <script src="/static/js/escaner.js"></script>
+</body>
+</html>

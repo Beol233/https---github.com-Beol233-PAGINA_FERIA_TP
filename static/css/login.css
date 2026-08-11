@@ -42,41 +42,6 @@ main span {
     margin-top: 20px;
 }
 
-.tipo-de-usuario {
-    display: flex;
-    gap: 10px;
-    margin-top: 20px;
-    flex-direction: column;
-    margin-top: 20px;
-    gap: 11px;
-}
-
-.tipo-de-usuario label {
-    font-weight: bold;
-    font-size: 15px;
-}
-
-.tipo_usuario {
-    display: flex;
-    gap: 14px;
-}
-
-.tipo-de-usuario button {
-    flex: 1;
-    padding: 10px;
-    border: 1px solid #b74120;
-    border-radius: 5px;
-    background-color: white;
-    color: #c44826;
-    font-weight: bold;
-    cursor: pointer;
-    transition: 0.5s;
-}
-
-.tipo-de-usuario button.activo {
-    background-color: #c44826;
-    color: white;
-}
 
 
 .campo {

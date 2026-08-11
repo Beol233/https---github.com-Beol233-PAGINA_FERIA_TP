@@ -9,7 +9,6 @@
 
     <link rel="stylesheet" href="/static/css/libros.css">
     <link rel="stylesheet" href="/static/css/style.css">
-
     <link rel="stylesheet"
         href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
 </head>
@@ -28,7 +27,7 @@
             <h1>Colección</h1>
 
             <button class="header_botton">
-                <a href="/templates/libros.html">Colección</a>
+                <a href="{{ url_for('libros') }}">Colección</a>
             </button>
 
             <button class="header_botton">
@@ -42,15 +41,11 @@
             <form action="/buscar" method="get" role="search">
 
                 <label for="busqueda">Buscar:</label>
-
-                <i class="bi bi-search"></i>
-
-                <input
-                    type="search"
-                    id="busqueda"
-                    name="q"
-                    placeholder="¿Qué estás buscando?"
-                    aria-label="Buscar">
+                <div class="contenedor_btn">
+                    <i class="bi bi-search" id="icono_busqueda"></i>
+                    <input type="search" class="btn_busqueda_libro" id="busqueda" name="q"
+                        placeholder="¿Qué estás buscando?" aria-label="Buscar en el sitio">
+                </div>
 
             </form>
 
