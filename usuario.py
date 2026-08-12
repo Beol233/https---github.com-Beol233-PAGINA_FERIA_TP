@@ -12,4 +12,20 @@ class Usuario:
         self.updated_at = data['updated_at']
         self.rol_id = data['rol_id']
 
+<<<<<<< HEAD
      
+=======
+def get_all(cls):
+       query = "SELECT * FROM Usuario;"
+
+       # Llamamos a función connectToMySQL con el esquema al que te diriges
+       resultados = connectToMySQL('biblioteca_db').query_db(query)
+
+       # Creamos una lista vacía para agregar nuestras instancias de mascota
+       usuario = []
+
+       # Iteramos sobre los resultados de la base de datos y crear instancias de mascota con cls
+       for usuario in resultados:
+           usuario.append( cls(usuario) )
+       return usuario
+>>>>>>> 773beeab7d9503b9742f8df8b48dfac45921e379
