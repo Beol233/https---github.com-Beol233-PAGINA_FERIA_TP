@@ -16,7 +16,7 @@ app.secret_key = "fjwefwein"
 # Nombre de la base de datos. Antes se usaba "BD" / "BD_NAME" en distintas
 # partes del archivo sin que existiera en ningún lado. Se deja UNA sola
 # constante y se usa siempre la misma, igual que ya hacía buscar_libro().
-BD_NAME = "biblioteca_db"
+BD_NAME = "biblioteca_bd"
 
 
 def buscar_libro(codigo):
