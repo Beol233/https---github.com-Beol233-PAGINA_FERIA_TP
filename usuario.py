@@ -12,3 +12,4 @@ class Usuario:
         self.updated_at = data['updated_at']
         self.rol_id = data['rol_id']
 
+     

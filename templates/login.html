@@ -7,7 +7,8 @@
     <title>registro de usuario</title>
     <link rel="stylesheet" href="/static/css/login.css">
     <link rel="stylesheet" href="/static/css/style.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+
 </head>
 
 <body>
@@ -16,16 +17,16 @@
         <h3>TU RINCON DE LECTURA</h3>
     </header>
     <main style="display: flex; justify-content:center">
-        <form action="/login" method="post" class="registro_completo" >
+        <form action="/login" method="post" class="registro_completo">
             <h2>Bienvenidos de nuevo</h2>
             {% with mensajes = get_flashed_messages() %}
-                {% if mensajes %}
-                    <ul class="mensajes-flash">
-                        {% for mensaje in mensajes %}
-                            <li>{{ mensaje }}</li>
-                        {% endfor %}
-                    </ul>
-                {% endif %}
+            {% if mensajes %}
+            <ul class="mensajes-flash">
+                {% for mensaje in mensajes %}
+                <li>{{ mensaje }}</li>
+                {% endfor %}
+            </ul>
+            {% endif %}
             {% endwith %}
             <div class="nombre-contraseña">
                 <div class="campo">
@@ -44,12 +45,47 @@
                     <input type="checkbox" id="recordar" name="recordar">
                     <label for="recordar">Recordar mi sesion</label>
                 </div>
-                <button class="btn-iniciar" type="submit" style="display: flex;justify-content: center;align-items: center; gap: 10px;">Iniciar Sesión    <i class="bi bi-arrow-right" ></i></button>
-            </div> 
+                <button class="btn-iniciar" type="submit"
+                    style="display: flex;justify-content: center;align-items: center; gap: 10px;">Iniciar Sesión <i
+                        class="bi bi-arrow-right"></i></button>
+            </div>
         </form>
         <div class="img-inicio">
-              <img src="{{ url_for('static', filename='img/libro_portada.jpg') }}" alt="portada" class="imagen-portada">
-           
+            <div id="carouselExampleSlidesOnly" class="carousel slide" data-bs-ride="carousel">
+
+                <div class="carousel-inner">
+
+                    <!-- IMAGEN 1 -->
+                    <div class="carousel-item active">
+
+
+                        <img src="{{ url_for('static', filename='img/libro_portada.jpg') }}" alt="portada"
+                            class="imagen-portada">
+
+                    </div>
+
+                    <!-- IMAGEN 2 -->
+                    <div class="carousel-item">
+
+                        <img src="{{ url_for('static', filename='img/imagen_colegio.jpg') }}" width="200px" alt="portada"
+                            class="imagen-portada">
+                        
+
+                    </div>
+
+                    <!-- IMAGEN 3 -->
+                    <div class="carousel-item">
+                        <img src="{{ url_for('static', filename='img/portada_colegio.jpg') }}" alt="portada"
+                            class="imagen-portada">
+
+
+
+                    </div>
+
+                </div>
+
+            </div>
+
         </div>
         <div class="mensaje">
             <h2>Descubre tu libro favorito</h2>
@@ -60,6 +96,7 @@
     <footer>
         <span>¿No tienes cuenta?</span> <a href="{{ url_for('registro') }}">Registrate ahora</a>
     </footer>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 
 </html>
