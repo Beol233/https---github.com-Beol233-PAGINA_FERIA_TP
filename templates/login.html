@@ -51,42 +51,32 @@
             </div>
         </form>
         <div class="img-inicio">
-            <div id="carouselExampleSlidesOnly" class="carousel slide" data-bs-ride="carousel">
+    <div id="carouselExampleSlidesOnly" class="carousel slide" data-bs-ride="carousel">
 
-                <div class="carousel-inner">
+        <div class="carousel-inner">
 
-                    
-                    <div class="carousel-item active">
+            <div class="carousel-item active">
+                <img src="{{ url_for('static', filename='img/ree.jpg') }}"
+                     alt="portada"
+                     class="imagen-portada">
+            </div>
 
+            <div class="carousel-item">
+                <img src="{{ url_for('static', filename='img/aaaa.jpg') }}"
+                     alt="portada"
+                     class="imagen-portada">
+            </div>
 
-                        <img src="{{ url_for('static', filename='img/libro_portada.jpg') }}" alt="portada"
-                            class="imagen-portada">
-
-                    </div>
-
-                    
-                    <div class="carousel-item">
-
-                        <img src="{{ url_for('static', filename='img/imagen_colegio.jpg') }}" width="200px" alt="portada"
-                            class="imagen-portada">
-                        
-
-                    </div>
-
-                  
-                    <div class="carousel-item">
-                        <img src="{{ url_for('static', filename='img/portada_colegio.jpg') }}" alt="portada"
-                            class="imagen-portada">
-
-
-
-                        </div>
-
-                </div>
-
+            <div class="carousel-item">
+                <img src="{{ url_for('static', filename='img/portada_colegio.jpg') }}"
+                     alt="portada"
+                     class="imagen-portada">
             </div>
 
         </div>
+
+    </div>
+</div>
         <div class="mensaje">
             <h2>Descubre tu libro favorito</h2>
             <p>Miles de libros te esperan para descubrir, aprender y descubrir</p>
