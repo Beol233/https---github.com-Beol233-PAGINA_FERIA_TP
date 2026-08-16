@@ -137,7 +137,7 @@ def login():
         result = mysql.query_db(
             """
             SELECT id, nombre, correo, tipo_usuario, password_hash
-            FROM users
+            FROM usuarios
             WHERE LOWER(correo) = %(correo)s
             """,
             {
@@ -152,14 +152,14 @@ def login():
             flash("Usuario o contraseña incorrectos.")
             return redirect(url_for("login"))
 
-        user = result[0]
+        usuarios = result[0]
 
         print("Usuario encontrado:", Usuarios["nombre"])
         print("Correo BD:", Usuarios["correo"])
         print("Hash guardado:", Usuarios["password_hash"])
 
         contraseña_correcta = bcrypt.check_password_hash(
-            user["password_hash"],
+            usuarios["password_hash"],
             password
         )
 
@@ -168,9 +168,9 @@ def login():
 
         if contraseña_correcta:
 
-            session["usuario_id"] = user["id"]
-            session["usuario"] = user["nombre"]
-            session["tipo_usuario"] = user["tipo_usuario"]
+            session["usuario_id"] = usuarios["id"]
+            session["usuario"] = usuarios["nombre"]
+            session["tipo_usuario"] = usuarios["tipo_usuario"]
 
             return redirect(url_for("libros"))
 
