@@ -86,36 +86,95 @@ def buscar_codigo():
 
 
 # ruta de logearse
+# @app.route("/login", methods=["GET", "POST"])
+# def login():
+#     if request.method == "POST":
+#         # OJO: se cambió "usuario" por "correo". registro.html nunca pide un
+#         # nombre de usuario, solo nombre/apellido/correo/contraseña, así que
+#         # no existe ningún valor "usuario" guardado contra el cual comparar.
+#         # El correo es el único dato que sirve hoy como identificador único
+#         # (ver PARTE 2 si más adelante quieren agregar un username real).
+#         correo = request.form["correo"].strip()
+#         password = request.form["password"]
+
+#         mysql = connectToMySQL(BD_NAME)
+#         result = mysql.query_db(
+#             "SELECT id, nombre, correo, tipo_usuario, password_hash FROM users WHERE correo = %(correo)s",
+#             {"correo": correo}
+#         )
+#         # query_db devuelve una lista de diccionarios
+#         user = result[0] if result else None
+
+#         # Comparamos la contraseña ingresada contra el hash guardado, sin
+#         # necesitar "deshacer" el hash (eso no se puede).
+#         # OJO: con Flask-Bcrypt el método correcto es check_password_hash,
+#         # no checkpw (eso es de la librería bcrypt "pelada", no de Flask-Bcrypt).
+#         if user and bcrypt.check_password_hash(user["password_hash"], password):
+#             session["usuario_id"] = user["id"]
+#             session["usuario"] = user["nombre"]
+#             session["tipo_usuario"] = user["tipo_usuario"]
+#             return redirect(url_for("libros"))
+
+#         flash("usuario o contraseña incorrectos.")
+#         return redirect(url_for("login"))
+
+#     return render_template("login.html")
+
 @app.route("/login", methods=["GET", "POST"])
 def login():
+
     if request.method == "POST":
-        # OJO: se cambió "usuario" por "correo". registro.html nunca pide un
-        # nombre de usuario, solo nombre/apellido/correo/contraseña, así que
-        # no existe ningún valor "usuario" guardado contra el cual comparar.
-        # El correo es el único dato que sirve hoy como identificador único
-        # (ver PARTE 2 si más adelante quieren agregar un username real).
-        correo = request.form["correo"].strip()
+
+        correo = request.form["correo"].strip().lower()
         password = request.form["password"]
 
-        mysql = connectToMySQL(BD_NAME)
-        result = mysql.query_db(
-            "SELECT id, nombre, correo, tipo_usuario, password_hash FROM users WHERE correo = %(correo)s",
-            {"correo": correo}
-        )
-        # query_db devuelve una lista de diccionarios
-        user = result[0] if result else None
+        print("\n--------- LOGIN ---------")
+        print("Correo ingresado:", correo)
+        print("Contraseña ingresada:", password)
 
-        # Comparamos la contraseña ingresada contra el hash guardado, sin
-        # necesitar "deshacer" el hash (eso no se puede).
-        # OJO: con Flask-Bcrypt el método correcto es check_password_hash,
-        # no checkpw (eso es de la librería bcrypt "pelada", no de Flask-Bcrypt).
-        if user and bcrypt.check_password_hash(user["password_hash"], password):
+        mysql = connectToMySQL(BD_NAME)
+
+        result = mysql.query_db(
+            """
+            SELECT id, nombre, correo, tipo_usuario, password_hash
+            FROM users
+            WHERE LOWER(correo) = %(correo)s
+            """,
+            {
+                "correo": correo
+            }
+        )
+
+        print("Resultado de MySQL:", result)
+
+        if not result:
+            print("NO SE ENCONTRÓ EL CORREO")
+            flash("Usuario o contraseña incorrectos.")
+            return redirect(url_for("login"))
+
+        user = result[0]
+
+        print("Usuario encontrado:", Usuarios["nombre"])
+        print("Correo BD:", Usuarios["correo"])
+        print("Hash guardado:", Usuarios["password_hash"])
+
+        contraseña_correcta = bcrypt.check_password_hash(
+            user["password_hash"],
+            password
+        )
+
+        print("¿Contraseña correcta?:", contraseña_correcta)
+        print("-------------------------\n")
+
+        if contraseña_correcta:
+
             session["usuario_id"] = user["id"]
             session["usuario"] = user["nombre"]
             session["tipo_usuario"] = user["tipo_usuario"]
+
             return redirect(url_for("libros"))
 
-        flash("usuario o contraseña incorrectos.")
+        flash("Usuario o contraseña incorrectos.")
         return redirect(url_for("login"))
 
     return render_template("login.html")
