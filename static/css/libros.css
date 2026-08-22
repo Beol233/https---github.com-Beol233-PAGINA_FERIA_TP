@@ -1,109 +1,68 @@
-body {
-    display: flex;
-    margin: 0px;
+    body {
+        display: flex;
+        margin: 0px;
 
-}
-*{
-    margin: 0;
-    padding: 0;
+    }
+    *{
+        margin: 0;
+        padding: 0;
 
-}
-.barra_lateral {
-    width: 20%;
-        
-    background-color: #FBF2EE;
-    height: 100vh;
-    padding: 30px, 10px;
-  
-    border-right: 1px solid #f0e6df;
-}
-.contenido_principal {
-    width: 80%;
-    display: flex;
-    flex-direction: column;
-}
-#icono_busqueda {
-        
-}
-header{
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 15px 30px ;
-    background: #FFF8F5;
-}
-header h1 {
-    color:#AE2d0a;
-    font-size: 20px;
-}
-.header_botton {
-    border: none;
-    background: transparent;
-}
-.header_botton a {
-    text-decoration: none;
-    color: #555;
-    padding: 10px 10px;
-    border-radius: 8px;
-    transition: .3s;
-}
-.header_botton{
-    height: 30px;
-    width: 60px;
-    background: none;
-    border: none;
-    font-family: Arial, Helvetica, sans-serif;
-    text-align: center;
-    margin-left: 50px;
-    font-size: 20px
-}
-header form{
-    margin-left: 20px;
-}
-.barra_lateral{
-
-}
-body {
-    display: flex;
-
-}
-label {
-    font-size: 20px;
-}   
-form i{
-font-size: 15px;
-}
-button a i{
-    margin-left: 29px;
-}
-.icono_barra{
-    height: 30px;
-    width: 60px;
-    background: none;
-    border: none;
-    font-family: Arial, Helvetica, sans-serif;
-    text-align: end;
-    font-size: 20px;
-    align-items: end;
-}
-
-.contenedor_btn {
-    position: relative;
-    width: 100%;
-    max-width: 400px;
-    min-width: 280px;
-    display: inline-block;
-}
-
-.btn_busqueda_libro{
-width: 100% ;
-  padding: 10px 10px 10px 32px; 
-    font-size: 16px;
-    border: 1px solid #dcdcdc;
-    border-radius: 20px;         
-    background-color: #fff;
+    }
+    .barra_lateral {
+        width: 20%;
+            
+        background-color: #FBF2EE;
+        height: 100vh;
+        padding: 30px, 10px;
     
+        border-right: 1px solid #f0e6df;
+    }
+    .contenido_principal {
+        width: 80%;
+        display: flex;
+        flex-direction: column;
+    }
+    #icono_busqueda {
+            
+    }
+    header{
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 15px 30px ;
+        background: #FFF8F5;
+    }
+    header h1 {
+        color:#AE2d0a;
+        font-size: 20px;
+    }
+    .header_botton {
+        border: none;
+        background: transparent;
+    }
+    .header_botton a {
+        text-decoration: none;
+        color: #555;
+        padding: 10px 10px;
+        border-radius: 8px;
+        transition: .3s;
+    }
+    .header_botton{
+        height: 30px;
+        width: 60px;
+        background: none;
+        border: none;
+        font-family: Arial, Helvetica, sans-serif;
+        text-align: center;
+        margin-left: 50px;
+        font-size: 20px
+    }
+    header form{
+        margin-left: 20px;
+    }
+    .barra_lateral{
 
+<<<<<<< HEAD
 }
 /* Quitar espacios que pone el navegador */
 * {
@@ -407,3 +366,48 @@ header label {
     border-radius: 5px;
     font-size: 13px;
 }
+=======
+    }
+    body {
+        display: flex;
+
+    }
+    label {
+        font-size: 20px;
+    }   
+    form i{
+    font-size: 15px;
+    }
+    button a i{
+        margin-left: 29px;
+    }
+    .icono_barra{
+        height: 30px;
+        width: 60px;
+        background: none;
+        border: none;
+        font-family: Arial, Helvetica, sans-serif;
+        text-align: end;
+        font-size: 20px;
+        align-items: end;
+    }
+
+    .contenedor_btn {
+        position: relative;
+        width: 100%;
+        max-width: 400px;
+        min-width: 280px;
+        display: inline-block;
+    }
+
+    .btn_busqueda_libro{
+    width: 100% ;
+    padding: 10px 10px 10px 32px; 
+        font-size: 16px;
+        border: 1px solid #dcdcdc;
+        border-radius: 20px;         
+        background-color: #fff;
+        
+
+    }
+>>>>>>> 351a7bbfc25e28af2accce2f6699239f6d953c59
