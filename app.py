@@ -136,6 +136,7 @@ def login():
             SELECT 
                 usuarios.id,
                 usuarios.nombre,
+                usuarios.apellido,
                 usuarios.correo,
                 usuarios.password,
                 usuarios.rol_id,
@@ -170,6 +171,10 @@ def login():
 @app.route("/registro")
 def registro():
     return render_template("registro.html")
+
+@app.route("/prestamo")
+def prestamo():
+    return render_template("prestamo.html")
 
 @app.route("/registro", methods=["POST"])
 def registro_process():
@@ -270,7 +275,10 @@ def registro_process():
         }
     )
 
-    print("Usuario creado con ID:", resultado)
+    print("Resultado insert:", resultado)
+    if resultado == False:
+        flash("Error al crear la cuenta.")
+        return redirect(url_for("login"))
 
     flash("Su cuenta está creada. Ahora puedes iniciar sesión.")
     return redirect(url_for("login"))

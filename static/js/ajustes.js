@@ -2,10 +2,6 @@ const modoOscuro = document.getElementById("modoOscuro");
 const notificaciones = document.getElementById("notificaciones");
 const idioma = document.getElementById("idioma");
 
-// Aplicar el modo oscuro guardado en cualquier página
-if (localStorage.getItem("modoOscuro") === "activado") {
-    document.body.classList.add("oscuro");
-}
 
 // Esta parte solo funciona si estamos en ajustes.html
 if (modoOscuro) {

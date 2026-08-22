@@ -62,7 +62,6 @@
     }
     .barra_lateral{
 
-<<<<<<< HEAD
 }
 /* Quitar espacios que pone el navegador */
 * {
@@ -77,7 +76,17 @@ body {
     font-family: Arial, Helvetica, sans-serif;
 }
 
+body.oscuro .contenido_principal {
+    background-color: #181818;
+}
 
+body.oscuro header {
+    background-color: #242424;
+}
+
+body.oscuro .barra_lateral {
+    background-color: #111111;
+}
 
 .barra_lateral {
     width: 20%;
@@ -366,48 +375,3 @@ header label {
     border-radius: 5px;
     font-size: 13px;
 }
-=======
-    }
-    body {
-        display: flex;
-
-    }
-    label {
-        font-size: 20px;
-    }   
-    form i{
-    font-size: 15px;
-    }
-    button a i{
-        margin-left: 29px;
-    }
-    .icono_barra{
-        height: 30px;
-        width: 60px;
-        background: none;
-        border: none;
-        font-family: Arial, Helvetica, sans-serif;
-        text-align: end;
-        font-size: 20px;
-        align-items: end;
-    }
-
-    .contenedor_btn {
-        position: relative;
-        width: 100%;
-        max-width: 400px;
-        min-width: 280px;
-        display: inline-block;
-    }
-
-    .btn_busqueda_libro{
-    width: 100% ;
-    padding: 10px 10px 10px 32px; 
-        font-size: 16px;
-        border: 1px solid #dcdcdc;
-        border-radius: 20px;         
-        background-color: #fff;
-        
-
-    }
->>>>>>> 351a7bbfc25e28af2accce2f6699239f6d953c59

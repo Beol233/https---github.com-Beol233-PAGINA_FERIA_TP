@@ -36,7 +36,7 @@
                 Buscar
             </a>
 
-            <a href="#">
+            <a href="{{ url_for('prestamo') }}">
                 <i class="bi bi-arrow-left-right"></i>
                 Préstamos
             </a>
@@ -75,7 +75,7 @@
             </button>
 
             <button class="header_botton">
-                <a href="#">Préstamos</a>
+                <a href="{{ url_for('prestamo') }}">Préstamos</a>
             </button>
 
             <button class="icono_barra" id="btnEscaner">
@@ -258,7 +258,7 @@
         });
         
     </script>
-
+<script src="/static/js/tema.js"></script>
 </body>
 
 </html>
