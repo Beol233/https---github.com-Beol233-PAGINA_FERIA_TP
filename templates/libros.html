@@ -9,8 +9,7 @@
 
     <link rel="stylesheet" href="/static/css/libros.css">
     <link rel="stylesheet" href="/static/css/style.css">
-    <link rel="stylesheet"
-        href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
 </head>
 
 <body>
@@ -65,122 +64,240 @@
             </p>
 
             <!-- Input oculto que recibe el código del escáner -->
-            <input
-                type="text"
-                id="scanner"
-                autocomplete="off"
-                autofocus
-                style="position:absolute; left:-9999px;">
+            <input type="text" id="scanner" autocomplete="off" autofocus style="position:absolute; left:-9999px;">
 
             <p id="resultado" style="font-size:20px;font-weight:bold;"></p>
 
         </div>
 
     </div>
+    <main class="parte-de-libros">
+        <aside class="generos">
+            <div class="grupo-genero">
+                <h3>Género</h3>
+                <label>
+                    <input type="checkbox">
+                    Ficción
+                </label>
+                <label>
+                    <input type="checkbox">
+                    Ensayo
+                </label>
+                <label>
+                    <input type="checkbox">
+                    Historia
+                </label>
+                <label>
+                    <input type="checkbox">
+                    Ciencias
+                </label>
+                <label>
+                    <input type="checkbox">
+                    Poesias
+                </label>
 
-<script>
 
-const boton = document.getElementById("btnEscaner");
-const contenedor = document.getElementById("contenedorScanner");
-const scanner = document.getElementById("scanner");
-const resultado = document.getElementById("resultado");
+            </div>
+            <div class="grupo-genero">
+                <h3>DISPONIBILIDAD</h3>
+                <label>
+                    <input type="radio" name="disponibilidad" checked>
+                    todos
+                </label>
+                <label>
+                    <input type="radio" name="disponibilidad">
+                    Disponible
+                </label>
+                <label>
+                    <input type="radio" name="disponibilidad">
+                    en prestamo
+                </label>
+            </div>
+        </aside>
+        <section class="seccion-libros">
+            <div class="inf-libros">
+                <p>Mostrar <strong>0 libros</strong></p>
+                <div>
+                    <button class="btn-vista">
+                        <i>bi bi-grid-fill</i>
+                    </button>
 
-let activo = false;
+                    <button class="btn-vista">
+                        <i>bi bi-list</i>
+                    </button>
 
-// Mostrar/Ocultar lector
-boton.addEventListener("click", () => {
+                </div>
+                <div class="container-libro">
+                    <article>
+                        <div class="portada">
+                            <i class="bi bi-book"></i>
+                        </div>
+                        <span class="estado disponible">Disponible</span>
+                        <h3>titulo libro</h3>
+                        <p>Nombre del autor</p>
+                        <small>Año: 0</small>
+                    </article>
 
-    activo = !activo;
+                </div>
+            </div>
+            <article class="tarjeta_libro">
+                <div class="portada_vacia">
+                    <i class="bi bi-book"></i>
+                </div>
 
-    if (activo) {
+                <span class="estado prestado">En préstamo</span>
+                <h3>Título del libro</h3>
+                <p>Nombre del autor</p>
+                <small>Año: 0</small>
+            </article>
 
-        contenedor.style.display = "block";
+            <article class="tarjeta_libro">
+                <div class="portada_vacia">
+                    <i class="bi bi-book"></i>
+                </div>
 
-        resultado.innerHTML = "Esperando lectura...";
+                <span class="estado disponible">Disponible</span>
+                <h3>Título del libro</h3>
+                <p>Nombre del autor</p>
+                <small>Año: 0</small>
+            </article>
 
-        scanner.focus();
+            </div>
 
-    } else {
+            <div class="paginacion">
+                <button>
+                    <i class="bi bi-chevron-left"></i>
+                </button>
 
-        contenedor.style.display = "none";
+                <button class="pagina_actual">0</button>
+                <button>0</button>
+                <button>0</button>
 
-        scanner.value = "";
+                <button>
+                    <i class="bi bi-chevron-right"></i>
+                </button>
+            </div>
 
-    }
+        </section>
 
-});
+    </main>
 
-// Mantener el foco en el input oculto
-window.addEventListener("click", () => {
+    <footer>
 
-    if (activo) {
-        scanner.focus();
-    }
+        <div>
+            <h2>Libroteca</h2>
+            <p>Tu rincón de lectura.</p>
+        </div>
 
-});
+        <p>© 2026 Libroteca. Todos los derechos reservados.</p>
 
-// Cuando el escáner envía ENTER
-scanner.addEventListener("keydown", async function(e){
+    </footer>
+    </section>
+    </main>
+    <script>
 
-    if(e.key !== "Enter") return;
+        const boton = document.getElementById("btnEscaner");
+        const contenedor = document.getElementById("contenedorScanner");
+        const scanner = document.getElementById("scanner");
+        const resultado = document.getElementById("resultado");
 
-    e.preventDefault();
+        let activo = false;
 
-    const codigo = scanner.value.trim();
+        // Mostrar/Ocultar lector
+        boton.addEventListener("click", () => {
 
-    scanner.value = "";
+            activo = !activo;
 
-    if(codigo === "") return;
+            if (activo) {
 
-    resultado.innerHTML =
-        "<strong>Código:</strong> " + codigo;
+                contenedor.style.display = "block";
 
-    try{
+                resultado.innerHTML = "Esperando lectura...";
 
-        const respuesta = await fetch("/buscar_codigo",{
+                scanner.focus();
 
-            method:"POST",
+            } else {
 
-            headers:{
-                "Content-Type":"application/json"
-            },
+                contenedor.style.display = "none";
 
-            body:JSON.stringify({
-                codigo:codigo
-            })
+                scanner.value = "";
+
+            }
 
         });
 
-        const libro = await respuesta.json();
+        // Mantener el foco en el input oculto
+        window.addEventListener("click", () => {
 
-        if(libro.encontrado){
+            if (activo) {
+                scanner.focus();
+            }
 
-            alert(
-                "Libro encontrado\n\n" +
-                "Título: " + libro.titulo +
-                "\nAutor: " + libro.autor +
-                "\nEditorial: " + libro.editorial
-            );
+        });
 
-        }else{
+        // Cuando el escáner envía ENTER
+        scanner.addEventListener("keydown", async function (e) {
 
-            alert("Libro no registrado.");
+            if (e.key !== "Enter") return;
 
-        }
+            e.preventDefault();
 
-    }catch(error){
+            const codigo = scanner.value.trim();
 
-        console.error(error);
+            scanner.value = "";
 
-        alert("Error al consultar el servidor.");
+            if (codigo === "") return;
 
-    }
+            resultado.innerHTML =
+                "<strong>Código:</strong> " + codigo;
 
-    scanner.focus();
+            try {
 
-});
+                const respuesta = await fetch("/buscar_codigo", {
 
-</script>
+                    method: "POST",
+
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+
+                    body: JSON.stringify({
+                        codigo: codigo
+                    })
+
+                });
+
+                const libro = await respuesta.json();
+
+                if (libro.encontrado) {
+
+                    alert(
+                        "Libro encontrado\n\n" +
+                        "Título: " + libro.titulo +
+                        "\nAutor: " + libro.autor +
+                        "\nEditorial: " + libro.editorial
+                    );
+
+                } else {
+
+                    alert("Libro no registrado.");
+
+                }
+
+            } catch (error) {
+
+                console.error(error);
+
+                alert("Error al consultar el servidor.");
+
+            }
+
+            scanner.focus();
+
+        });
+
+    </script>
 
 </body>
+
 </html>
