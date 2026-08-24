@@ -19,9 +19,9 @@
         </div>
 
         <nav>
-            <a href="#">📚 Colección</a>
-            <a href="#" class="activo">📖 Préstamos</a>
-            <a href="{{ url_for('prestamo') }}">📷 QR Scanner</a>
+            <a href="{{url_for('libros')}}">📚 Colección</a>
+            <a href="{{url_for('prestamos')}}" class="activo">📖 Préstamos</a>
+            <a href="{{ url_for('escaner') }}">📷 QR Scanner</a>
             
         </nav>
 
