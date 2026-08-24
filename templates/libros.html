@@ -15,8 +15,53 @@
 <body>
 
     <div class="barra_lateral">
+
         <h1 class="titulo_barraLateral">Libroteca</h1>
-        <p>Tu rincón de lectura</p>
+        <p class="subtitulo_barra">Tu rincón de lectura</p>
+
+        <button class="boton_nuevo_lector">
+            <i class="bi bi-plus-lg"></i>
+            Nuevo lector
+        </button>
+
+        <nav class="menu_lateral">
+
+            <a href="{{ url_for('libros') }}" class="opcion_activa">
+                <i class="bi bi-book"></i>
+                Colección
+            </a>
+
+            <a href="#">
+                <i class="bi bi-search"></i>
+                Buscar
+            </a>
+
+            <a href="{{ url_for('prestamo') }}">
+                <i class="bi bi-arrow-left-right"></i>
+                Préstamos
+            </a>
+
+            <a href="#">
+                <i class="bi bi-people"></i>
+                Lectores
+            </a>
+
+        </nav>
+
+        <div class="menu_inferior">
+
+            <a href="{{ url_for('ajustes') }}">
+                <i class="bi bi-gear"></i>
+                Ajustes
+            </a>
+
+            <a href="{{ url_for('login') }}">
+                <i class="bi bi-box-arrow-left"></i>
+                Cerrar sesión
+            </a>
+
+        </div>
+
     </div>
 
     <div class="contenido_principal">
@@ -30,7 +75,7 @@
             </button>
 
             <button class="header_botton">
-                <a href="#">Préstamos</a>
+                <a href="{{ url_for('prestamo') }}">Préstamos</a>
             </button>
 
             <button class="icono_barra" id="btnEscaner">
@@ -69,7 +114,45 @@
             <p id="resultado" style="font-size:20px;font-weight:bold;"></p>
 
         </div>
+        <div class="seccion_libros">
 
+            <div class="titulo_lista">
+            
+                <p>Mostrando <strong>0 libros</strong></p>
+
+            </div>
+
+            <div class="contenedor_libros">
+
+                <div class="libro">
+
+                    <div class="p_libro">
+
+                        <i class="bi bi-book"></i>
+
+                    </div>
+
+                    <div class="inf-libro">
+
+                        <h2>Título del libro</h2>
+
+                        <p>Nombre del autor</p>
+
+                        <p>Editorial</p>
+
+                        <small>Año: 0</small>
+
+                    </div>
+
+                    <span class="disponiblidad">
+                        Disponible
+                    </span>
+
+                </div>
+
+            </div>
+
+        </div>
     </div>
     <main class="parte-de-libros">
         <aside class="generos">
@@ -257,6 +340,7 @@
 
                     method: "POST",
 
+
                     headers: {
                         "Content-Type": "application/json"
                     },
@@ -296,8 +380,48 @@
 
         });
 
-    </script>
+    
 
+        headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    codigo: codigo
+                })
+
+            
+
+                const libro = await respuesta.json();
+
+                if (libro.encontrado) {
+
+                    alert(
+                        "Libro encontrado\n\n" +
+                        "Título: " + libro.titulo +
+                        "\nAutor: " + libro.autor +
+                        "\nEditorial: " + libro.editorial
+                    );
+
+                } else {
+
+                    alert("Libro no registrado.");
+
+                }
+
+            } catch (error) {
+
+                console.error(error);
+
+                alert("Error al consultar el servidor.");
+
+            }
+
+            scanner.focus();
+
+        });
+        
+    </script>
+<script src="/static/js/tema.js"></script>
 </body>
 
 </html>
