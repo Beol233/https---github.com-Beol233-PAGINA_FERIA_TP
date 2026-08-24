@@ -5,281 +5,336 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Libros</title>
+    <title>Colección | Libroteca</title>
 
-    <link rel="stylesheet" href="/static/css/libros.css">
+    <!-- CSS general primero y CSS de esta página después -->
     <link rel="stylesheet" href="/static/css/style.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="/static/css/libros.css">
+
+    <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
 </head>
 
 <body>
 
-    <div class="barra_lateral">
+    <div class="aplicacion">
 
-        <h1 class="titulo_barraLateral">Libroteca</h1>
-        <p class="subtitulo_barra">Tu rincón de lectura</p>
+        <!-- Barra lateral -->
+        <aside class="barra_lateral">
 
-        <button class="boton_nuevo_lector">
-            <i class="bi bi-plus-lg"></i>
-            Nuevo lector
-        </button>
+            <div>
+                <h1 class="titulo_barra_lateral">Libroteca</h1>
+                <p class="subtitulo_barra">Tu rincón de lectura</p>
 
-        <nav class="menu_lateral">
+                <button type="button" class="boton_nuevo_lector">
+                    <i class="bi bi-plus-lg"></i>
+                    Nuevo lector
+                </button>
 
-            <a href="{{ url_for('libros') }}" class="opcion_activa">
-                <i class="bi bi-book"></i>
-                Colección
-            </a>
+                <nav class="menu_lateral">
 
-            <a href="#">
-                <i class="bi bi-search"></i>
-                Buscar
-            </a>
-
-            <a href="{{ url_for('prestamo') }}">
-                <i class="bi bi-arrow-left-right"></i>
-                Préstamos
-            </a>
-
-            <a href="#">
-                <i class="bi bi-people"></i>
-                Lectores
-            </a>
-
-        </nav>
-
-        <div class="menu_inferior">
-
-            <a href="{{ url_for('ajustes') }}">
-                <i class="bi bi-gear"></i>
-                Ajustes
-            </a>
-
-            <a href="{{ url_for('login') }}">
-                <i class="bi bi-box-arrow-left"></i>
-                Cerrar sesión
-            </a>
-
-        </div>
-
-    </div>
-
-    <div class="contenido_principal">
-
-        <header>
-
-            <h1>Colección</h1>
-
-            <button class="header_botton">
-                <a href="{{ url_for('libros') }}">Colección</a>
-            </button>
-
-            <button class="header_botton">
-                <a href="{{ url_for('prestamo') }}">Préstamos</a>
-            </button>
-
-            <button class="icono_barra" id="btnEscaner">
-                <i class="bi bi-upc-scan"></i>
-            </button>
-
-            <form action="/buscar" method="get" role="search">
-
-                <label for="busqueda">Buscar:</label>
-                <div class="contenedor_btn">
-                    <i class="bi bi-search" id="icono_busqueda"></i>
-                    <input type="search" class="btn_busqueda_libro" id="busqueda" name="q"
-                        placeholder="¿Qué estás buscando?" aria-label="Buscar en el sitio">
-                </div>
-
-            </form>
-
-            <button class="icono_barra">
-                <i class="bi bi-person-circle"></i>
-            </button>
-
-        </header>
-
-        <!-- Escáner -->
-        <div id="contenedorScanner" style="display:none; margin-top:30px;">
-
-            <h2>Escanee un código de barras</h2>
-
-            <p>
-                Pase el lector por el código de barras.
-            </p>
-
-            <!-- Input oculto que recibe el código del escáner -->
-            <input type="text" id="scanner" autocomplete="off" autofocus style="position:absolute; left:-9999px;">
-
-            <p id="resultado" style="font-size:20px;font-weight:bold;"></p>
-
-        </div>
-        <div class="seccion_libros">
-
-            <div class="titulo_lista">
-            
-                <p>Mostrando <strong>0 libros</strong></p>
-
-            </div>
-
-            <div class="contenedor_libros">
-
-                <div class="libro">
-
-                    <div class="p_libro">
-
+                    <a href="{{ url_for('libros') }}" class="opcion_activa">
                         <i class="bi bi-book"></i>
+                        Colección
+                    </a>
 
-                    </div>
+                    <a href="#busqueda">
+                        <i class="bi bi-search"></i>
+                        Buscar
+                    </a>
 
-                    <div class="inf-libro">
+                    <a href="{{ url_for('prestamo') }}">
+                        <i class="bi bi-arrow-left-right"></i>
+                        Préstamos
+                    </a>
 
-                        <h2>Título del libro</h2>
+                    <a href="#">
+                        <i class="bi bi-people"></i>
+                        Lectores
+                    </a>
 
-                        <p>Nombre del autor</p>
-
-                        <p>Editorial</p>
-
-                        <small>Año: 0</small>
-
-                    </div>
-
-                    <span class="disponiblidad">
-                        Disponible
-                    </span>
-
-                </div>
-
+                </nav>
             </div>
 
-        </div>
-    </div>
-    <main class="parte-de-libros">
-        <aside class="generos">
-            <div class="grupo-genero">
-                <h3>Género</h3>
-                <label>
-                    <input type="checkbox">
-                    Ficción
-                </label>
-                <label>
-                    <input type="checkbox">
-                    Ensayo
-                </label>
-                <label>
-                    <input type="checkbox">
-                    Historia
-                </label>
-                <label>
-                    <input type="checkbox">
-                    Ciencias
-                </label>
-                <label>
-                    <input type="checkbox">
-                    Poesias
-                </label>
+            <nav class="menu_inferior">
 
+                <a href="{{ url_for('ajustes') }}">
+                    <i class="bi bi-gear"></i>
+                    Ajustes
+                </a>
 
-            </div>
-            <div class="grupo-genero">
-                <h3>DISPONIBILIDAD</h3>
-                <label>
-                    <input type="radio" name="disponibilidad" checked>
-                    todos
-                </label>
-                <label>
-                    <input type="radio" name="disponibilidad">
-                    Disponible
-                </label>
-                <label>
-                    <input type="radio" name="disponibilidad">
-                    en prestamo
-                </label>
-            </div>
+                <a href="{{ url_for('login') }}">
+                    <i class="bi bi-box-arrow-left"></i>
+                    Cerrar sesión
+                </a>
+
+            </nav>
+
         </aside>
-        <section class="seccion-libros">
-            <div class="inf-libros">
-                <p>Mostrar <strong>0 libros</strong></p>
-                <div>
-                    <button class="btn-vista">
-                        <i>bi bi-grid-fill</i>
-                    </button>
 
-                    <button class="btn-vista">
-                        <i>bi bi-list</i>
-                    </button>
+        <!-- Contenido -->
+        <div class="contenido_principal">
 
+            <header class="encabezado">
+
+                <div class="titulo_encabezado">
+                    <h1>Colección</h1>
                 </div>
-                <div class="container-libro">
-                    <article>
-                        <div class="portada">
-                            <i class="bi bi-book"></i>
+
+                <nav class="navegacion_superior">
+
+                    <a href="{{ url_for('libros') }}" class="enlace_activo">
+                        Colección
+                    </a>
+
+                    <a href="{{ url_for('prestamo') }}">
+                        Préstamos
+                    </a>
+
+                </nav>
+
+                <div class="acciones_encabezado">
+
+                    <button type="button"
+                        class="boton_icono"
+                        id="btnEscaner"
+                        aria-label="Abrir escáner">
+                        <i class="bi bi-upc-scan"></i>
+                    </button>
+
+                    <form action="/buscar" method="get" role="search" class="formulario_busqueda">
+
+                        <label for="busqueda" class="etiqueta_oculta">
+                            Buscar un libro
+                        </label>
+
+                        <div class="contenedor_busqueda">
+                            <i class="bi bi-search"></i>
+
+                            <input
+                                type="search"
+                                id="busqueda"
+                                name="q"
+                                placeholder="¿Qué estás buscando?"
+                                aria-label="Buscar un libro">
                         </div>
-                        <span class="estado disponible">Disponible</span>
-                        <h3>titulo libro</h3>
-                        <p>Nombre del autor</p>
-                        <small>Año: 0</small>
-                    </article>
+
+                    </form>
+
+                    <button type="button"
+                        class="boton_icono"
+                        aria-label="Abrir perfil">
+                        <i class="bi bi-person-circle"></i>
+                    </button>
 
                 </div>
-            </div>
-            <article class="tarjeta_libro">
-                <div class="portada_vacia">
-                    <i class="bi bi-book"></i>
+
+            </header>
+
+            <!-- Escáner -->
+            <section id="contenedorScanner" class="contenedor_scanner oculto">
+
+                <div>
+                    <h2>Escanear código de barras</h2>
+                    <p>Pase el lector por el código de barras del libro.</p>
                 </div>
 
-                <span class="estado prestado">En préstamo</span>
-                <h3>Título del libro</h3>
-                <p>Nombre del autor</p>
-                <small>Año: 0</small>
-            </article>
+                <input
+                    type="text"
+                    id="scanner"
+                    autocomplete="off"
+                    class="input_scanner">
 
-            <article class="tarjeta_libro">
-                <div class="portada_vacia">
-                    <i class="bi bi-book"></i>
+                <p id="resultado" class="resultado_scanner"></p>
+
+            </section>
+
+            <main class="contenido_coleccion">
+
+                <!-- Filtros -->
+                <aside class="filtros">
+
+                    <div class="grupo_filtro">
+
+                        <h2>Género</h2>
+
+                        <label>
+                            <input type="checkbox" name="genero" value="ficcion">
+                            Ficción
+                        </label>
+
+                        <label>
+                            <input type="checkbox" name="genero" value="ensayo">
+                            Ensayo
+                        </label>
+
+                        <label>
+                            <input type="checkbox" name="genero" value="historia">
+                            Historia
+                        </label>
+
+                        <label>
+                            <input type="checkbox" name="genero" value="ciencias">
+                            Ciencias
+                        </label>
+
+                        <label>
+                            <input type="checkbox" name="genero" value="poesia">
+                            Poesía
+                        </label>
+
+                    </div>
+
+                    <div class="grupo_filtro">
+
+                        <h2>Disponibilidad</h2>
+
+                        <label>
+                            <input
+                                type="radio"
+                                name="disponibilidad"
+                                value="todos"
+                                checked>
+                            Todos
+                        </label>
+
+                        <label>
+                            <input
+                                type="radio"
+                                name="disponibilidad"
+                                value="disponible">
+                            Disponible
+                        </label>
+
+                        <label>
+                            <input
+                                type="radio"
+                                name="disponibilidad"
+                                value="prestado">
+                            En préstamo
+                        </label>
+
+                    </div>
+
+                </aside>
+
+                <!-- Lista de libros -->
+                <section class="seccion_libros">
+
+                    <div class="cabecera_lista">
+
+                        <p>
+                            Mostrando <strong>3 libros</strong>
+                        </p>
+
+                        <div class="botones_vista">
+
+                            <button type="button"
+                                class="boton_vista boton_vista_activo"
+                                aria-label="Vista en cuadrícula">
+                                <i class="bi bi-grid-fill"></i>
+                            </button>
+
+                            <button type="button"
+                                class="boton_vista"
+                                aria-label="Vista en lista">
+                                <i class="bi bi-list"></i>
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                    <div class="contenedor_libros">
+
+                        <article class="tarjeta_libro">
+
+                            <div class="portada_vacia">
+                                <i class="bi bi-book"></i>
+                            </div>
+
+                            <div class="informacion_libro">
+                                <span class="estado disponible">Disponible</span>
+                                <h3>Título del libro</h3>
+                                <p>Nombre del autor</p>
+                                <p class="editorial">Nombre de la editorial</p>
+                                <small>Año: 2026</small>
+                            </div>
+
+                        </article>
+
+                        <article class="tarjeta_libro">
+
+                            <div class="portada_vacia">
+                                <i class="bi bi-book"></i>
+                            </div>
+
+                            <div class="informacion_libro">
+                                <span class="estado prestado">En préstamo</span>
+                                <h3>Título del libro</h3>
+                                <p>Nombre del autor</p>
+                                <p class="editorial">Nombre de la editorial</p>
+                                <small>Año: 2025</small>
+                            </div>
+
+                        </article>
+
+                        <article class="tarjeta_libro">
+
+                            <div class="portada_vacia">
+                                <i class="bi bi-book"></i>
+                            </div>
+
+                            <div class="informacion_libro">
+                                <span class="estado disponible">Disponible</span>
+                                <h3>Título del libro</h3>
+                                <p>Nombre del autor</p>
+                                <p class="editorial">Nombre de la editorial</p>
+                                <small>Año: 2024</small>
+                            </div>
+
+                        </article>
+
+                    </div>
+
+                    <nav class="paginacion" aria-label="Paginación">
+
+                        <button type="button" aria-label="Página anterior">
+                            <i class="bi bi-chevron-left"></i>
+                        </button>
+
+                        <button type="button" class="pagina_actual">1</button>
+                        <button type="button">2</button>
+                        <button type="button">3</button>
+
+                        <button type="button" aria-label="Página siguiente">
+                            <i class="bi bi-chevron-right"></i>
+                        </button>
+
+                    </nav>
+
+                </section>
+
+            </main>
+
+            <footer>
+
+                <div>
+                    <h2>Libroteca</h2>
+                    <p>Tu rincón de lectura.</p>
                 </div>
 
-                <span class="estado disponible">Disponible</span>
-                <h3>Título del libro</h3>
-                <p>Nombre del autor</p>
-                <small>Año: 0</small>
-            </article>
+                <p>© 2026 Libroteca. Todos los derechos reservados.</p>
 
-            </div>
+            </footer>
 
-            <div class="paginacion">
-                <button>
-                    <i class="bi bi-chevron-left"></i>
-                </button>
-
-                <button class="pagina_actual">0</button>
-                <button>0</button>
-                <button>0</button>
-
-                <button>
-                    <i class="bi bi-chevron-right"></i>
-                </button>
-            </div>
-
-        </section>
-
-    </main>
-
-    <footer>
-
-        <div>
-            <h2>Libroteca</h2>
-            <p>Tu rincón de lectura.</p>
         </div>
 
-        <p>© 2026 Libroteca. Todos los derechos reservados.</p>
+    </div>
 
-    </footer>
-    </section>
-    </main>
-    
-<script src="/static/js/libros.js"></script>
-<script src="/static/js/tema.js"></script>
+    <script src="/static/js/tema.js"></script>
+    <script src="/static/js/libros.js"></script>
+
 </body>
 
 </html>
