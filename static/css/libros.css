@@ -1,251 +1,91 @@
-    body {
-        display: flex;
-        margin: 0px;
-
-    }
-    *{
-        margin: 0;
-        padding: 0;
-
-    }
-    .barra_lateral {
-        width: 20%;
-            
-        background-color: #FBF2EE;
-        height: 100vh;
-        padding: 30px, 10px;
-    
-        border-right: 1px solid #f0e6df;
-    }
-    .contenido_principal {
-        width: 80%;
-        display: flex;
-        flex-direction: column;
-    }
-    #icono_busqueda {
-            
-    }
-    header{
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        padding: 15px 30px ;
-        background: #FFF8F5;
-    }
-    header h1 {
-        color:#AE2d0a;
-        font-size: 20px;
-    }
-    .header_botton {
-        border: none;
-        background: transparent;
-    }
-    .header_botton a {
-        text-decoration: none;
-        color: #555;
-        padding: 10px 10px;
-        border-radius: 8px;
-        transition: .3s;
-    }
-    .header_botton{
-        height: 30px;
-        width: 60px;
-        background: none;
-        border: none;
-        font-family: Arial, Helvetica, sans-serif;
-        text-align: center;
-        margin-left: 50px;
-        font-size: 20px
-    }
-    header form{
-        margin-left: 20px;
-    }
-    .barra_lateral{
-
-}
-/* Quitar espacios que pone el navegador */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
 body {
     display: flex;
-    min-height: 100vh;
-    font-family: Arial, Helvetica, sans-serif;
-}
+    margin: 0px;
 
-body.oscuro .contenido_principal {
-    background-color: #181818;
 }
+*{
+    margin: 0;
+    padding: 0;
 
-body.oscuro header {
-    background-color: #242424;
 }
-
-body.oscuro .barra_lateral {
-    background-color: #111111;
-}
-
 .barra_lateral {
     width: 20%;
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    padding: 30px 15px;
+        
     background-color: #FBF2EE;
+    height: 100vh;
+    padding: 30px, 10px;
+  
     border-right: 1px solid #f0e6df;
 }
-
-.titulo_barraLateral {
-    color: #AE2D0A;
-    font-size: 25px;
-}
-
-.subtitulo_barra {
-    margin-top: 4px;
-    color: #777;
-    font-size: 14px;
-}
-
-.boton_nuevo_lector {
-    width: 100%;
-    margin-top: 25px;
-    padding: 10px;
-    border: none;
-    border-radius: 5px;
-    color: white;
-    background-color: #AE2D0A;
-    cursor: pointer;
-}
-
-.boton_nuevo_lector i {
-    margin-right: 5px;
-}
-
-.boton_nuevo_lector:hover {
-    background-color: #8d2408;
-}
-
-
-
-.menu_lateral {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-    margin-top: 25px;
-}
-
-.menu_lateral a,
-.menu_inferior a {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    padding: 10px;
-    color: #555;
-    text-decoration: none;
-    border-radius: 5px;
-}
-
-.menu_lateral a:hover,
-.menu_inferior a:hover {
-    color: #AE2D0A;
-    background-color: #fff8f5;
-}
-
-.menu_lateral .opcion_activa {
-    color: #AE2D0A;
-    background-color: #fff8f5;
-}
-
-.menu_lateral i,
-.menu_inferior i {
-    font-size: 17px;
-}
-
-
-
-.menu_inferior {
-    display: flex;
-    flex-direction: column;
-    gap: 5px;
-    margin-top: auto;
-    padding-top: 15px;
-    border-top: 1px solid #e2d7d1;
-}
-
-/* Contenido principal */
-
 .contenido_principal {
     width: 80%;
     display: flex;
     flex-direction: column;
 }
-
-/* Encabezado */
-
-header {
+#icono_busqueda {
+        
+}
+header{
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 15px;
-    padding: 15px 30px;
-    background-color: #FFF8F5;
+    padding: 15px 30px ;
+    background: #FFF8F5;
 }
-
 header h1 {
-    color: #AE2D0A;
+    color:#AE2d0a;
     font-size: 20px;
 }
-
 .header_botton {
+    border: none;
+    background: transparent;
+}
+.header_botton a {
+    text-decoration: none;
+    color: #555;
+    padding: 10px 10px;
+    border-radius: 8px;
+    transition: .3s;
+}
+.header_botton{
     height: 30px;
-    width: 90px;
+    width: 60px;
     background: none;
     border: none;
     font-family: Arial, Helvetica, sans-serif;
     text-align: center;
-    font-size: 16px;
+    margin-left: 50px;
+    font-size: 20px
 }
-
-.header_botton a {
-    text-decoration: none;
-    color: #555;
-    padding: 10px;
-    border-radius: 8px;
-    transition: 0.3s;
-}
-
-.header_botton a:hover {
-    color: #AE2D0A;
-    background-color: #FBF2EE;
-}
-
-header form {
+header form{
     margin-left: 20px;
 }
+.barra_lateral{
 
-header label {
-    font-size: 16px;
 }
+body {
+    display: flex;
 
-/* Botones de iconos */
-
-.icono_barra {
-    width: 45px;
-    height: 35px;
+}
+label {
+    font-size: 20px;
+}   
+form i{
+font-size: 15px;
+}
+button a i{
+    margin-left: 29px;
+}
+.icono_barra{
+    height: 30px;
+    width: 60px;
     background: none;
     border: none;
+    font-family: Arial, Helvetica, sans-serif;
+    text-align: end;
     font-size: 20px;
-    cursor: pointer;
+    align-items: end;
 }
-
-.icono_barra:hover {
-    color: #AE2D0A;
-}
-
-/* Buscador */
 
 .contenedor_btn {
     position: relative;
@@ -255,123 +95,13 @@ header label {
     display: inline-block;
 }
 
-#icono_busqueda {
-    position: absolute;
-    left: 11px;
-    top: 50%;
-    transform: translateY(-50%);
-    color: #777;
-    font-size: 15px;
-}
-
-.btn_busqueda_libro {
-    width: 100%;
-    padding: 10px 10px 10px 32px;
+.btn_busqueda_libro{
+width: 100% ;
+  padding: 10px 10px 10px 32px; 
     font-size: 16px;
     border: 1px solid #dcdcdc;
-    border-radius: 20px;
+    border-radius: 20px;         
     background-color: #fff;
-    outline: none;
-}
+    
 
-.btn_busqueda_libro:focus {
-    border-color: #AE2D0A;
-}
-
-/* Escáner */
-
-#contenedorScanner {
-    margin: 25px 30px 0;
-    padding: 20px;
-    background-color: #FBF2EE;
-    border-radius: 8px;
-}
-
-#contenedorScanner h2 {
-    margin-bottom: 10px;
-    color: #AE2D0A;
-}
-
-#contenedorScanner p {
-    margin-bottom: 10px;
-    color: #555;
-}
-
-
-
-
-
-/* Sección de libros */
-
-.seccion_libros {
-    padding: 30px;
-}
-
-.titulo_lista {
-    margin-bottom: 20px;
-    color: #555;
-}
-
-.titulo_lista p {
-    font-size: 15px;
-}
-
-/* Los libros se ordenan hacia abajo */
-
-.contenedor_libros {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-}
-
-/* Diseño de cada libro */
-
-.libro {
-    display: flex;
-    align-items: center;
-    gap: 20px;
-    padding: 15px;
-    background-color: #fff;
-    border-bottom: 1px solid #dcdcdc;
-}
-
-.p_libro {
-    width: 70px;
-    height: 95px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-    color: #AE2D0A;
-    background-color: #FBF2EE;
-    border-radius: 4px;
-    font-size: 35px;
-}
-
-.inf-libro {
-    flex: 1;
-}
-
-.disponiblidad h2 {
-    margin-bottom: 7px;
-    color: #333;
-    font-size: 18px;
-}
-
-.disponiblidad p {
-    margin-bottom: 5px;
-    color: #777;
-    font-size: 14px;
-}
-
-.disponiblidad small {
-    color: #999;
-}
-
-.disponiblidad{
-    padding: 6px 10px;
-    color: #765900;
-    background-color: #FFE882;
-    border-radius: 5px;
-    font-size: 13px;
 }

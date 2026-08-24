@@ -154,7 +154,129 @@
 
         </div>
     </div>
+    <main class="parte-de-libros">
+        <aside class="generos">
+            <div class="grupo-genero">
+                <h3>Género</h3>
+                <label>
+                    <input type="checkbox">
+                    Ficción
+                </label>
+                <label>
+                    <input type="checkbox">
+                    Ensayo
+                </label>
+                <label>
+                    <input type="checkbox">
+                    Historia
+                </label>
+                <label>
+                    <input type="checkbox">
+                    Ciencias
+                </label>
+                <label>
+                    <input type="checkbox">
+                    Poesias
+                </label>
 
+
+            </div>
+            <div class="grupo-genero">
+                <h3>DISPONIBILIDAD</h3>
+                <label>
+                    <input type="radio" name="disponibilidad" checked>
+                    todos
+                </label>
+                <label>
+                    <input type="radio" name="disponibilidad">
+                    Disponible
+                </label>
+                <label>
+                    <input type="radio" name="disponibilidad">
+                    en prestamo
+                </label>
+            </div>
+        </aside>
+        <section class="seccion-libros">
+            <div class="inf-libros">
+                <p>Mostrar <strong>0 libros</strong></p>
+                <div>
+                    <button class="btn-vista">
+                        <i>bi bi-grid-fill</i>
+                    </button>
+
+                    <button class="btn-vista">
+                        <i>bi bi-list</i>
+                    </button>
+
+                </div>
+                <div class="container-libro">
+                    <article>
+                        <div class="portada">
+                            <i class="bi bi-book"></i>
+                        </div>
+                        <span class="estado disponible">Disponible</span>
+                        <h3>titulo libro</h3>
+                        <p>Nombre del autor</p>
+                        <small>Año: 0</small>
+                    </article>
+
+                </div>
+            </div>
+            <article class="tarjeta_libro">
+                <div class="portada_vacia">
+                    <i class="bi bi-book"></i>
+                </div>
+
+                <span class="estado prestado">En préstamo</span>
+                <h3>Título del libro</h3>
+                <p>Nombre del autor</p>
+                <small>Año: 0</small>
+            </article>
+
+            <article class="tarjeta_libro">
+                <div class="portada_vacia">
+                    <i class="bi bi-book"></i>
+                </div>
+
+                <span class="estado disponible">Disponible</span>
+                <h3>Título del libro</h3>
+                <p>Nombre del autor</p>
+                <small>Año: 0</small>
+            </article>
+
+            </div>
+
+            <div class="paginacion">
+                <button>
+                    <i class="bi bi-chevron-left"></i>
+                </button>
+
+                <button class="pagina_actual">0</button>
+                <button>0</button>
+                <button>0</button>
+
+                <button>
+                    <i class="bi bi-chevron-right"></i>
+                </button>
+            </div>
+
+        </section>
+
+    </main>
+
+    <footer>
+
+        <div>
+            <h2>Libroteca</h2>
+            <p>Tu rincón de lectura.</p>
+        </div>
+
+        <p>© 2026 Libroteca. Todos los derechos reservados.</p>
+
+    </footer>
+    </section>
+    </main>
     <script>
 
         const boton = document.getElementById("btnEscaner");
@@ -218,6 +340,7 @@
 
                     method: "POST",
 
+
                     headers: {
                         "Content-Type": "application/json"
                     },
@@ -227,6 +350,46 @@
                     })
 
                 });
+
+                const libro = await respuesta.json();
+
+                if (libro.encontrado) {
+
+                    alert(
+                        "Libro encontrado\n\n" +
+                        "Título: " + libro.titulo +
+                        "\nAutor: " + libro.autor +
+                        "\nEditorial: " + libro.editorial
+                    );
+
+                } else {
+
+                    alert("Libro no registrado.");
+
+                }
+
+            } catch (error) {
+
+                console.error(error);
+
+                alert("Error al consultar el servidor.");
+
+            }
+
+            scanner.focus();
+
+        });
+
+    
+
+        headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    codigo: codigo
+                })
+
+            
 
                 const libro = await respuesta.json();
 
