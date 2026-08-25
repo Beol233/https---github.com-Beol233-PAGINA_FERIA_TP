@@ -88,7 +88,7 @@
     align-items: center;
     flex-direction: column;
     gap: 20px;
-    background-color: white;
+    background-color: #FFFAF7;
     border-radius: 6px;
    
 }
@@ -109,7 +109,7 @@
     width: 100%;
     padding: 8px 12px;
     border: 1px solid #b9aea6;
-    border-radius: 8px;
+    
     box-sizing: border-box;
 }
 

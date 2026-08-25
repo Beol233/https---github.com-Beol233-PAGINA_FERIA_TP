@@ -1,3 +1,18 @@
+.boton_Filto{
+    width: 100%;
+    margin-top: 25px;
+    padding: 12px;
+
+    color: white;
+    background-color: #ae2d0a;
+
+    border: none;
+    border-radius: 7px;
+    
+}
+.boton_Filto:hover{
+        background-color: #741d04;
+}
 /* CONFIGURACIÓN GENERAL */
 
 * {

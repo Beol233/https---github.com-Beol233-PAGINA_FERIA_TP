@@ -5,10 +5,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>registro de usuario</title>
-    <link rel="stylesheet" href="/static/css/login.css">
-    <link rel="stylesheet" href="/static/css/style.css">
+
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="/static/css/login.css">
+    <link rel="stylesheet" href="/static/css/style.css">
 </head>
 
 <body>
@@ -53,6 +54,10 @@
                     style="display: flex;justify-content: center;align-items: center; gap: 10px;">Iniciar Sesión <i
                         class="bi bi-arrow-right"></i></button>
             </div>
+            <div class="register_a  ">
+                <span>¿No tienes cuenta?</span> <a class="register" href="{{ url_for('registro') }}">Registrate
+                    ahora</a>
+            </div>
         </form>
         <div class="img-inicio">
             <div id="carouselExampleSlidesOnly" class="carousel slide" data-bs-ride="carousel">
@@ -81,10 +86,10 @@
             <h2>Descubre tu libro favorito</h2>
             <p>Miles de libros te esperan para descubrir, aprender y descubrir</p>
         </div>
+
     </main>
-    <hr>
     <footer>
-        <span>¿No tienes cuenta?</span> <a href="{{ url_for('registro') }}">Registrate ahora</a>
+
     </footer>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
     <script src="/static/js/login.js"></script>
