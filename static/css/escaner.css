@@ -20,70 +20,97 @@ body{
 }
 
 /* ===========================
-   SIDEBAR
+   barra lateral
 =========================== */
+.barra_lateral {
+    position: fixed;
+    width: 240px;
+    height: 100vh;
+    padding: 30px 20px;
 
-.sidebar{
-    width:250px;
-    background:#fff;
-    border-right:1px solid #ddd;
-    padding:25px;
     display:flex;
-    flex-direction:column;
+    flex-direction: column;
+    justify-content: space-between;
+
+    background-color: #fbf2ee;
+    border-right: 1px solid #eadfd9;
 }
 
-.logo{
-    margin-bottom:40px;
+.titulo_barra_lateral {
+    color: #ae2d0a;
+    font-size: 28px;
 }
 
-.logo h1{
-    color:#c43b1c;
-    font-size:32px;
+.subtitulo_barra {
+    margin-top: 5px;
+    color: #777;
+    font-size: 14px;
 }
 
-.logo p{
-    color:#888;
+.boton_nuevo_lector {
+    width: 100%;
+    margin-top: 25px;
+    padding: 12px;
+
+    color: white;
+    background-color: #ae2d0a;
+
+    border: none;
+    border-radius: 7px;
 }
 
-.sidebar nav{
-    display:flex;
-    flex-direction:column;
-    gap:10px;
+.boton_nuevo_lector:hover {
+    background-color: #8d2408;
 }
 
-.sidebar nav a{
-    text-decoration:none;
-    color:#555;
-    padding:12px;
-    border-radius:10px;
-    display:flex;
-    gap:10px;
-    align-items:center;
+.menu_lateral,
+.menu_inferior {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
 }
 
-.sidebar nav a:hover,
-.sidebar nav .active{
-    background:#fce8e8;
-    color:#c43b1c;
+.menu_lateral {
+    margin-top: 25px;
 }
 
-.new-reading{
-    margin-top:30px;
-    padding:12px;
-    border:none;
-    border-radius:10px;
-    background:#c43b1c;
-    color:white;
-    cursor:pointer;
+.menu_inferior {
+    padding-top: 15px;
+    border-top: 1px solid #e2d7d1;
 }
+
+.menu_lateral a,
+.menu_inferior a {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    padding: 11px;
+
+    color: #555;
+    text-decoration: none;
+    border-radius: 7px;
+}
+
+.menu_lateral a:hover,
+.menu_inferior a:hover,
+.menu_lateral .opcion_activa {
+     color: #ae2d0a;
+    background-color: white;
+}
+
+
 
 /* ===========================
    CONTENIDO
 =========================== */
 
 .content{
-    flex:1;
-    padding:35px;
+    display: block;
+    width: 85%;
+    min-height: 15%;
+    margin-left: 15%;
+    padding: 35px 40px;
 }
 
 .header{
