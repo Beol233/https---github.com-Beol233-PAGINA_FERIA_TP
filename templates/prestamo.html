@@ -11,57 +11,19 @@
 
 <div class="contenedor">
 
-    <aside class="barra_lateral">
+    <!-- Menú lateral -->
+    <aside class="sidebar">
+        <div class="logo">
+            <h1>Libroteca</h1>
+            <p>Tu rincón de lectura</p>
+        </div>
 
             <div>
                 <h1 class="titulo_barra_lateral">Libroteca</h1>
                 <p class="subtitulo_barra">Tu rincón de lectura</p>
 
-                <button type="button" class="boton_nuevo_lector">
-                    <i class="bi bi-plus-lg"></i>
-                    Nuevo lector
-                </button>
-
-                <nav class="menu_lateral">
-
-                    <a href="{{ url_for('libros') }}">
-                        <i class="bi bi-book"></i>
-                        Colección
-                    </a>
-
-                    <a href="{{url_for('escaner')}}" >
-                        <i class="bi bi-upc-scan"></i>
-                        Escaner
-                    </a>
-
-                    <a href="{{ url_for('prestamo') }}" class="opcion_activa">
-                        <i class="bi bi-arrow-left-right"></i>
-                        Préstamos
-                    </a>
-
-                    <a href="#">
-                        <i class="bi bi-people"></i>
-                        Lectores
-                    </a>
-
-                </nav>
-            </div>
-
-            <nav class="menu_inferior">
-
-                <a href="{{ url_for('ajustes') }}">
-                    <i class="bi bi-gear"></i>
-                    Ajustes
-                </a>
-
-                <a href="{{ url_for('login') }}">
-                    <i class="bi bi-box-arrow-left"></i>
-                    Cerrar sesión
-                </a>
-
-            </nav>
-
-        </aside>
+        <button class="btn-nuevo">+ Nueva lectura</button>
+    </aside>
 
     <!-- Contenido principal -->
     <main class="contenido">
