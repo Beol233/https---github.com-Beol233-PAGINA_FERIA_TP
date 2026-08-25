@@ -6,12 +6,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Libroteca - Panel</title>
     <link rel="stylesheet" href="/static/css/prestamo.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
 </head>
 <body>
 
 <div class="contenedor">
 
-    <aside class="barra_lateral">
+    <!-- Menú lateral -->
+    <aside class="sidebar">
+        <div class="logo">
+            <h1>Libroteca</h1>
+            <p>Tu rincón de lectura</p>
+        </div>
 
         <nav>
             <a href="{{ url_for('libros') }}"> Colección</a>
@@ -20,51 +26,8 @@
             
         </nav>
 
-                <button type="button" class="boton_nuevo_lector">
-                    <i class="bi bi-plus-lg"></i>
-                    Nuevo lector
-                </button>
-
-                <nav class="menu_lateral">
-
-                    <a href="{{ url_for('libros') }}">
-                        <i class="bi bi-book"></i>
-                        Colección
-                    </a>
-
-                    <a href="{{url_for('escaner')}}" >
-                        <i class="bi bi-upc-scan"></i>
-                        Escaner
-                    </a>
-
-                    <a href="{{ url_for('prestamo') }}" class="opcion_activa">
-                        <i class="bi bi-arrow-left-right"></i>
-                        Préstamos
-                    </a>
-
-                    <a href="#">
-                        <i class="bi bi-people"></i>
-                        Lectores
-                    </a>
-
-                </nav>
-            </div>
-
-            <nav class="menu_inferior">
-
-                <a href="{{ url_for('ajustes') }}">
-                    <i class="bi bi-gear"></i>
-                    Ajustes
-                </a>
-
-                <a href="{{ url_for('login') }}">
-                    <i class="bi bi-box-arrow-left"></i>
-                    Cerrar sesión
-                </a>
-
-            </nav>
-
-        </aside>
+        <button class="btn-nuevo">+ Nueva lectura</button>
+    </aside>
 
     <!-- Contenido principal -->
     <main class="contenido">
@@ -75,8 +38,8 @@
 
             <div class="topbar-derecha">
                 <input type="text" placeholder="Buscar préstamo o estudiante">
-                <span>🔔</span>
-                <span>👤</span>
+                <span><i class="bi bi-bell"></i></span>
+                <span><i class="bi bi-person"></i></span>
             </div>
         </header>
 
@@ -156,7 +119,7 @@
                 <h3>Libros más pedidos</h3>
 
                 <div class="libro-item">
-                    <span class="numero">1°</span>
+                    <span class="numero">01</span>
                     <div>
                         <strong>Don Quijote de la Mancha</strong>
                         <p>15 préstamos este mes</p>
@@ -164,7 +127,7 @@
                 </div>
 
                 <div class="libro-item">
-                    <span class="numero">2°</span>
+                    <span class="numero">02</span>
                     <div>
                         <strong>Pedro Páramo</strong>
                         <p>12 préstamos este mes</p>
