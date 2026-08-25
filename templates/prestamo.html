@@ -14,9 +14,12 @@
 
     <aside class="barra_lateral">
 
-            <div>
-                <h1 class="titulo_barra_lateral">Libroteca</h1>
-                <p class="subtitulo_barra">Tu rincón de lectura</p>
+        <nav>
+            <a href="{{ url_for('libros') }}"> Colección</a>
+            <a href="{{ url_for('prestamo') }}" class="activo"> Préstamos</a>
+            <a href="{{ url_for('escaner') }}">Escaner</a>
+            
+        </nav>
 
                 <button type="button" class="boton_nuevo_lector">
                     <i class="bi bi-plus-lg"></i>
@@ -73,8 +76,12 @@
 
             <div class="topbar-derecha">
                 <input type="text" placeholder="Buscar préstamo o estudiante">
+<<<<<<< HEAD
+               
+=======
                 <span><i class="bi bi-bell"></i></span>
                 <span><i class="bi bi-person"></i></span>
+>>>>>>> 3f605c29e729fd8e3af9ff408728ea38e05bddd3
             </div>
         </header>
 
@@ -154,7 +161,7 @@
                 <h3>Libros más pedidos</h3>
 
                 <div class="libro-item">
-                    <span class="numero">01</span>
+                    <span class="numero">1°</span>
                     <div>
                         <strong>Don Quijote de la Mancha</strong>
                         <p>15 préstamos este mes</p>
@@ -162,7 +169,7 @@
                 </div>
 
                 <div class="libro-item">
-                    <span class="numero">02</span>
+                    <span class="numero">2°</span>
                     <div>
                         <strong>Pedro Páramo</strong>
                         <p>12 préstamos este mes</p>
@@ -184,4 +191,3 @@
 </body>
 </html>
 
-aa
