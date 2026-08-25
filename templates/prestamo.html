@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Libroteca - Panel</title>
     <link rel="stylesheet" href="/static/css/prestamo.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
 </head>
 <body>
 
@@ -19,9 +20,9 @@
         </div>
 
         <nav>
-            <a href="{{url_for('libros')}}">📚 Colección</a>
-            <a href="{{url_for('prestamos')}}" class="activo">📖 Préstamos</a>
-            <a href="{{ url_for('escaner') }}">📷 QR Scanner</a>
+            <a href="{{url_for('libros')}}"><i class="bi bi-collection"></i> Colección</a>
+            <a href="{{url_for('prestamos')}}" class="activo"><i class="bi bi-book"></i> Préstamos</a>
+            <a href="{{ url_for('escaner') }}"><i class="bi bi-upc-scan"></i> QR Scanner</a>
             
         </nav>
 
