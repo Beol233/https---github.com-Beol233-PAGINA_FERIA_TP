@@ -374,7 +374,7 @@ def escaner():
     return render_template("escaner.html")
 
 
-@app.route("/prestamos")
+@app.route("/prestamo")
 def prestamos():
     return render_template("prestamo.html")
 
