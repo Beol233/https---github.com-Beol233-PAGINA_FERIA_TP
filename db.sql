@@ -63,7 +63,8 @@ CREATE TABLE IF NOT EXISTS `biblioteca_bd`.`categorias` (
 ENGINE = InnoDB;
 
 
--- ----------------------------------------------------
+
+
 -- Table `biblioteca_bd`.`libros`
 -- ----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `biblioteca_bd`.`libros` (
