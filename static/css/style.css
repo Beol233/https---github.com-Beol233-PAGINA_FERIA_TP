@@ -1,3 +1,15 @@
-body {
-    background-color: #FFF5EF;
+body{
+    background-color:#FFF5EF;
+}
+body.oscuro {
+    background-color: #181818;
+    color: white;
+}
+
+body.oscuro input,
+body.oscuro select,
+body.oscuro button {
+    background-color: #2b2b2b;
+    color: white;
+    border-color: #555;
 }

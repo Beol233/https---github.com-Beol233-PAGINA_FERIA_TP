@@ -1,26 +1,33 @@
 * {
     margin: 0;
     padding: 0;
-    
+
 }
 
-.rgs{
+.rgs {
     color: #d04018;
     font-weight: 800px;
-    font-size:40px;
+    font-size: 35px;
 
 }
+
 .parte-principal {
     display: flex;
-    height: 100vh;
+    min-height: 100vh;
 }
+
 .tipo-de-usuario {
+    padding: 12px;
+    border: 1px solid #d8c2bd;
+    border-radius: 10px;
+    background-color: #fffaf8;
+     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
     display: flex;
     gap: 10px;
-    margin-top: 20px;
+    margin-top: 8px;
     flex-direction: column;
-    margin-top: 20px;
-    gap: 11px;
+   
+    gap: 8px;
 }
 
 .tipo-de-usuario label {
@@ -30,14 +37,14 @@
 
 .tipo_usuario {
     display: flex;
-    gap: 14px;
+    gap: 8px;
 }
 
 .tipo-de-usuario button {
     flex: 1;
-    padding: 10px;
+    padding: 8px;
     border: 1px solid #b74120;
-    border-radius: 5px;
+    border-radius: 6px;
     background-color: white;
     color: #c44826;
     font-weight: bold;
@@ -52,19 +59,25 @@
 
 .registro-completo {
     display: flex;
-    width: 80%;
-   flex-direction: column;
-   gap: 15px;
+    width: 380px;
+    
+    padding: 25px;
+    flex-direction: column;
+    gap: 10px;
+    border-top: 6px solid #ae2d0a;
+    border-radius: 6px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0, .1);
+}
 
+.imagen-grande {
+    width: 60%;
 }
-.imagen-grande{
-width: 60%;
-}
+
 .imagen-grande img {
-width: 100%;
-height: 100%;
-object-fit: cover;
-display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
 }
 
 .registro-usuario {
@@ -75,32 +88,66 @@ display: block;
     align-items: center;
     flex-direction: column;
     gap: 20px;
-    background-color:white;
+    background-color: white;
     border-radius: 6px;
+   
 }
+
 .campo {
     display: flex;
     flex-direction: column;
     gap: 5px;
 }
+
 .campo label {
     font-size: 15px;
     font-weight: 600;
     color: #5a3a1f;
 }
+
 .campo input {
     width: 100%;
-    padding: 12px 15px;
+    padding: 8px 12px;
     border: 1px solid #b9aea6;
-    border-radius:8px;
-    transition: 0,3s;
+    border-radius: 8px;
+    box-sizing: border-box;
 }
+
 .registrar {
-        flex: 1;
+    flex: 1;
     padding: 10px;
     border: 1px solid #eb5026;
-    border-radius:5px ;
+    border-radius: 5px;
     background-color: white;
     color: #d04018;
     font-weight: bold;
+}
+
+.campo-password {
+    position: relative;
+    width: 100%;
+}
+
+.campo-password input {
+    width: 100%;
+    padding: 9px 40px 9px 12px;
+    box-sizing: border-box;
+}
+
+.campo-password button {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    border: none;
+    background: transparent;
+    padding: 0;
+    cursor: pointer;
+    font-size: 18px;
+    color: #5a3a1f;
+}
+
+.campo-password button:hover {
+    background: transparent;
+    color: #c44826;
 }

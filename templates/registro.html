@@ -7,6 +7,7 @@
     <title>Registro</title>
     <link rel="stylesheet" href="/static/css/registro.css">
     <link rel="stylesheet" href="/static/css/style.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
 </head>
 
 <body>
@@ -15,34 +16,34 @@
     </header>
     <main class="parte-principal">
         <div class="imagen-grande">
-            <img src="{{ url_for('static', filename='img/harrypote.jpg') }}" alt="Harry Potter" class="imagen-portada">
+            <img src="{{ url_for('static', filename='img/imgbiblioteca.jpg') }}" alt="Harry Potter" class="imagen-portada">
 
         </div>
         <div class="registro-usuario">
             <form method="post" class="registro-completo" action="{{url_for('registro_process')}}">
-                <span class="rgs">Bienvenidos a registrarse</span>
-                <span >Selecciona tu perfil y accede a tu coleccion personal</span>
+                <span class="rgs">Libroteca</span>
+                <span>Selecciona tu perfil y accede a tu coleccion personal</span>
                 {% with mensajes = get_flashed_messages() %}
-                    {% if mensajes %}
-                        <ul class="mensajes-flash">
-                            {% for mensaje in mensajes %}
-                                <li>{{ mensaje }}</li>
-                            {% endfor %}
-                        </ul>
-                    {% endif %}
+                {% if mensajes %}
+                <ul class="mensajes-flash">
+                    {% for mensaje in mensajes %}
+                    <li>{{ mensaje }}</li>
+                    {% endfor %}
+                </ul>
+                {% endif %}
                 {% endwith %}
                 <!--Tipo de usuario-->
                 <div class="tipo-de-usuario">
-                    
+
                     <label for="tipo_usuario">Tipo de usuario</label>
-                    
+
                     <div class="tipo_usuario">
                         <input type="hidden" name="tipo_usuario" id="tipo_usuario">
-                        
+
                         <button type="button" class="btn-usuario" data-tipo="alumno">ALUMNO</button>
-                        
+
                         <button type="button" class="btn-usuario" data-tipo="profesor">PROFESOR</button>
-                        
+
                         <Button type="button" class="btn-usuario" data-tipo="admin">ADMIN</Button>
                     </div>
                 </div>
@@ -53,19 +54,34 @@
                 </div>
                 <!--Apellido-->
                 <div class="campo">
-                    <label for="apellido">Apellido paterno</label>
+                    <label for="apellido">Apellido</label>
                     <input type="text" id="apellido" name="apellido" required>
                 </div>
-                <!--Contraseña-->
+                
                 <div class="campo">
                     <label for="password">Contraseña</label>
-                    <input type="password" name="password" id="password" required>
+
+                    <div class="campo-password">
+                        <input type="password" name="password" id="password" required>
+
+                        <button type="button" id="verPassword">
+                            <i class="bi bi-eye"></i>
+                        </button>
+                    </div>
                 </div>
-                <!--Confirmat contraseña-->
+                
                 <div class="campo">
                     <label for="confirmar">Confirmar contraseña</label>
-                    <input type="password" name="confirmar" id="confirmar" required>
+
+                    <div class="campo-password">
+                        <input type="password" name="confirmar" id="confirmar" required>
+
+                        <button type="button" id="verConfirmar">
+                            <i class="bi bi-eye"></i>
+                        </button>
+                    </div>
                 </div>
+
                 <!--Correo-->
                 <div class="campo">
                     <label for="correo">Correo electrónico</label>
@@ -86,31 +102,63 @@
 
     </footer>
     <script>
-    // OJO: antes esta línea no existía. Sin ella, "tipoUsuario" no
-    // estaba definido en ningún lado y el click en ALUMNO/PROFESOR/ADMIN
-    // lanzaba un error de JavaScript (se veía en la consola del navegador,
-    // F12 -> Console) y nunca llegaba a llenar el input oculto. Por eso
-    // el formulario siempre se enviaba con tipo_usuario vacío, y por eso
-    // app.py siempre respondía "Seleccione un tipo de usuario" aunque
-    // sí se hubiera hecho clic en un botón.
-    const tipoUsuario = document.getElementById("tipo_usuario");
-    const botones = document.querySelectorAll(".btn-usuario");
+        // OJO: antes esta línea no existía. Sin ella, "tipoUsuario" no
+        // estaba definido en ningún lado y el click en ALUMNO/PROFESOR/ADMIN
+        // lanzaba un error de JavaScript (se veía en la consola del navegador,
+        // F12 -> Console) y nunca llegaba a llenar el input oculto. Por eso
+        // el formulario siempre se enviaba con tipo_usuario vacío, y por eso
+        // app.py siempre respondía "Seleccione un tipo de usuario" aunque
+        // sí se hubiera hecho clic en un botón.
+        const tipoUsuario = document.getElementById("tipo_usuario");
+        const botones = document.querySelectorAll(".btn-usuario");
 
-    botones.forEach(boton => {
-        boton.addEventListener("click", function(event){
-            event.preventDefault();
+        botones.forEach(boton => {
+            boton.addEventListener("click", function (event) {
+                event.preventDefault();
 
-            botones.forEach(btn => {
-                btn.classList.remove("activo");
+                botones.forEach(btn => {
+                    btn.classList.remove("activo");
+                });
+
+                this.classList.add("activo");
+
+                // También era un typo: "datasat" -> "dataset"
+                tipoUsuario.value = this.dataset.tipo;
             });
-
-            this.classList.add("activo");
-
-            // También era un typo: "datasat" -> "dataset"
-            tipoUsuario.value = this.dataset.tipo;
         });
-    });
-</script>
+        const password = document.getElementById("password");
+        const verPassword = document.getElementById("verPassword");
+
+        verPassword.addEventListener("click",function() {
+            if (password.type === "password") {
+            password.type = "text";
+            verPassword.innerHTML = '<i class ="bi bi-eye-slash"></i>';
+            } else {
+                password.type = "password";
+                verPassword.innerHTML = '<i class ="bi bi-eye"></i>'
+            }
+        });
+
+
+        const confirmar = document.getElementById("confirmar");
+        const verConfirmar = document.getElementById("verConfirmar");
+
+        verConfirmar.addEventListener("click", function() {
+            if (confirmar.type === "password") {
+                confirmar.type = "text";
+                verConfirmar.innerHTML = '<i class="bi bi-eye-slash"></i>';
+            } else {
+                confirmar.type = "password";
+                verConfirmar.innerHTML = '<i class="bi bi-eye"></i>';
+            }
+        });
+
+
+
+
+
+
+    </script>
 
 </body>
 
