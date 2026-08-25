@@ -103,28 +103,22 @@
                         <div class="contenedor_busqueda">
                             <i class="bi bi-search"></i>
 
-                            <input
-                                type="search"
-                                id="busqueda"
-                                name="q"
-                                placeholder="¿Qué estás buscando?"
+                            <input type="search" id="busqueda" name="q" placeholder="¿Qué estás buscando?"
                                 aria-label="Buscar un libro">
                         </div>
 
                     </form>
 
-                    <button type="button"
-                        class="boton_icono"
-                        aria-label="Abrir perfil">
+                    <a href="{{ url_for('perfil') }}" class="boton_icono" aria-label="Abrir perfil">
                         <i class="bi bi-person-circle"></i>
-                    </button>
+                    </a>
 
                 </div>
 
             </header>
 
-            
-            
+
+
             <main class="contenido_coleccion">
 
                 <!-- Filtros -->
@@ -166,27 +160,17 @@
                         <h2>Disponibilidad</h2>
 
                         <label>
-                            <input
-                                type="radio"
-                                name="disponibilidad"
-                                value="todos"
-                                checked>
+                            <input type="radio" name="disponibilidad" value="todos" checked>
                             Todos
                         </label>
 
                         <label>
-                            <input
-                                type="radio"
-                                name="disponibilidad"
-                                value="disponible">
+                            <input type="radio" name="disponibilidad" value="disponible">
                             Disponible
                         </label>
 
                         <label>
-                            <input
-                                type="radio"
-                                name="disponibilidad"
-                                value="prestado">
+                            <input type="radio" name="disponibilidad" value="prestado">
                             En préstamo
                         </label>
 
@@ -207,15 +191,12 @@
 
                         <div class="botones_vista">
 
-                            <button type="button"
-                                class="boton_vista boton_vista_activo"
+                            <button type="button" class="boton_vista boton_vista_activo"
                                 aria-label="Vista en cuadrícula">
                                 <i class="bi bi-grid-fill"></i>
                             </button>
 
-                            <button type="button"
-                                class="boton_vista"
-                                aria-label="Vista en lista">
+                            <button type="button" class="boton_vista" aria-label="Vista en lista">
                                 <i class="bi bi-list"></i>
                             </button>
 
