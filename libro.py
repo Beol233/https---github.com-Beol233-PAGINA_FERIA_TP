@@ -1,35 +1,52 @@
 from config import DB_NAME
 from mysqlconnection import connectToMySQL
 
+
 class Libro:
-    def __init__(self,data):
+
+    def __init__(self, data):
         self.id = data["id"]
-        self.isbn = data["isbn"]
-        self.titulo = data["titulo"]
-        self.autor = data["autor"]
-        self.editorial = data["editorial"] 
-        self.anio =  data["anio"]
-        self.cantidad_total = data["cantidad_total"]
-        self.cantidad_disponible = data["cantidad_disponible"]
-        self.categoria_id = data["categoria_id"]
-        self.portada_url = data["portada_url"] 
-    
+        self.isbn = data.get("isbn")
+        self.titulo = data.get("titulo")
+        self.autor = data.get("autor")
+        self.editorial = data.get("editorial")
+        self.anio = data.get("anio")
+        self.cantidad_total = data.get("cantidad_total")
+        self.cantidad_disponible = data.get("cantidad_disponible")
+        self.portada_url = data.get("portada_url")
+        self.categoria_id = data.get("categoria_id")
+        self.created_at = data.get("created_at")
+        self.updated_at = data.get("updated_at")
+
+
+    # ==========================================
+    # OBTENER TODOS LOS LIBROS
+    # ==========================================
     @classmethod
     def get_all(cls):
-        query = "SELECT * FROM libros ORDER BY titulo;"
 
-        #llamamos a funcion connectToMysql
-        resultados = connectToMySQL(DB_NAME).query_db(query)
-        #Creamos lista vacida 
+        query = """
+            SELECT *
+            FROM libros
+            ORDER BY titulo;
+        """
+
+        resultados = connectToMySQL(
+            DB_NAME
+        ).query_db(query)
+
         libros = []
-        #Iteramos sobre los resultados de la base de datos
-        
+
         if resultados:
             for libro in resultados:
                 libros.append(cls(libro))
-            
-        return libros   
 
+        return libros
+
+
+    # ==========================================
+    # OBTENER LIBRO POR ID
+    # ==========================================
     @classmethod
     def get_by_id(cls, libro_id):
 
@@ -39,7 +56,7 @@ class Libro:
             WHERE id = %(id)s;
         """
 
-        datos = {
+        data = {
             "id": libro_id
         }
 
@@ -47,32 +64,32 @@ class Libro:
             DB_NAME
         ).query_db(
             query,
-            datos
+            data
         )
 
         if resultado:
-            return cls(
-                resultado[0]
-            )
+            return cls(resultado[0])
 
         return None
 
+
+    # ==========================================
+    # BUSCAR LIBROS
+    # ==========================================
     @classmethod
     def buscar(cls, texto):
 
         query = """
             SELECT *
             FROM libros
-
             WHERE titulo LIKE %(texto)s
                OR autor LIKE %(texto)s
                OR editorial LIKE %(texto)s
                OR isbn LIKE %(texto)s
-
             ORDER BY titulo;
         """
 
-        datos = {
+        data = {
             "texto": f"%{texto}%"
         }
 
@@ -80,27 +97,26 @@ class Libro:
             DB_NAME
         ).query_db(
             query,
-            datos
+            data
         )
 
         libros = []
 
         if resultados:
-
             for libro in resultados:
-                libros.append(
-                    cls(libro)
-                )
+                libros.append(cls(libro))
 
         return libros
 
+
+    # ==========================================
+    # BUSCAR POR CÓDIGO DE BARRAS / ISBN
+    # ==========================================
     @classmethod
     def buscar_por_codigo(cls, codigo):
 
         query = """
-            SELECT DISTINCT
-                libros.*
-
+            SELECT DISTINCT libros.*
             FROM libros
 
             LEFT JOIN codigo_de_barras
@@ -112,7 +128,7 @@ class Libro:
             LIMIT 1;
         """
 
-        datos = {
+        data = {
             "codigo": codigo
         }
 
@@ -120,16 +136,116 @@ class Libro:
             DB_NAME
         ).query_db(
             query,
-            datos
+            data
         )
 
         if resultado:
-            return cls(
-                resultado[0]
-            )
+            return cls(resultado[0])
 
         return None
 
+
+    # ==========================================
+    # FILTRAR LIBROS
+    # ==========================================
+    @classmethod
+    def filtrar(
+        cls,
+        texto="",
+        generos=None,
+        disponibilidad="todos"
+    ):
+
+        if generos is None:
+            generos = []
+
+        query = """
+            SELECT libros.*
+            FROM libros
+
+            JOIN categorias
+                ON libros.categoria_id = categorias.id
+
+            WHERE 1 = 1
+        """
+
+        datos = {}
+
+        # --------------------------
+        # Buscar por texto
+        # --------------------------
+        if texto:
+
+            query += """
+                AND (
+                    libros.titulo LIKE %(texto)s
+                    OR libros.autor LIKE %(texto)s
+                    OR libros.editorial LIKE %(texto)s
+                    OR libros.isbn LIKE %(texto)s
+                )
+            """
+
+            datos["texto"] = f"%{texto}%"
+
+        # --------------------------
+        # Filtrar por género
+        # --------------------------
+        if generos:
+
+            placeholders = []
+
+            for i, genero in enumerate(generos):
+
+                clave = f"genero_{i}"
+
+                placeholders.append(
+                    f"%({clave})s"
+                )
+
+                datos[clave] = genero
+
+            query += " AND categorias.nombre IN ("
+            query += ", ".join(placeholders)
+            query += ")"
+
+        # --------------------------
+        # Filtrar disponibilidad
+        # --------------------------
+        if disponibilidad == "disponible":
+
+            query += """
+                AND libros.cantidad_disponible > 0
+            """
+
+        elif disponibilidad == "prestado":
+
+            query += """
+                AND libros.cantidad_disponible = 0
+            """
+
+        query += """
+            ORDER BY libros.titulo;
+        """
+
+        resultados = connectToMySQL(
+            DB_NAME
+        ).query_db(
+            query,
+            datos
+        )
+
+        libros = []
+
+        if resultados:
+            for libro in resultados:
+                libros.append(cls(libro))
+
+        return libros
+
+
+    # ==========================================
+    # CREAR LIBRO
+    # ==========================================
     @classmethod
     def crear(cls, data):
 
@@ -165,10 +281,14 @@ class Libro:
             query,
             data
         )
+
+
+    # ==========================================
+    # ACTUALIZAR LIBRO
+    # ==========================================
     @classmethod
     def actualizar(cls, data):
 
-        # Primero obtenemos el libro actual
         libro_actual = cls.get_by_id(
             data["id"]
         )
@@ -176,8 +296,8 @@ class Libro:
         if not libro_actual:
             return False
 
-        # Cantidad que actualmente está prestada
-        cantidad_prestada = (
+        # Cantidad actualmente prestada
+        prestados = (
             libro_actual.cantidad_total
             - libro_actual.cantidad_disponible
         )
@@ -186,35 +306,24 @@ class Libro:
             data["cantidad_total"]
         )
 
-        # No permitir que el total quede menor
-        # a la cantidad actualmente prestada
-        if nueva_cantidad_total < cantidad_prestada:
-
+        # No permitir tener menos ejemplares
+        # que los que actualmente están prestados
+        if nueva_cantidad_total < prestados:
             return False
 
         nueva_disponible = (
             nueva_cantidad_total
-            - cantidad_prestada
+            - prestados
         )
 
-        datos = {
-            "id": data["id"],
-            "isbn": data["isbn"],
-            "titulo": data["titulo"],
-            "autor": data["autor"],
-            "editorial": data["editorial"],
-            "anio": data["anio"],
-            "cantidad_total": nueva_cantidad_total,
-            "cantidad_disponible": nueva_disponible,
-            "portada_url": data["portada_url"],
-            "categoria_id": data["categoria_id"]
-        }
+        data["cantidad_disponible"] = (
+            nueva_disponible
+        )
 
         query = """
             UPDATE libros
 
-            SET
-                isbn = %(isbn)s,
+            SET isbn = %(isbn)s,
                 titulo = %(titulo)s,
                 autor = %(autor)s,
                 editorial = %(editorial)s,
@@ -231,9 +340,13 @@ class Libro:
             DB_NAME
         ).query_db(
             query,
-            datos
+            data
         )
 
+
+    # ==========================================
+    # ELIMINAR LIBRO
+    # ==========================================
     @classmethod
     def eliminar(cls, libro_id):
 
@@ -242,7 +355,7 @@ class Libro:
             WHERE id = %(id)s;
         """
 
-        datos = {
+        data = {
             "id": libro_id
         }
 
@@ -250,5 +363,5 @@ class Libro:
             DB_NAME
         ).query_db(
             query,
-            datos
+            data
         )

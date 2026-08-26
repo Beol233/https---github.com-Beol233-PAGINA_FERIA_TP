@@ -334,8 +334,9 @@ button {
 
 .contenedor_libros {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
     gap: 20px;
+    width: 100%;
 }
 
 
@@ -343,6 +344,9 @@ button {
 
 .tarjeta_libro {
     overflow: hidden;
+    width: 100%;
+min-width: 260px;
+    max-width: 320px;
 
     background-color: white;
     border: 1px solid #eadfd9;
@@ -364,7 +368,12 @@ button {
     background-color: #f5dfd5;
     font-size: 50px;
 }
-
+.portada_libro {
+    width: 100%;
+    height: 210px;
+    object-fit: cover;
+    display: block;
+}
 .informacion_libro {
     padding: 17px;
 }

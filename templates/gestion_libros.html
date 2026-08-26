@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <title>Panel de Gestión | Libroteca</title>
+    <title>Gestión de libros</title>
 
     <link rel="stylesheet" href="/static/css/style.css" />
     <link rel="stylesheet" href="/static/css/libros.css" />
@@ -17,6 +17,7 @@
 
   <body>
     <div class="aplicacion">
+      <!-- BARRA LATERAL -->
       <aside class="barra_lateral">
         <div>
           <h1 class="titulo_barra_lateral">Libroteca</h1>
@@ -64,111 +65,140 @@
         </nav>
       </aside>
 
+      <!-- CONTENIDO -->
       <div class="contenido_principal">
         <header class="encabezado">
           <div class="titulo_encabezado">
-            <h1>Panel de Gestión</h1>
+            <h1>Gestión de libros</h1>
           </div>
 
           <div class="acciones_encabezado">
-            <a
-              href="{{ url_for('perfil') }}"
-              class="boton_icono"
-              aria-label="Abrir perfil"
-            >
-              <i class="bi bi-person-circle"></i>
+            <a href="{{ url_for('agregar_libro') }}" class="boton_nuevo_lector">
+              <i class="bi bi-plus-lg"></i>
+
+              Nuevo libro
             </a>
           </div>
         </header>
 
-        <main style="padding: 40px;">
+        <main style="padding: 35px;">
+          <div style="margin-bottom: 25px;">
+            <a href="{{ url_for('gestion') }}">
+              <i class="bi bi-arrow-left"></i>
+              Volver al panel
+            </a>
+          </div>
+
           {% with mensajes = get_flashed_messages() %}
 
             {% if mensajes %}
 
               {% for mensaje in mensajes %}
-                <div class="mensaje_flash">{{ mensaje }}</div>
+                <p>{{ mensaje }}</p>
               {% endfor %}
             {% endif %}
           {% endwith %}
 
-          <h2>Administración de Libroteca</h2>
+          <h2>Libros registrados</h2>
 
-          <p style="margin-bottom: 30px;">
-            Desde aquí puedes administrar los libros, lectores y préstamos de la
-            biblioteca.
+          <p style="margin-bottom: 25px;">
+            Desde aquí puedes agregar, editar o eliminar libros.
           </p>
 
-          <section
-            style="
-                        display: grid;
-                        grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
-                        gap: 25px;
-                    "
-          >
-            <a
-              href="{{ url_for('gestion_libros') }}"
-              style="text-decoration: none; color: inherit;"
+          <div style="overflow-x: auto;">
+            <table
+              style="
+                    width: 100%;
+                    background-color: white;
+                    border-collapse: collapse;
+                "
             >
-              <article class="tarjeta_libro">
-                <div
-                  style="
-                                    padding: 30px;
-                                    text-align: center;
-                                "
-                >
-                  <i class="bi bi-book" style="font-size: 45px;"></i>
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>ISBN</th>
+                  <th>Título</th>
+                  <th>Autor</th>
+                  <th>Editorial</th>
+                  <th>Año</th>
+                  <th>Disponible</th>
+                  <th>Total</th>
+                  <th>Acciones</th>
+                </tr>
+              </thead>
 
-                  <h3>Gestión de libros</h3>
+              <tbody>
+                {% for libro in libros %}
+                  <tr>
+                    <td>{{ libro.id }}</td>
 
-                  <p>Agregar, editar y eliminar libros.</p>
-                </div>
-              </article>
-            </a>
+                    <td>{{ libro.isbn or "-" }}</td>
 
-            <a
-              href="{{ url_for('gestion_usuarios') }}"
-              style="text-decoration: none; color: inherit;"
-            >
-              <article class="tarjeta_libro">
-                <div
-                  style="
-                                    padding: 30px;
-                                    text-align: center;
-                                "
-                >
-                  <i class="bi bi-people" style="font-size: 45px;"></i>
+                    <td>{{ libro.titulo }}</td>
 
-                  <h3>Gestión de lectores</h3>
+                    <td>{{ libro.autor }}</td>
 
-                  <p>Administrar alumnos, profesores y administradores.</p>
-                </div>
-              </article>
-            </a>
+                    <td>{{ libro.editorial or "-" }}</td>
 
-            <a
-              href="{{ url_for('prestamo') }}"
-              style="text-decoration: none; color: inherit;"
-            >
-              <article class="tarjeta_libro">
-                <div
-                  style="
-                                    padding: 30px;
-                                    text-align: center;
-                                "
-                >
-                  <i
-                    class="bi bi-arrow-left-right"
-                    style="font-size: 45px;"
-                  ></i>
+                    <td>{{ libro.anio or "-" }}</td>
 
-                  <h3>Préstamos</h3>
+                    <td>{{ libro.cantidad_disponible }}</td>
 
-                  <p>Crear préstamos y registrar devoluciones.</p>
-                </div>
-              </article>
-            </a>
-          </section>
+                    <td>{{ libro.cantidad_total }}</td>
+
+                    <td>
+                      <!-- EDITAR -->
+                      <a
+                        href="{{
+                          url_for(
+                              'editar_libro',
+                              libro_id=libro.id
+                          )
+                        }}"
+                      >
+                        <i class="bi bi-pencil"></i>
+                        Editar
+                      </a>
+
+                      <!-- ELIMINAR -->
+                      <form
+                        action="{{
+                          url_for(
+                              'eliminar_libro',
+                              libro_id=libro.id
+                          )
+                        }}"
+                        method="POST"
+                        style="display: inline;"
+                      >
+                        <button
+                          type="submit"
+                          onclick="return confirm(
+                                                '¿Seguro que deseas eliminar este libro?'
+                                            )"
+                        >
+                          <i class="bi bi-trash"></i>
+                          Eliminar
+                        </button>
+                      </form>
+                    </td>
+                  </tr>
+                {% else %}
+                  <tr>
+                    <td
+                      colspan="9"
+                      style="
+                                        text-align: center;
+                                        padding: 30px;
+                                    "
+                    >
+                      No hay libros registrados.
+                    </td>
+                  </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
         </main>
       </div>
     </div>

@@ -108,6 +108,10 @@ def login():
             session["tipo_usuario"] = usuario.tipo_usuario
             session["rol_id"] = usuario.rol_id
 
+            if usuario.tipo_usuario == "admin":
+                return redirect(url_for("gestion"))
+
+
             return redirect(url_for("libros"))
 
         flash("Correo o contraseña incorrectos.")
@@ -251,7 +255,9 @@ def libros():
 
     return render_template(
         "libros.html",
-        libros=lista_libros
+        libros=lista_libros,
+        generos_seleccionados=[],
+        disponibilidad_seleccionada="todos"
     )
 
 
@@ -268,19 +274,28 @@ def buscar():
         ""
     ).strip()
 
-    if texto:
+    generos = request.args.getlist(
+        "genero"
+    )
 
-        lista_libros = Libro.buscar(texto)
+    disponibilidad = request.args.get(
+        "disponibilidad",
+        "todos"
+    )
 
-    else:
-
-        lista_libros = Libro.get_all()
+    lista_libros = Libro.filtrar(
+        texto=texto,
+        generos=generos,
+        disponibilidad=disponibilidad
+    )
 
     return render_template(
         "libros.html",
-        libros=lista_libros
+        libros=lista_libros,
+        busqueda=texto,
+        generos_seleccionados=generos,
+        disponibilidad_seleccionada=disponibilidad
     )
-
 
 # =========================================================
 # ESCÁNER
@@ -339,6 +354,9 @@ def buscar_codigo():
 # =========================================================
 # PRÉSTAMOS
 # =========================================================
+# =========================================================
+# PÁGINA DE PRÉSTAMOS
+# =========================================================
 
 @app.route("/prestamo")
 @login_required
@@ -347,11 +365,29 @@ def prestamo():
     # Actualizar automáticamente los atrasados
     Prestamo.actualizar_atrasados()
 
-    lista_prestamos = Prestamo.get_all()
+    # Libro que viene seleccionado desde el escáner
+    libro_id_seleccionado = request.args.get(
+        "libro_id",
+        type=int
+    )
 
-    lista_usuarios = Usuario.get_all()
+    # ADMIN: ve todos los préstamos
+    if session.get("tipo_usuario") == "admin":
 
-    lista_libros = Libro.get_all()
+        lista_prestamos = Prestamo.get_all()
+        lista_usuarios = Usuario.get_all()
+        lista_libros = Libro.get_all()
+
+    # ALUMNO / PROFESOR: solo ve sus préstamos
+    else:
+
+        lista_prestamos = Prestamo.get_by_usuario(
+            session["usuario_id"]
+        )
+
+        lista_usuarios = []
+        lista_libros = []
+
 
     activos = 0
     atrasados = 0
@@ -359,12 +395,11 @@ def prestamo():
     for prestamo_actual in lista_prestamos:
 
         if prestamo_actual.estado == "activo":
-
             activos += 1
 
         elif prestamo_actual.estado == "atrasado":
-
             atrasados += 1
+
 
     return render_template(
         "prestamo.html",
@@ -374,7 +409,9 @@ def prestamo():
         libros=lista_libros,
 
         activos=activos,
-        atrasados=atrasados
+        atrasados=atrasados,
+
+        libro_id_seleccionado=libro_id_seleccionado
     )
 
 
@@ -382,53 +419,51 @@ def prestamo():
 # CREAR PRÉSTAMO
 # =========================================================
 
-@app.route(
-    "/prestamos/crear",
-    methods=["POST"]
-)
+@app.route("/prestamos/crear", methods=["POST"])
 @admin_required
 def crear_prestamo():
 
     usuario_id = request.form.get("usuario_id")
-
     libro_id = request.form.get("libro_id")
-
     fecha_dev_esperada = request.form.get(
         "fecha_dev_esperada"
     )
 
-    if not usuario_id or not libro_id:
+    # Validar campos
+    if not usuario_id or not libro_id or not fecha_dev_esperada:
 
-        flash("Debes seleccionar un usuario y un libro.")
+        flash(
+            "Debes completar todos los campos."
+        )
 
-        return redirect(url_for("prestamo"))
+        return redirect(
+            url_for("prestamo")
+        )
 
-    if not fecha_dev_esperada:
 
-        flash("Debes seleccionar una fecha de devolución.")
-
-        return redirect(url_for("prestamo"))
-
-    datos = {
-
+    resultado = Prestamo.crear({
         "usuario_id": usuario_id,
-
         "libro_id": libro_id,
-
         "fecha_dev_esperada": fecha_dev_esperada
-    }
+    })
 
-    resultado = Prestamo.crear(datos)
 
-    if resultado["ok"]:
+    if resultado:
 
-        flash("Préstamo realizado correctamente.")
+        flash(
+            "Préstamo realizado correctamente."
+        )
 
     else:
 
-        flash(resultado["mensaje"])
+        flash(
+            "No se pudo realizar el préstamo."
+        )
 
-    return redirect(url_for("prestamo"))
+
+    return redirect(
+        url_for("prestamo")
+    )
 
 
 # =========================================================
@@ -448,14 +483,19 @@ def devolver_libro(prestamo_id):
 
     if resultado["ok"]:
 
-        flash("Libro devuelto correctamente.")
+        flash(
+            "Libro devuelto correctamente."
+        )
 
     else:
 
-        flash(resultado["mensaje"])
+        flash(
+            resultado["mensaje"]
+        )
 
-    return redirect(url_for("prestamo"))
-
+    return redirect(
+        url_for("prestamo")
+    )
 
 # =========================================================
 # PERFIL
