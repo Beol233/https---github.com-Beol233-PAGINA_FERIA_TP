@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0">
+
+    <title>
+
+        {% if usuario %}
+
+            Editar usuario
+
+        {% else %}
+
+            Nuevo usuario
+
+        {% endif %}
+
+    </title>
+
+
+    <link rel="stylesheet" href="/static/css/style.css">
+
+    <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+
+</head>
+
+<body>
+
+
+<main
+    style="
+        max-width: 700px;
+        margin: 50px auto;
+        background: white;
+        padding: 35px;
+        border-radius: 10px;
+    "
+>
+
+
+    <a href="{{ url_for('gestion_usuarios') }}">
+
+        <i class="bi bi-arrow-left"></i>
+
+        Volver
+
+    </a>
+
+
+    <h1 style="margin-top: 25px;">
+
+        {% if usuario %}
+
+            Editar usuario
+
+        {% else %}
+
+            Nuevo usuario
+
+        {% endif %}
+
+    </h1>
+
+
+    {% if usuario %}
+
+        <form
+            action="{{ url_for(
+                'editar_usuario',
+                usuario_id=usuario.id
+            ) }}"
+            method="POST"
+        >
+
+    {% else %}
+
+        <form
+            action="{{ url_for('agregar_usuario') }}"
+            method="POST"
+        >
+
+    {% endif %}
+
+
+        <div>
+
+            <label for="nombre">
+                Nombre
+            </label>
+
+            <input
+                type="text"
+                id="nombre"
+                name="nombre"
+                value="{{ usuario.nombre if usuario else '' }}"
+                required
+            >
+
+        </div>
+
+
+        <div>
+
+            <label for="apellido">
+                Apellido
+            </label>
+
+            <input
+                type="text"
+                id="apellido"
+                name="apellido"
+                value="{{ usuario.apellido if usuario else '' }}"
+                required
+            >
+
+        </div>
+
+
+        <div>
+
+            <label for="correo">
+                Correo
+            </label>
+
+            <input
+                type="email"
+                id="correo"
+                name="correo"
+                value="{{ usuario.correo if usuario else '' }}"
+                required
+            >
+
+        </div>
+
+
+        <div>
+
+            <label for="matricula">
+                Matrícula
+            </label>
+
+            <input
+                type="text"
+                id="matricula"
+                name="matricula"
+                value="{{ usuario.matricula if usuario and usuario.matricula else '' }}"
+            >
+
+        </div>
+
+
+        {% if not usuario %}
+
+            <div>
+
+                <label for="password">
+                    Contraseña
+                </label>
+
+                <input
+                    type="password"
+                    id="password"
+                    name="password"
+                    required
+                >
+
+            </div>
+
+        {% endif %}
+
+
+        <div>
+
+            <label for="rol_id">
+                Tipo de usuario
+            </label>
+
+
+            <select
+                id="rol_id"
+                name="rol_id"
+                required
+            >
+
+                <option value="">
+                    Seleccionar rol
+                </option>
+
+
+                {% for rol in roles %}
+
+                    <option
+                        value="{{ rol.id }}"
+
+                        {% if usuario and usuario.rol_id == rol.id %}
+                            selected
+                        {% endif %}
+                    >
+
+                        {{ rol.nombre }}
+
+                    </option>
+
+                {% endfor %}
+
+            </select>
+
+        </div>
+
+
+        <button
+            type="submit"
+            style="margin-top: 25px;"
+        >
+
+            {% if usuario %}
+
+                Guardar cambios
+
+            {% else %}
+
+                Crear usuario
+
+            {% endif %}
+
+        </button>
+
+
+    </form>
+
+</main>
+
+
+<script src="/static/js/tema.js"></script>
+
+</body>
+
+</html>

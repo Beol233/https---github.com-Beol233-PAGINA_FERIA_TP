@@ -1,386 +1,933 @@
-from flask import Flask, render_template, request, jsonify, redirect, url_for, flash, session
+from flask import (
+    Flask,
+    render_template,
+    request,
+    jsonify,
+    redirect,
+    url_for,
+    flash,
+    session
+)
+
 from flask_bcrypt import Bcrypt
-from mysqlconnection import connectToMySQL
+from functools import wraps
+
+from config import DB_NAME
+
+from usuario import Usuario
+from libro import Libro
+from prestamo import Prestamo
+from categorias import Categoria
+from roles import Rol
+
 
 app = Flask(__name__)
+
 bcrypt = Bcrypt(app)
 
-# NOTA PEDAGÓGICA: la sesión y flash() de Flask NECESITAN una secret_key
-# configurada, o Flask lanzará un error en tiempo de ejecución apenas se
-# use session[...] o flash(...). Estaba comentada, lo que impedía que el
-# login funcionara. Se descomenta y se deja un valor de desarrollo.
-# IMPORTANTE: en un proyecto real esto NO debería quedar hardcodeado así;
-# debería venir de una variable de entorno. Queda pendiente para más adelante.
 app.secret_key = "fjwefwein"
 
-# Nombre de la base de datos. Antes se usaba "BD" / "BD_NAME" en distintas
-# partes del archivo sin que existiera en ningún lado. Se deja UNA sola
-# constante y se usa siempre la misma, igual que ya hacía buscar_libro().
-BD_NAME = "biblioteca_bd"
+
+# =========================================================
+# PROTECCIÓN DE RUTAS
+# =========================================================
+
+def login_required(func):
+
+    @wraps(func)
+    def wrapper(*args, **kwargs):
+
+        if "usuario_id" not in session:
+
+            flash("Debes iniciar sesión.")
+
+            return redirect(url_for("login"))
+
+        return func(*args, **kwargs)
+
+    return wrapper
 
 
-def buscar_libro(codigo):
-    query = """
-        SELECT titulo, autor, editorial
-        FROM libros
-        WHERE codigo = %(codigo)s
-    """
+def admin_required(func):
 
-    datos = {
-        "codigo": codigo
-    }
+    @wraps(func)
+    def wrapper(*args, **kwargs):
 
-    resultado = connectToMySQL(BD_NAME).query_db(query, datos)
+        if "usuario_id" not in session:
 
-    if resultado:
-        libro = resultado[0]
-        return (
-            libro["titulo"],
-            libro["autor"],
-            libro["editorial"]
-        )
+            flash("Debes iniciar sesión.")
 
-    return None
+            return redirect(url_for("login"))
+
+        if session.get("tipo_usuario") != "admin":
+
+            flash("No tienes permisos para entrar a esta sección.")
+
+            return redirect(url_for("libros"))
+
+        return func(*args, **kwargs)
+
+    return wrapper
 
 
-# ruta inicial
+# =========================================================
+# INICIO
+# =========================================================
+
 @app.route("/")
 def inicio():
-    # Duda si tendria que ir a login o a registro
-    return render_template("login.html")
+
+    if "usuario_id" in session:
+
+        return redirect(url_for("libros"))
+
+    return redirect(url_for("login"))
 
 
-# ruta hacia los libros
-@app.route("/libros")
-def libros():
-    return render_template("libros.html")
-
-
-# ruta para el lector del codigo del libro
-@app.route("/buscar_codigo", methods=["POST"])
-def buscar_codigo():
-
-    datos = request.get_json()
-
-    if not datos or "codigo" not in datos:
-        return jsonify({
-            "encontrado": False,
-            "mensaje": "Código no recibido"
-        }), 400
-
-    codigo = datos["codigo"]
-
-    libro = buscar_libro(codigo)
-
-    if libro:
-        return jsonify({
-            "encontrado": True,
-            "titulo": libro[0],
-            "autor": libro[1],
-            "editorial": libro[2]
-        })
-
-    return jsonify({
-        "encontrado": False
-    })
-@app.route("/ajustes")
-def ajustes():
-    return render_template("ajustes.html")
-
-# ruta de logearse
-# @app.route("/login", methods=["GET", "POST"])
-# def login():
-#     if request.method == "POST":
-#         # OJO: se cambió "usuario" por "correo". registro.html nunca pide un
-#         # nombre de usuario, solo nombre/apellido/correo/contraseña, así que
-#         # no existe ningún valor "usuario" guardado contra el cual comparar.
-#         # El correo es el único dato que sirve hoy como identificador único
-#         # (ver PARTE 2 si más adelante quieren agregar un username real).
-#         correo = request.form["correo"].strip()
-#         password = request.form["password"]
-
-#         mysql = connectToMySQL(BD_NAME)
-#         result = mysql.query_db(
-#             "SELECT id, nombre, correo, tipo_usuario, password_hash FROM users WHERE correo = %(correo)s",
-#             {"correo": correo}
-#         )
-#         # query_db devuelve una lista de diccionarios
-#         user = result[0] if result else None
-
-#         # Comparamos la contraseña ingresada contra el hash guardado, sin
-#         # necesitar "deshacer" el hash (eso no se puede).
-#         # OJO: con Flask-Bcrypt el método correcto es check_password_hash,
-#         # no checkpw (eso es de la librería bcrypt "pelada", no de Flask-Bcrypt).
-#         if user and bcrypt.check_password_hash(user["password_hash"], password):
-#             session["usuario_id"] = user["id"]
-#             session["usuario"] = user["nombre"]
-#             session["tipo_usuario"] = user["tipo_usuario"]
-#             return redirect(url_for("libros"))
-
-#         flash("usuario o contraseña incorrectos.")
-#         return redirect(url_for("login"))
-
-#     return render_template("login.html")
+# =========================================================
+# LOGIN
+# =========================================================
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
+
     if request.method == "POST":
 
         correo = request.form["correo"].strip().lower()
         password = request.form["password"]
 
-        mysql = connectToMySQL(BD_NAME)
+        usuario = Usuario.get_by_email(correo)
 
-        result = mysql.query_db(
-            """
-            SELECT 
-                usuarios.id,
-                usuarios.nombre,
-                usuarios.apellido,
-                usuarios.correo,
-                usuarios.password,
-                usuarios.rol_id,
-                roles.nombre AS tipo_usuario
-            FROM usuarios
-            JOIN roles ON usuarios.rol_id = roles.id
-            WHERE LOWER(usuarios.correo) = %(correo)s
-            """,
-            {
-                "correo": correo
-            }
-        )
+        if usuario and bcrypt.check_password_hash(
+            usuario.password,
+            password
+        ):
 
-        print("Resultado login:", result)
-
-        user = result[0] if result else None
-
-        if user and bcrypt.check_password_hash(user["password"], password):
-
-            session["usuario_id"] = user["id"]
-            session["usuario"] = user["nombre"]
-            session["tipo_usuario"] = user["tipo_usuario"]
-            session["rol_id"] = user["rol_id"]
+            session["usuario_id"] = usuario.id
+            session["usuario"] = usuario.nombre
+            session["tipo_usuario"] = usuario.tipo_usuario
+            session["rol_id"] = usuario.rol_id
 
             return redirect(url_for("libros"))
 
         flash("Correo o contraseña incorrectos.")
-        return redirect(url_for("login"))
 
     return render_template("login.html")
-# Registro que solo da la entrada a el html
-@app.route("/registro")
+
+
+# =========================================================
+# REGISTRO
+# =========================================================
+
+@app.route("/registro", methods=["GET", "POST"])
 def registro():
-    return render_template("registro.html")
 
-@app.route("/prestamo")
-def prestamo():
-    return render_template("prestamo.html")
+    if request.method == "POST":
 
-@app.route("/registro", methods=["POST"])
-def registro_process():
+        nombre = request.form["nombre"].strip()
+        apellido = request.form["apellido"].strip()
+        correo = request.form["correo"].strip().lower()
 
-    nombre = request.form["nombre"].strip()
-    apellido = request.form["apellido"].strip()
-    correo = request.form["correo"].strip().lower()
-    tipo_usuario = request.form.get("tipo_usuario")
-    password = request.form["password"]
-    confirmar = request.form["confirmar"]
+        tipo_usuario = request.form.get("tipo_usuario")
 
-    # Comprobar campos
-    if not nombre or not apellido or not correo or not password or not confirmar:
-        flash("Rellena todos los datos.")
-        return redirect(url_for("registro"))
+        password = request.form["password"]
+        confirmar = request.form["confirmar"]
 
-    # Comprobar tipo de usuario
-    if tipo_usuario not in ["alumno", "profesor", "admin"]:
-        flash("Seleccione un tipo de usuario.")
-        return redirect(url_for("registro"))
+        # -----------------------------------------
+        # Validar campos
+        # -----------------------------------------
 
-    # Comprobar contraseñas
-    if password != confirmar:
-        flash("Las contraseñas no coinciden.")
-        return redirect(url_for("registro"))
+        if not nombre or not apellido or not correo:
 
-    # Comprobar correo existente
-    mysql = connectToMySQL(BD_NAME)
+            flash("Rellena todos los datos.")
 
-    existing = mysql.query_db(
-        """
-        SELECT id
-        FROM usuarios
-        WHERE correo = %(correo)s
-        """,
-        {
-            "correo": correo
-        }
-    )
+            return redirect(url_for("registro"))
 
-    if existing:
-        flash("Este correo ya está registrado.")
-        return redirect(url_for("registro"))
+        if not password or not confirmar:
 
-    # Buscar el id del rol seleccionado
-    mysql = connectToMySQL(BD_NAME)
+            flash("Debes ingresar una contraseña.")
 
-    resultado_rol = mysql.query_db(
-        """
-        SELECT id
-        FROM roles
-        WHERE nombre = %(nombre_rol)s
-        """,
-        {
-            "nombre_rol": tipo_usuario
-        }
-    )
+            return redirect(url_for("registro"))
 
-    if not resultado_rol:
-        flash("El rol seleccionado no existe en la base de datos.")
-        return redirect(url_for("registro"))
+        # El registro público NO puede crear admins
+        if tipo_usuario not in [
+            "alumno",
+            "profesor"
+        ]:
 
-    rol_id = resultado_rol[0]["id"]
+            flash("Seleccione un tipo de usuario válido.")
 
-    # Crear hash de contraseña
-    hashed = bcrypt.generate_password_hash(password).decode("utf-8")
+            return redirect(url_for("registro"))
 
-    # Insertar usuario
-    mysql = connectToMySQL(BD_NAME)
+        if password != confirmar:
 
-    resultado = mysql.query_db(
-        """
-        INSERT INTO usuarios (
-            nombre,
-            apellido,
-            correo,
-            password,
-            rol_id,
-            created_at,
-            updated_at
-        )
-        VALUES (
-            %(nombre)s,
-            %(apellido)s,
-            %(correo)s,
-            %(password)s,
-            %(rol_id)s,
-            NOW(),
-            NOW()
-        )
-        """,
-        {
+            flash("Las contraseñas no coinciden.")
+
+            return redirect(url_for("registro"))
+
+        # -----------------------------------------
+        # Revisar correo existente
+        # -----------------------------------------
+
+        usuario_existente = Usuario.get_by_email(correo)
+
+        if usuario_existente:
+
+            flash("Este correo ya está registrado.")
+
+            return redirect(url_for("registro"))
+
+        # -----------------------------------------
+        # Obtener rol
+        # -----------------------------------------
+
+        rol = Rol.get_by_nombre(tipo_usuario)
+
+        if not rol:
+
+            flash("El rol seleccionado no existe.")
+
+            return redirect(url_for("registro"))
+
+        # -----------------------------------------
+        # Hash contraseña
+        # -----------------------------------------
+
+        password_hash = bcrypt.generate_password_hash(
+            password
+        ).decode("utf-8")
+
+        # -----------------------------------------
+        # Crear usuario
+        # -----------------------------------------
+
+        datos = {
             "nombre": nombre,
             "apellido": apellido,
             "correo": correo,
-            "password": hashed,
-            "rol_id": rol_id
+            "password": password_hash,
+            "matricula": None,
+            "rol_id": rol.id
         }
-    )
 
-    print("Resultado insert:", resultado)
-    if resultado == False:
-        flash("Error al crear la cuenta.")
+        resultado = Usuario.crear(datos)
+
+        if resultado is False:
+
+            flash("No se pudo crear la cuenta.")
+
+            return redirect(url_for("registro"))
+
+        flash(
+            "Su cuenta está creada. Ahora puedes iniciar sesión."
+        )
+
         return redirect(url_for("login"))
 
-    flash("Su cuenta está creada. Ahora puedes iniciar sesión.")
-    return redirect(url_for("login"))
-# esta ruta solo procesa los datos que manda el formulario de registro
-# @app.route("/registro", methods=["POST"])
-# def registro_process():
-#     # ruta solo para procesar los datos del formulario de registro
-#     #
-#     # NOTA PEDAGÓGICA IMPORTANTE:
-#     # registro.html (revisar el template) pide estos campos: nombre,
-#     # apellido, password, confirmar, correo (name="correo", NO "gmail") y
-#     # tipo_usuario. No pide un campo "usuario" (nombre de usuario), pero
-#     # login.html sí espera un campo "usuario" para poder iniciar sesión.
-#     # Esto es una INCONSISTENCIA entre pantallas que el código original no
-#     # resolvía (usaba variables que nunca llegaban a definirse, como
-#     # "nombre", "apellido", "gmail", "password", "confirmar", sin sacarlas
-#     # de request.form). No se inventa aquí una solución (por ejemplo,
-#     # generar el "usuario" a partir del correo) porque es una decisión de
-#     # diseño que les corresponde tomar a ustedes. Ver PARTE 2, sección 8,
-#     # para más detalle.
-#     nombre = request.form["nombre"].strip()
-#     apellido = request.form["apellido"].strip()
-#     correo = request.form["correo"].strip()
-#     tipo_usuario = request.form.get("tipo_usuario")
-#     password = request.form["password"]
-#     confirmar = request.form["confirmar"]
-
-#     if not nombre or not apellido or not correo or not password or not confirmar:
-#         flash("Rellena Los datos que te piden")
-#         return redirect(url_for("registro"))
-
-#     if tipo_usuario not in ["alumno", "profesor", "admin"]:
-#         flash("Seleccione un tipo de usuario")
-#         return redirect(url_for("registro"))
-
-#     if password != confirmar:
-#         flash("Las contraseñas no coinciden")
-#         return redirect(url_for("registro"))
-
-#     # Chequeamos que el usuario no exista ya.
-#     # OJO: cada vez que queremos hacer una consulta, generamos una
-#     # conexión nueva con connectToMySQL, porque la clase MySQLConnection
-#     # cierra la conexión automáticamente después de cada query_db().
-#     #
-#     # NOTA: esta consulta asume que existe una tabla "users" con una
-#     # columna "correo". Esa tabla todavía NO existe en el proyecto
-#     # (db.sql está vacío) — ver PARTE 2, sección "Base de datos propuesta".
-#     # Al ejecutar esto hoy va a fallar con un error de MySQL porque la
-#     # tabla no existe; eso es esperado hasta que se cree el esquema.
-#     mysql = connectToMySQL(BD_NAME)
-#     existing = mysql.query_db(
-#         "SELECT id FROM users WHERE correo = %(correo)s",
-#         {"correo": correo}
-#     )
-#     if existing:
-#         flash("Este correo ya esta registrado.")
-#         return redirect(url_for("registro"))
-
-#     # AQUÍ está lo importante: NUNCA guardamos la contraseña tal cual.
-#     # Con Flask-Bcrypt, generate_password_hash() ya se encarga de crear
-#     # el hash y el salt por nosotros (no hace falta bcrypt.gensalt()
-#     # aparte, eso es de la librería bcrypt "pelada").
-#     hashed = bcrypt.generate_password_hash(password).decode("utf-8")
-
-#     mysql = connectToMySQL(BD_NAME)
-#     mysql.query_db(
-#         """
-#         INSERT INTO users (nombre, apellido, correo, tipo_usuario, password_hash)
-#         VALUES (%(nombre)s, %(apellido)s, %(correo)s, %(tipo_usuario)s, %(password_hash)s)
-#         """,
-#         {
-#             "nombre": nombre,
-#             "apellido": apellido,
-#             "correo": correo,
-#             "tipo_usuario": tipo_usuario,
-#             "password_hash": hashed
-#         }
-#     )
-
-#     flash("Su cuenta esta creada. Ahora puedes iniciar sesion")
-#     return redirect(url_for("login"))
+    return render_template("registro.html")
 
 
-# # logout: elimina la sesión del usuario actual
+# =========================================================
+# LOGOUT
+# =========================================================
+
 @app.route("/logout")
 def logout():
+
     session.clear()
+
     return redirect(url_for("login"))
 
 
+# =========================================================
+# LIBROS / COLECCIÓN
+# =========================================================
+
+@app.route("/libros")
+@login_required
+def libros():
+
+    lista_libros = Libro.get_all()
+
+    return render_template(
+        "libros.html",
+        libros=lista_libros
+    )
+
+
+# =========================================================
+# BUSCADOR DE LIBROS
+# =========================================================
+
+@app.route("/buscar")
+@login_required
+def buscar():
+
+    texto = request.args.get(
+        "q",
+        ""
+    ).strip()
+
+    if texto:
+
+        lista_libros = Libro.buscar(texto)
+
+    else:
+
+        lista_libros = Libro.get_all()
+
+    return render_template(
+        "libros.html",
+        libros=lista_libros
+    )
+
+
+# =========================================================
+# ESCÁNER
+# =========================================================
+
 @app.route("/escaner")
+@login_required
 def escaner():
+
     return render_template("escaner.html")
 
 
+@app.route("/buscar_codigo", methods=["POST"])
+@login_required
+def buscar_codigo():
+
+    datos = request.get_json()
+
+    if not datos:
+
+        return jsonify({
+            "encontrado": False,
+            "mensaje": "No se recibieron datos."
+        }), 400
+
+    codigo = str(
+        datos.get("codigo", "")
+    ).strip()
+
+    if not codigo:
+
+        return jsonify({
+            "encontrado": False,
+            "mensaje": "Código no recibido."
+        }), 400
+
+    libro = Libro.buscar_por_codigo(codigo)
+
+    if not libro:
+
+        return jsonify({
+            "encontrado": False,
+            "mensaje": "Libro no encontrado."
+        })
+
+    return jsonify({
+        "encontrado": True,
+        "id": libro.id,
+        "titulo": libro.titulo,
+        "autor": libro.autor,
+        "editorial": libro.editorial,
+        "cantidad_disponible": libro.cantidad_disponible
+    })
+
+
+# =========================================================
+# PRÉSTAMOS
+# =========================================================
+
 @app.route("/prestamo")
-def prestamos():
-    return render_template("prestamo.html")
+@login_required
+def prestamo():
+
+    # Actualizar automáticamente los atrasados
+    Prestamo.actualizar_atrasados()
+
+    lista_prestamos = Prestamo.get_all()
+
+    lista_usuarios = Usuario.get_all()
+
+    lista_libros = Libro.get_all()
+
+    activos = 0
+    atrasados = 0
+
+    for prestamo_actual in lista_prestamos:
+
+        if prestamo_actual.estado == "activo":
+
+            activos += 1
+
+        elif prestamo_actual.estado == "atrasado":
+
+            atrasados += 1
+
+    return render_template(
+        "prestamo.html",
+
+        prestamos=lista_prestamos,
+        usuarios=lista_usuarios,
+        libros=lista_libros,
+
+        activos=activos,
+        atrasados=atrasados
+    )
+
+
+# =========================================================
+# CREAR PRÉSTAMO
+# =========================================================
+
+@app.route(
+    "/prestamos/crear",
+    methods=["POST"]
+)
+@admin_required
+def crear_prestamo():
+
+    usuario_id = request.form.get("usuario_id")
+
+    libro_id = request.form.get("libro_id")
+
+    fecha_dev_esperada = request.form.get(
+        "fecha_dev_esperada"
+    )
+
+    if not usuario_id or not libro_id:
+
+        flash("Debes seleccionar un usuario y un libro.")
+
+        return redirect(url_for("prestamo"))
+
+    if not fecha_dev_esperada:
+
+        flash("Debes seleccionar una fecha de devolución.")
+
+        return redirect(url_for("prestamo"))
+
+    datos = {
+
+        "usuario_id": usuario_id,
+
+        "libro_id": libro_id,
+
+        "fecha_dev_esperada": fecha_dev_esperada
+    }
+
+    resultado = Prestamo.crear(datos)
+
+    if resultado["ok"]:
+
+        flash("Préstamo realizado correctamente.")
+
+    else:
+
+        flash(resultado["mensaje"])
+
+    return redirect(url_for("prestamo"))
+
+
+# =========================================================
+# DEVOLVER LIBRO
+# =========================================================
+
+@app.route(
+    "/prestamos/<int:prestamo_id>/devolver",
+    methods=["POST"]
+)
+@admin_required
+def devolver_libro(prestamo_id):
+
+    resultado = Prestamo.devolver(
+        prestamo_id
+    )
+
+    if resultado["ok"]:
+
+        flash("Libro devuelto correctamente.")
+
+    else:
+
+        flash(resultado["mensaje"])
+
+    return redirect(url_for("prestamo"))
+
+
+# =========================================================
+# PERFIL
+# =========================================================
 
 @app.route("/perfil")
+@login_required
 def perfil():
-    return render_template("perfil.html")
+
+    usuario = Usuario.get_by_id(
+        session["usuario_id"]
+    )
+
+    prestamos_usuario = Prestamo.get_by_usuario(
+        session["usuario_id"]
+    )
+
+    return render_template(
+        "perfil.html",
+        usuario=usuario,
+        prestamos=prestamos_usuario
+    )
+
+
+# =========================================================
+# AJUSTES
+# =========================================================
+
+@app.route("/ajustes")
+@login_required
+def ajustes():
+
+    return render_template(
+        "ajustes.html"
+    )
+
+
+# =========================================================
+# PANEL DE GESTIÓN
+# =========================================================
+
+@app.route("/gestion")
+@admin_required
+def gestion():
+
+    return render_template(
+        "gestion.html"
+    )
+
+
+# =========================================================
+# GESTIÓN DE LIBROS
+# =========================================================
+
+@app.route("/gestion/libros")
+@admin_required
+def gestion_libros():
+
+    lista_libros = Libro.get_all()
+
+    return render_template(
+        "gestion_libros.html",
+        libros=lista_libros
+    )
+
+
+# =========================================================
+# AGREGAR LIBRO
+# =========================================================
+
+@app.route(
+    "/gestion/libros/agregar",
+    methods=["GET", "POST"]
+)
+@admin_required
+def agregar_libro():
+
+    categorias = Categoria.get_all()
+
+    if request.method == "POST":
+
+        titulo = request.form["titulo"].strip()
+
+        autor = request.form["autor"].strip()
+
+        if not titulo or not autor:
+
+            flash("El título y el autor son obligatorios.")
+
+            return redirect(
+                url_for("agregar_libro")
+            )
+
+        cantidad = int(
+            request.form.get(
+                "cantidad_total",
+                1
+            )
+        )
+
+        datos = {
+
+            "isbn":
+                request.form.get("isbn") or None,
+
+            "titulo":
+                titulo,
+
+            "autor":
+                autor,
+
+            "editorial":
+                request.form.get("editorial") or None,
+
+            "anio":
+                request.form.get("anio") or None,
+
+            "cantidad_total":
+                cantidad,
+
+            "portada_url":
+                request.form.get("portada_url") or None,
+
+            "categoria_id":
+                request.form["categoria_id"]
+        }
+
+        resultado = Libro.crear(datos)
+
+        if resultado is False:
+
+            flash("No se pudo agregar el libro.")
+
+        else:
+
+            flash("Libro agregado correctamente.")
+
+            return redirect(
+                url_for("gestion_libros")
+            )
+
+    return render_template(
+        "formulario_libro.html",
+        categorias=categorias
+    )
+
+
+# =========================================================
+# EDITAR LIBRO
+# =========================================================
+
+@app.route(
+    "/gestion/libros/<int:libro_id>/editar",
+    methods=["GET", "POST"]
+)
+@admin_required
+def editar_libro(libro_id):
+
+    libro = Libro.get_by_id(libro_id)
+
+    if not libro:
+
+        flash("El libro no existe.")
+
+        return redirect(
+            url_for("gestion_libros")
+        )
+
+    categorias = Categoria.get_all()
+
+    if request.method == "POST":
+
+        datos = {
+
+            "id":
+                libro_id,
+
+            "isbn":
+                request.form.get("isbn") or None,
+
+            "titulo":
+                request.form["titulo"].strip(),
+
+            "autor":
+                request.form["autor"].strip(),
+
+            "editorial":
+                request.form.get("editorial") or None,
+
+            "anio":
+                request.form.get("anio") or None,
+
+            "cantidad_total":
+                int(request.form["cantidad_total"]),
+
+            "portada_url":
+                request.form.get("portada_url") or None,
+
+            "categoria_id":
+                request.form["categoria_id"]
+        }
+
+        resultado = Libro.actualizar(datos)
+
+        if resultado is False:
+
+            flash("No se pudo actualizar el libro.")
+
+        else:
+
+            flash("Libro actualizado correctamente.")
+
+            return redirect(
+                url_for("gestion_libros")
+            )
+
+    return render_template(
+        "formulario_libro.html",
+        libro=libro,
+        categorias=categorias
+    )
+
+
+# =========================================================
+# ELIMINAR LIBRO
+# =========================================================
+
+@app.route(
+    "/gestion/libros/<int:libro_id>/eliminar",
+    methods=["POST"]
+)
+@admin_required
+def eliminar_libro(libro_id):
+
+    resultado = Libro.eliminar(
+        libro_id
+    )
+
+    if resultado is False:
+
+        flash(
+            "No se pudo eliminar el libro."
+        )
+
+    elif resultado == 0:
+
+        flash(
+            "El libro no existe."
+        )
+
+    else:
+
+        flash(
+            "Libro eliminado correctamente."
+        )
+
+    return redirect(
+        url_for("gestion_libros")
+    )
+
+
+# =========================================================
+# GESTIÓN DE USUARIOS
+# =========================================================
+
+@app.route("/gestion/usuarios")
+@admin_required
+def gestion_usuarios():
+
+    lista_usuarios = Usuario.get_all()
+
+    return render_template(
+        "gestion_usuarios.html",
+        usuarios=lista_usuarios
+    )
+
+
+# =========================================================
+# AGREGAR USUARIO DESDE GESTIÓN
+# =========================================================
+
+@app.route(
+    "/gestion/usuarios/agregar",
+    methods=["GET", "POST"]
+)
+@admin_required
+def agregar_usuario():
+
+    roles = Rol.get_all()
+
+    if request.method == "POST":
+
+        nombre = request.form["nombre"].strip()
+        apellido = request.form["apellido"].strip()
+        correo = request.form["correo"].strip().lower()
+        password = request.form["password"]
+
+        if Usuario.get_by_email(correo):
+
+            flash("El correo ya está registrado.")
+
+            return redirect(
+                url_for("agregar_usuario")
+            )
+
+        hashed = bcrypt.generate_password_hash(
+            password
+        ).decode("utf-8")
+
+        datos = {
+
+            "nombre":
+                nombre,
+
+            "apellido":
+                apellido,
+
+            "correo":
+                correo,
+
+            "password":
+                hashed,
+
+            "matricula":
+                request.form.get("matricula") or None,
+
+            "rol_id":
+                request.form["rol_id"]
+        }
+
+        resultado = Usuario.crear(datos)
+
+        if resultado is False:
+
+            flash("No se pudo crear el usuario.")
+
+        else:
+
+            flash("Usuario creado correctamente.")
+
+            return redirect(
+                url_for("gestion_usuarios")
+            )
+
+    return render_template(
+        "formulario_usuario.html",
+        roles=roles
+    )
+
+
+# =========================================================
+# EDITAR USUARIO
+# =========================================================
+
+@app.route(
+    "/gestion/usuarios/<int:usuario_id>/editar",
+    methods=["GET", "POST"]
+)
+@admin_required
+def editar_usuario(usuario_id):
+
+    usuario = Usuario.get_by_id(
+        usuario_id
+    )
+
+    if not usuario:
+
+        flash("El usuario no existe.")
+
+        return redirect(
+            url_for("gestion_usuarios")
+        )
+
+    roles = Rol.get_all()
+
+    if request.method == "POST":
+
+        datos = {
+
+            "id":
+                usuario_id,
+
+            "nombre":
+                request.form["nombre"].strip(),
+
+            "apellido":
+                request.form["apellido"].strip(),
+
+            "correo":
+                request.form["correo"].strip().lower(),
+
+            "matricula":
+                request.form.get("matricula") or None,
+
+            "rol_id":
+                request.form["rol_id"]
+        }
+
+        resultado = Usuario.actualizar(datos)
+
+        if resultado is False:
+
+            flash("No se pudo editar el usuario.")
+
+        else:
+
+            flash("Usuario actualizado.")
+
+            return redirect(
+                url_for("gestion_usuarios")
+            )
+
+    return render_template(
+        "formulario_usuario.html",
+        usuario=usuario,
+        roles=roles
+    )
+
+
+# =========================================================
+# ELIMINAR USUARIO
+# =========================================================
+
+@app.route(
+    "/gestion/usuarios/<int:usuario_id>/eliminar",
+    methods=["POST"]
+)
+@admin_required
+def eliminar_usuario(usuario_id):
+
+    # No permitir que el admin elimine su propia cuenta
+    if usuario_id == session["usuario_id"]:
+
+        flash(
+            "No puedes eliminar tu propia cuenta."
+        )
+
+        return redirect(
+            url_for("gestion_usuarios")
+        )
+
+    resultado = Usuario.eliminar(
+        usuario_id
+    )
+
+    if resultado is False:
+
+        flash(
+            "No se pudo eliminar el usuario."
+        )
+
+    elif resultado == 0:
+
+        flash(
+            "El usuario no existe."
+        )
+
+    else:
+
+        flash(
+            "Usuario eliminado correctamente."
+        )
+
+    return redirect(
+        url_for("gestion_usuarios")
+    )
+
+
+# =========================================================
+# EJECUTAR FLASK
+# =========================================================
 
 if __name__ == "__main__":
+
     app.run(debug=True)

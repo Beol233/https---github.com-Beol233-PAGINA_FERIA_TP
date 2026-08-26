@@ -1,24 +1,38 @@
+from config import DB_NAME
 from mysqlconnection import connectToMySQL
 
-class Categorias:
 
-    def __init__(self,data ):
-        self.id = data['id']
-        self.nombre = data['nombre']
-        self.descripcion = data['descripcion']
-        self.updated_at = data['updated_at']
-        self.created_at = data['created_at']
+class Categoria:
 
-@classmethod
-def get_all(cls):
-    query = "SELECT * FROM categorias;"
+    def __init__(self, data):
+        self.id = data["id"]
+        self.nombre = data["nombre"]
+        self.descripcion = data["descripcion"]
+        self.updated_at = data["updated_at"]
+        self.created_at = data["created_at"]
 
-    resultados = connectToMySQL('biblioteca_db').query_db(query)
 
-    Categorias = []
+    @classmethod
+    def get_all(cls):
 
-    for categoria in resultados:
-        Categorias.append(cls(categoria))
+        query = """
+            SELECT *
+            FROM categorias
+            ORDER BY nombre;
+        """
 
-    return Categorias
+        resultados = connectToMySQL(
+            DB_NAME
+        ).query_db(query)
 
+        categorias = []
+
+        if resultados:
+
+            for categoria in resultados:
+
+                categorias.append(
+                    cls(categoria)
+                )
+
+        return categorias

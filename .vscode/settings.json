@@ -1,4 +1,5 @@
 {
     "python-envs.defaultEnvManager": "ms-python.python:pipenv",
-    "liveServer.settings.port": 5501
+    "liveServer.settings.port": 5501,
+    "livePreview.defaultPreviewPath": "/templates/prestamo.html"
 }
