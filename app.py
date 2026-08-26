@@ -8,9 +8,15 @@ from flask import (
     flash,
     session
 )
+import os
+import uuid
 
 from flask_bcrypt import Bcrypt
 from functools import wraps
+
+
+from werkzeug.utils import secure_filename
+from mysqlconnection import connectToMySQL
 
 from config import DB_NAME
 
@@ -963,6 +969,228 @@ def eliminar_usuario(usuario_id):
         url_for("gestion_usuarios")
     )
 
+# =========================================================
+# EDITAR MI PERFIL
+# =========================================================
+
+@app.route(
+    "/perfil/editar",
+    methods=["POST"]
+)
+@login_required
+def editar_perfil():
+
+    usuario_id = session["usuario_id"]
+
+    nombre = request.form["nombre"].strip()
+    apellido = request.form["apellido"].strip()
+    correo = request.form["correo"].strip().lower()
+
+    if not nombre or not apellido or not correo:
+
+        flash("Nombre, apellido y correo son obligatorios.")
+
+        return redirect(
+            url_for("perfil")
+        )
+
+
+    # -----------------------------------------------------
+    # Comprobar que otro usuario no tenga ese correo
+    # -----------------------------------------------------
+
+    mysql = connectToMySQL(DB_NAME)
+
+    correo_existente = mysql.query_db(
+        """
+        SELECT id
+        FROM usuarios
+        WHERE LOWER(correo) = %(correo)s
+        AND id != %(usuario_id)s
+        """,
+        {
+            "correo": correo,
+            "usuario_id": usuario_id
+        }
+    )
+
+
+    if correo_existente:
+
+        flash("Ese correo ya pertenece a otro usuario.")
+
+        return redirect(
+            url_for("perfil")
+        )
+
+
+    # -----------------------------------------------------
+    # FOTO
+    # -----------------------------------------------------
+
+    foto = request.files.get(
+        "foto_perfil"
+    )
+
+    ruta_foto = None
+
+
+    if foto and foto.filename:
+
+        extensiones_permitidas = {
+            "jpg",
+            "jpeg",
+            "png",
+            "webp"
+        }
+
+
+        nombre_seguro = secure_filename(
+            foto.filename
+        )
+
+
+        if "." not in nombre_seguro:
+
+            flash("La imagen no tiene una extensión válida.")
+
+            return redirect(
+                url_for("perfil")
+            )
+
+
+        extension = (
+            nombre_seguro
+            .rsplit(".", 1)[1]
+            .lower()
+        )
+
+
+        if extension not in extensiones_permitidas:
+
+            flash(
+                "La foto debe ser JPG, PNG o WEBP."
+            )
+
+            return redirect(
+                url_for("perfil")
+            )
+
+
+        nuevo_nombre = (
+            f"usuario_{usuario_id}_"
+            f"{uuid.uuid4().hex}.{extension}"
+        )
+
+
+        carpeta = os.path.join(
+            app.static_folder,
+            "uploads",
+            "perfiles"
+        )
+
+
+        os.makedirs(
+            carpeta,
+            exist_ok=True
+        )
+
+
+        ruta_completa = os.path.join(
+            carpeta,
+            nuevo_nombre
+        )
+
+
+        foto.save(
+            ruta_completa
+        )
+
+
+        ruta_foto = (
+            f"uploads/perfiles/{nuevo_nombre}"
+        )
+
+
+    # -----------------------------------------------------
+    # ACTUALIZAR USUARIO
+    # -----------------------------------------------------
+
+    mysql = connectToMySQL(DB_NAME)
+
+
+    if ruta_foto:
+
+        query = """
+            UPDATE usuarios
+            SET
+                nombre = %(nombre)s,
+                apellido = %(apellido)s,
+                correo = %(correo)s,
+                foto_perfil = %(foto_perfil)s,
+                updated_at = NOW()
+            WHERE id = %(usuario_id)s
+        """
+
+        datos = {
+            "nombre": nombre,
+            "apellido": apellido,
+            "correo": correo,
+            "foto_perfil": ruta_foto,
+            "usuario_id": usuario_id
+        }
+
+
+    else:
+
+        query = """
+            UPDATE usuarios
+            SET
+                nombre = %(nombre)s,
+                apellido = %(apellido)s,
+                correo = %(correo)s,
+                updated_at = NOW()
+            WHERE id = %(usuario_id)s
+        """
+
+        datos = {
+            "nombre": nombre,
+            "apellido": apellido,
+            "correo": correo,
+            "usuario_id": usuario_id
+        }
+
+
+    resultado = mysql.query_db(
+        query,
+        datos
+    )
+
+
+    if resultado is False:
+
+        flash(
+            "No se pudieron guardar los cambios."
+        )
+
+        return redirect(
+            url_for("perfil")
+        )
+
+
+    # Actualizar nombre guardado en sesión
+
+    session["usuario"] = nombre
+
+
+    flash(
+        "Perfil actualizado correctamente."
+    )
+
+
+    return redirect(
+        url_for("perfil")
+    )
 
 # =========================================================
 # EJECUTAR FLASK

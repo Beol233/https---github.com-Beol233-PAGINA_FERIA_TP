@@ -9,17 +9,20 @@ class Usuario:
         self.nombre = data["nombre"]
         self.apellido = data["apellido"]
         self.correo = data["correo"]
-
+    
         # Algunas consultas podrían no traer password
         self.password = data.get("password")
-
+    
         self.matricula = data.get("matricula")
-
+    
+        # Foto de perfil
+        self.foto_perfil = data.get("foto_perfil")
+    
         self.created_at = data.get("created_at")
         self.updated_at = data.get("updated_at")
-
+    
         self.rol_id = data["rol_id"]
-
+    
         # Solo aparece cuando hacemos JOIN con roles
         self.tipo_usuario = data.get("tipo_usuario")
 
@@ -207,6 +210,49 @@ class Usuario:
         )
 
 
+    # =====================================================
+    # ACTUALIZAR PERFIL DEL USUARIO
+    # =====================================================
+    @classmethod
+    def actualizar_perfil(cls, data):
+    
+        # Si se seleccionó una nueva foto
+        if data.get("foto_perfil"):
+        
+            query = """
+                UPDATE usuarios
+    
+                SET
+                    nombre = %(nombre)s,
+                    apellido = %(apellido)s,
+                    correo = %(correo)s,
+                    foto_perfil = %(foto_perfil)s,
+                    updated_at = NOW()
+    
+                WHERE id = %(id)s;
+            """
+    
+        # Si no se cambió la foto
+        else:
+        
+            query = """
+                UPDATE usuarios
+    
+                SET
+                    nombre = %(nombre)s,
+                    apellido = %(apellido)s,
+                    correo = %(correo)s,
+                    updated_at = NOW()
+    
+                WHERE id = %(id)s;
+            """
+    
+        return connectToMySQL(
+            DB_NAME
+        ).query_db(
+            query,
+            data
+        )
     # =====================================================
     # ELIMINAR USUARIO
     # =====================================================

@@ -142,13 +142,18 @@
             >
         </div>
 
-        {% if not usuario %}
-            <div class="campo-usuario">
-                <label for="password">
-                    <i class="bi bi-lock"></i>
-                    Contraseña
-                </label>
-
+    {% if not usuario %}
+        
+        <!-- CONTRASEÑA -->
+        <div class="campo-usuario">
+        
+            <label for="password">
+                <i class="bi bi-lock"></i>
+                Contraseña
+            </label>
+        
+            <div class="campo-password">
+            
                 <input
                     type="password"
                     id="password"
@@ -156,9 +161,53 @@
                     placeholder="Ingrese una contraseña"
                     required
                 >
+            
+                <button
+                    type="button"
+                    class="boton-ver-password"
+                    id="verPassword"
+                    aria-label="Mostrar contraseña"
+                >
+                    <i class="bi bi-eye"></i>
+                </button>
+            
             </div>
-        {% endif %}
-
+        
+        </div>
+    
+    
+        <!-- CONFIRMAR CONTRASEÑA -->
+        <div class="campo-usuario">
+        
+            <label for="confirmar">
+                <i class="bi bi-shield-lock"></i>
+                Confirmar contraseña
+            </label>
+        
+            <div class="campo-password">
+            
+                <input
+                    type="password"
+                    id="confirmar"
+                    name="confirmar"
+                    placeholder="Repita la contraseña"
+                    required
+                >
+            
+                <button
+                    type="button"
+                    class="boton-ver-password"
+                    id="verConfirmar"
+                    aria-label="Mostrar contraseña"
+                >
+                    <i class="bi bi-eye"></i>
+                </button>
+            
+            </div>
+        
+        </div>
+    
+    {% endif %}
         <div class="campo-usuario campo-completo">
             <label for="rol_id">
                 <i class="bi bi-person-badge"></i>
@@ -215,6 +264,7 @@
 
 
 <script src="/static/js/tema.js"></script>
+<script src="/static/js/Formulario_usuario.js"></script>
 
 </body>
 

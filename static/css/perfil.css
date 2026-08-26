@@ -393,3 +393,490 @@ body {
     border: none;
     border-radius: 7px;
 }
+
+
+/* =========================================================
+   FOTO DEL PERFIL
+========================================================= */
+
+.avatar {
+    width: 108px;
+    height: 108px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    flex-shrink: 0;
+
+    border-radius: 50%;
+
+    overflow: hidden;
+
+    color: #bd3109;
+
+    font-size: 105px;
+}
+
+
+.foto_perfil {
+    width: 100%;
+    height: 100%;
+
+    object-fit: cover;
+
+    border-radius: 50%;
+
+    border: 5px solid #bd3109;
+}
+
+
+/* =========================================================
+   FONDO MODAL
+========================================================= */
+
+.fondo_modal {
+    position: fixed;
+
+    inset: 0;
+
+    z-index: 1000;
+
+    display: none;
+
+    align-items: center;
+    justify-content: center;
+
+    padding: 20px;
+
+    background-color: rgba(20, 15, 13, 0.55);
+
+    backdrop-filter: blur(3px);
+}
+
+
+.fondo_modal.activo {
+    display: flex;
+}
+
+
+/* =========================================================
+   VENTANA EDITAR PERFIL
+========================================================= */
+
+.modal_perfil {
+    width: 100%;
+    max-width: 650px;
+
+    max-height: 90vh;
+
+    overflow-y: auto;
+
+    padding: 30px;
+
+    background-color: #ffffff;
+
+    border-radius: 18px;
+
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.22);
+
+    animation: aparecerModal 0.2s ease;
+}
+
+
+@keyframes aparecerModal {
+
+    from {
+        opacity: 0;
+        transform: translateY(15px) scale(0.98);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+
+}
+
+
+/* =========================================================
+   CABECERA MODAL
+========================================================= */
+
+.modal_cabecera {
+    display: flex;
+
+    align-items: flex-start;
+    justify-content: space-between;
+
+    gap: 20px;
+
+    margin-bottom: 27px;
+
+    padding-bottom: 20px;
+
+    border-bottom: 1px solid #eee2dc;
+}
+
+
+.modal_cabecera h2 {
+    margin: 0;
+
+    color: #202733;
+
+    font-size: 25px;
+}
+
+
+.modal_cabecera p {
+    margin: 6px 0 0;
+
+    color: #786c66;
+
+    font-size: 14px;
+}
+
+
+.cerrar_modal {
+    width: 38px;
+    height: 38px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    flex-shrink: 0;
+
+    border: none;
+
+    border-radius: 9px;
+
+    background-color: transparent;
+
+    color: #655b56;
+
+    cursor: pointer;
+
+    font-size: 18px;
+
+    transition: 0.2s ease;
+}
+
+
+.cerrar_modal:hover {
+    color: #bd3109;
+
+    background-color: #fff1eb;
+}
+
+
+/* =========================================================
+   FORMULARIO
+========================================================= */
+
+.formulario_editar_perfil {
+    display: grid;
+
+    grid-template-columns: 1fr 1fr;
+
+    gap: 20px;
+}
+
+
+/* =========================================================
+   FOTO
+========================================================= */
+
+.seccion_foto_editar {
+    grid-column: 1 / -1;
+
+    display: flex;
+    align-items: center;
+
+    gap: 22px;
+
+    padding: 18px;
+
+    background-color: #fffaf8;
+
+    border: 1px solid #ead8d0;
+
+    border-radius: 13px;
+}
+
+
+.preview_foto {
+    width: 90px;
+    height: 90px;
+
+    flex-shrink: 0;
+
+    overflow: hidden;
+
+    border-radius: 50%;
+
+    background-color: #fff1eb;
+}
+
+
+.preview_foto img {
+    width: 100%;
+    height: 100%;
+
+    object-fit: cover;
+}
+
+
+.preview_sin_foto {
+    width: 100%;
+    height: 100%;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    color: #bd3109;
+
+    font-size: 42px;
+}
+
+
+.datos_foto h3 {
+    margin: 0 0 4px;
+
+    color: #292522;
+
+    font-size: 16px;
+}
+
+
+.datos_foto p {
+    margin: 0 0 12px;
+
+    color: #847771;
+
+    font-size: 12px;
+}
+
+
+/* Ocultamos input normal */
+
+#foto_perfil {
+    display: none;
+}
+
+
+.boton_seleccionar_foto {
+    display: inline-flex;
+
+    align-items: center;
+    justify-content: center;
+
+    gap: 7px;
+
+    padding: 9px 13px;
+
+    color: #bd3109;
+
+    background-color: #ffffff;
+
+    border: 1px solid #e3bfb1;
+
+    border-radius: 8px;
+
+    cursor: pointer;
+
+    font-size: 13px;
+
+    font-weight: 600;
+
+    transition: 0.2s ease;
+}
+
+
+.boton_seleccionar_foto:hover {
+    background-color: #fff0e9;
+}
+
+
+/* =========================================================
+   CAMPOS
+========================================================= */
+
+.campo_editar {
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 8px;
+}
+
+
+.campo_editar_completo {
+    grid-column: 1 / -1;
+}
+
+
+.campo_editar label {
+    display: flex;
+
+    align-items: center;
+
+    gap: 7px;
+
+    color: #403834;
+
+    font-size: 14px;
+
+    font-weight: 600;
+}
+
+
+.campo_editar label i {
+    color: #bd3109;
+}
+
+
+.campo_editar input {
+    width: 100%;
+
+    height: 48px;
+
+    padding: 0 14px;
+
+    outline: none;
+
+    color: #292522;
+
+    background-color: #fffaf8;
+
+    border: 1px solid #ddcbc3;
+
+    border-radius: 9px;
+
+    font-family: inherit;
+
+    font-size: 14px;
+
+    transition: 0.2s ease;
+}
+
+
+.campo_editar input:focus {
+    background-color: #ffffff;
+
+    border-color: #bd3109;
+
+    box-shadow: 0 0 0 3px rgba(189, 49, 9, 0.12);
+}
+
+
+/* =========================================================
+   BOTONES DEL MODAL
+========================================================= */
+
+.acciones_modal {
+    grid-column: 1 / -1;
+
+    display: flex;
+
+    justify-content: flex-end;
+
+    gap: 10px;
+
+    margin-top: 10px;
+
+    padding-top: 20px;
+
+    border-top: 1px solid #eee2dc;
+}
+
+
+.boton_cancelar_modal,
+.boton_guardar_perfil {
+    height: 45px;
+
+    padding: 0 18px;
+
+    border-radius: 9px;
+
+    font-weight: 600;
+
+    cursor: pointer;
+}
+
+
+.boton_cancelar_modal {
+    color: #514641;
+
+    background-color: #ffffff;
+
+    border: 1px solid #d6c5bd;
+}
+
+
+.boton_cancelar_modal:hover {
+    background-color: #f7f0ed;
+}
+
+
+.boton_guardar_perfil {
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    gap: 7px;
+
+    color: #ffffff;
+
+    background-color: #bd3109;
+
+    border: none;
+}
+
+
+.boton_guardar_perfil:hover {
+    background-color: #9f2908;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media (max-width: 600px) {
+
+    .modal_perfil {
+        padding: 22px;
+    }
+
+
+    .formulario_editar_perfil {
+        grid-template-columns: 1fr;
+    }
+
+
+    .campo_editar_completo,
+    .seccion_foto_editar,
+    .acciones_modal {
+        grid-column: auto;
+    }
+
+
+    .seccion_foto_editar {
+        align-items: flex-start;
+    }
+
+
+    .acciones_modal {
+        flex-direction: column-reverse;
+    }
+
+
+    .boton_cancelar_modal,
+    .boton_guardar_perfil {
+        width: 100%;
+    }
+
+}

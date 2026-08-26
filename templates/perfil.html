@@ -80,7 +80,194 @@
         </a>
       </nav>
     </aside>
+        <!-- =========================================
+             MODAL EDITAR PERFIL
+        ========================================= -->
 
+        <div class="fondo_modal" id="modalEditarPerfil">
+
+            <div class="modal_perfil">
+
+                <!-- CABECERA -->
+
+                <div class="modal_cabecera">
+
+                    <div>
+                        <h2>Editar perfil</h2>
+
+                        <p>
+                            Actualiza tu información personal.
+                        </p>
+                    </div>
+
+                    <button
+                        type="button"
+                        class="cerrar_modal"
+                        id="cerrarEditarPerfil"
+                        aria-label="Cerrar"
+                    >
+                        <i class="bi bi-x-lg"></i>
+                    </button>
+
+                </div>
+
+
+                <!-- FORMULARIO -->
+
+                <form
+                    action="{{ url_for('editar_perfil') }}"
+                    method="POST"
+                    enctype="multipart/form-data"
+                    class="formulario_editar_perfil"
+                >
+
+                    <!-- FOTO -->
+
+                    <div class="seccion_foto_editar">
+
+                        <div class="preview_foto">
+
+                            {% if usuario.foto_perfil %}
+
+                                <img
+                                    src="{{ url_for('static', filename=usuario.foto_perfil) }}"
+                                    alt="Foto actual"
+                                    id="imagenPreview"
+                                >
+
+                            {% else %}
+
+                                <div
+                                    class="preview_sin_foto"
+                                    id="sinFotoPreview"
+                                >
+                                    <i class="bi bi-person"></i>
+                                </div>
+
+                                <img
+                                    src=""
+                                    alt="Nueva foto"
+                                    id="imagenPreview"
+                                    style="display: none;"
+                                >
+
+                            {% endif %}
+
+                        </div>
+
+
+                        <div class="datos_foto">
+
+                            <h3>Foto de perfil</h3>
+
+                            <p>
+                                JPG, PNG o WEBP.
+                            </p>
+
+                            <label
+                                for="foto_perfil"
+                                class="boton_seleccionar_foto"
+                            >
+                                <i class="bi bi-camera"></i>
+                                Seleccionar foto
+                            </label>
+
+                            <input
+                                type="file"
+                                id="foto_perfil"
+                                name="foto_perfil"
+                                accept="image/jpeg,image/png,image/webp"
+                            >
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- NOMBRE -->
+
+                    <div class="campo_editar">
+
+                        <label for="nombreEditar">
+                            <i class="bi bi-person"></i>
+                            Nombre
+                        </label>
+
+                        <input
+                            type="text"
+                            id="nombreEditar"
+                            name="nombre"
+                            value="{{ usuario.nombre }}"
+                            required
+                        >
+
+                    </div>
+
+
+                    <!-- APELLIDO -->
+
+                    <div class="campo_editar">
+
+                        <label for="apellidoEditar">
+                            <i class="bi bi-person"></i>
+                            Apellido
+                        </label>
+
+                        <input
+                            type="text"
+                            id="apellidoEditar"
+                            name="apellido"
+                            value="{{ usuario.apellido }}"
+                            required
+                        >
+
+                    </div>
+
+
+                    <!-- CORREO -->
+
+                    <div class="campo_editar campo_editar_completo">
+
+                        <label for="correoEditar">
+                            <i class="bi bi-envelope"></i>
+                            Correo electrónico
+                        </label>
+
+                        <input
+                            type="email"
+                            id="correoEditar"
+                            name="correo"
+                            value="{{ usuario.correo }}"
+                            required
+                        >
+
+                    </div>
+
+
+                    <!-- ACCIONES -->
+
+                    <div class="acciones_modal">
+
+                        <button
+                            type="button"
+                            class="boton_cancelar_modal"
+                            id="cancelarEditarPerfil"
+                        >
+                            Cancelar
+                        </button>
+
+                        <button
+                            type="submit"
+                            class="boton_guardar_perfil"
+                        >
+                            <i class="bi bi-check-lg"></i>
+                            Guardar cambios
+                        </button>
+
+                    </div>
+                </form>
+            </div>
+        </div>
         <!-- Contenido -->
         <main class="contenido">
 
@@ -101,8 +288,21 @@
             <!-- Información del usuario -->
             <section class="tarjeta_perfil">
 
-                <div class="avatar">
-                    <i class="bi bi-person-circle"></i>
+               <div class="avatar">
+                    {% if usuario.foto_perfil %}
+
+                        <img
+                            src="{{ url_for('static', filename=usuario.foto_perfil) }}"
+                            alt="Foto de perfil"
+                            class="foto_perfil"
+                        >
+
+                    {% else %}
+
+                        <i class="bi bi-person-circle"></i>
+
+                    {% endif %}
+
                 </div>
 
                 <div class="datos_principales">
@@ -114,7 +314,11 @@
                     </span>
                 </div>
 
-                <button type="button" class="boton_editar">
+                <button
+                    type="button"
+                    class="boton_editar"
+                    id="abrirEditarPerfil"
+                >
                     <i class="bi bi-pencil"></i>
                     Editar perfil
                 </button>
@@ -238,7 +442,8 @@
 
     </div>
 
-    <script src="/static/js/tema.js"></script>
+<script src="/static/js/tema.js"></script>
+<script src="/static/js/perfil.js"></script>
 
 </body>
 </html>
