@@ -24,6 +24,7 @@
 
 
     <link rel="stylesheet" href="/static/css/style.css">
+    <link rel="stylesheet" href="/static/css/Formulario_usuario.css">
 
     <link rel="stylesheet"
         href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
@@ -33,64 +34,54 @@
 <body>
 
 
-<main
-    style="
-        max-width: 700px;
-        margin: 50px auto;
-        background: white;
-        padding: 35px;
-        border-radius: 10px;
-    "
->
+<main class="contenedor-usuario">
 
-
-    <a href="{{ url_for('gestion_usuarios') }}">
-
+    <a href="{{ url_for('gestion_usuarios') }}" class="boton-volver">
         <i class="bi bi-arrow-left"></i>
-
         Volver
-
     </a>
 
+    <div class="encabezado-usuario">
+        <div class="icono-usuario">
+            <i class="bi bi-person-plus"></i>
+        </div>
 
-    <h1 style="margin-top: 25px;">
+        <div>
+            <h1>
+                {% if usuario %}
+                    Editar usuario
+                {% else %}
+                    Nuevo usuario
+                {% endif %}
+            </h1>
 
-        {% if usuario %}
-
-            Editar usuario
-
-        {% else %}
-
-            Nuevo usuario
-
-        {% endif %}
-
-    </h1>
-
+            <p>
+                {% if usuario %}
+                    Modifica la información del usuario.
+                {% else %}
+                    Registra un nuevo lector en Libroteca.
+                {% endif %}
+            </p>
+        </div>
+    </div>
 
     {% if usuario %}
-
         <form
-            action="{{ url_for(
-                'editar_usuario',
-                usuario_id=usuario.id
-            ) }}"
+            action="{{ url_for('editar_usuario', usuario_id=usuario.id) }}"
             method="POST"
+            class="formulario-usuario"
         >
-
     {% else %}
-
         <form
             action="{{ url_for('agregar_usuario') }}"
             method="POST"
+            class="formulario-usuario"
         >
-
     {% endif %}
 
-
-        <div>
-
+        <div class="campo-usuario">
             <label for="nombre">
+                <i class="bi bi-person"></i>
                 Nombre
             </label>
 
@@ -99,15 +90,14 @@
                 id="nombre"
                 name="nombre"
                 value="{{ usuario.nombre if usuario else '' }}"
+                placeholder="Ingrese el nombre"
                 required
             >
-
         </div>
 
-
-        <div>
-
+        <div class="campo-usuario">
             <label for="apellido">
+                <i class="bi bi-person"></i>
                 Apellido
             </label>
 
@@ -116,15 +106,14 @@
                 id="apellido"
                 name="apellido"
                 value="{{ usuario.apellido if usuario else '' }}"
+                placeholder="Ingrese el apellido"
                 required
             >
-
         </div>
 
-
-        <div>
-
+        <div class="campo-usuario campo-completo">
             <label for="correo">
+                <i class="bi bi-envelope"></i>
                 Correo
             </label>
 
@@ -133,15 +122,14 @@
                 id="correo"
                 name="correo"
                 value="{{ usuario.correo if usuario else '' }}"
+                placeholder="ejemplo@correo.cl"
                 required
             >
-
         </div>
 
-
-        <div>
-
+        <div class="campo-usuario">
             <label for="matricula">
+                <i class="bi bi-card-text"></i>
                 Matrícula
             </label>
 
@@ -150,16 +138,14 @@
                 id="matricula"
                 name="matricula"
                 value="{{ usuario.matricula if usuario and usuario.matricula else '' }}"
+                placeholder="Número de matrícula"
             >
-
         </div>
 
-
         {% if not usuario %}
-
-            <div>
-
+            <div class="campo-usuario">
                 <label for="password">
+                    <i class="bi bi-lock"></i>
                     Contraseña
                 </label>
 
@@ -167,70 +153,61 @@
                     type="password"
                     id="password"
                     name="password"
+                    placeholder="Ingrese una contraseña"
                     required
                 >
-
             </div>
-
         {% endif %}
 
-
-        <div>
-
+        <div class="campo-usuario campo-completo">
             <label for="rol_id">
+                <i class="bi bi-person-badge"></i>
                 Tipo de usuario
             </label>
-
 
             <select
                 id="rol_id"
                 name="rol_id"
                 required
             >
-
                 <option value="">
                     Seleccionar rol
                 </option>
 
-
                 {% for rol in roles %}
-
                     <option
                         value="{{ rol.id }}"
-
                         {% if usuario and usuario.rol_id == rol.id %}
                             selected
                         {% endif %}
                     >
-
                         {{ rol.nombre }}
-
                     </option>
-
                 {% endfor %}
-
             </select>
-
         </div>
 
+        <div class="acciones-formulario">
+            <a
+                href="{{ url_for('gestion_usuarios') }}"
+                class="boton-cancelar"
+            >
+                Cancelar
+            </a>
 
-        <button
-            type="submit"
-            style="margin-top: 25px;"
-        >
+            <button
+                type="submit"
+                class="boton-guardar"
+            >
+                <i class="bi bi-check-lg"></i>
 
-            {% if usuario %}
-
-                Guardar cambios
-
-            {% else %}
-
-                Crear usuario
-
-            {% endif %}
-
-        </button>
-
+                {% if usuario %}
+                    Guardar cambios
+                {% else %}
+                    Crear usuario
+                {% endif %}
+            </button>
+        </div>
 
     </form>
 

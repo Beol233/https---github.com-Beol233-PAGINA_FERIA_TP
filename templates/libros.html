@@ -17,11 +17,13 @@
 <body>
   <div class="aplicacion">
     <!-- Barra lateral -->
-    <aside class="barra_lateral">
+        <aside class="barra_lateral">
       <div>
         <h1 class="titulo_barra_lateral">Libroteca</h1>
+
         <p class="subtitulo_barra">Tu rincón de lectura</p>
 
+        <!-- Solo administrador -->
         {% if session.get("tipo_usuario") == "admin" %}
         <a href="{{ url_for('agregar_usuario') }}" class="boton_nuevo_lector">
           <i class="bi bi-plus-lg"></i>
@@ -32,12 +34,20 @@
         <nav class="menu_lateral">
           <a href="{{ url_for('libros') }}" class="opcion_activa">
             <i class="bi bi-book"></i>
+
             Colección
           </a>
 
           <a href="{{ url_for('escaner') }}">
             <i class="bi bi-upc-scan"></i>
-            Escaner
+
+            Escáner
+          </a>
+
+          <a href="{{ url_for('prestamo') }}" >
+            <i class="bi bi-arrow-left-right"></i>
+
+            Préstamos
           </a>
 
           {% if session.get("tipo_usuario") == "admin" %}
@@ -59,11 +69,13 @@
       <nav class="menu_inferior">
         <a href="{{ url_for('ajustes') }}">
           <i class="bi bi-gear"></i>
+
           Ajustes
         </a>
 
         <a href="{{ url_for('logout') }}">
           <i class="bi bi-box-arrow-left"></i>
+
           Cerrar sesión
         </a>
       </nav>
@@ -106,7 +118,7 @@
 
       <main class="contenido_coleccion">
         <!-- Filtros -->
-        <<aside class="filtros">
+        <aside class="filtros">
 
           <form action="{{ url_for('buscar') }}" method="GET">
 
@@ -194,7 +206,9 @@
           <!-- Lista de libros -->
           <section class="seccion_libros">
             <div class="cabecera_lista">
-              <p>Mostrando <strong>{{ libros|length }}libros</strong></p>
+              <p id="contador_libros">
+                Mostrando <strong>{{ libros|length }} libros</strong>
+              </p>
 
               <div class="botones_vista">
                 <button type="button" class="boton_vista boton_vista_activo" aria-label="Vista en cuadrícula">
@@ -291,19 +305,37 @@
 </div>
             
 
-            <nav class="paginacion" aria-label="Paginación">
-              <button type="button" aria-label="Página anterior">
-                <i class="bi bi-chevron-left"></i>
-              </button>
+            <nav
+    class="paginacion"
+    id="paginacion"
+    aria-label="Paginación"
+>
 
-              <button type="button" class="pagina_actual">1</button>
-              <button type="button">2</button>
-              <button type="button">3</button>
+    <button
+        type="button"
+        id="pagina_anterior"
+        aria-label="Página anterior"
+    >
+        <i class="bi bi-chevron-left"></i>
+    </button>
 
-              <button type="button" aria-label="Página siguiente">
-                <i class="bi bi-chevron-right"></i>
-              </button>
-            </nav>
+
+    <div
+        class="numeros_paginacion"
+        id="numeros_paginacion"
+    >
+    </div>
+
+
+    <button
+        type="button"
+        id="pagina_siguiente"
+        aria-label="Página siguiente"
+    >
+        <i class="bi bi-chevron-right"></i>
+    </button>
+
+</nav>
           </section>
       </main>
 

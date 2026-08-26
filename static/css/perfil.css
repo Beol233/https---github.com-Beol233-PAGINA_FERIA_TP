@@ -381,3 +381,15 @@ body {
         gap: 20px;
     }
 }
+
+.boton_nuevo_lector {
+    width: 100%;
+    margin-top: 25px;
+    padding: 12px;
+    display: block;
+    color: white;
+    background-color: #ae2d0a;
+
+    border: none;
+    border-radius: 7px;
+}

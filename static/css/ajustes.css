@@ -89,3 +89,15 @@ body.oscuro select {
     background-color: #333333;
     border-color: #555555;
 }
+
+.boton_nuevo_lector {
+    width: 100%;
+    margin-top: 25px;
+    padding: 12px;
+    display: block;
+    color: white;
+    background-color: #ae2d0a;
+
+    border: none;
+    border-radius: 7px;
+}

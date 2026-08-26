@@ -8,6 +8,7 @@
 
     <link rel="stylesheet" href="/static/css/style.css" />
     <link rel="stylesheet" href="/static/css/libros.css" />
+    <link rel="stylesheet" href="/static/css/gestion_libros.css">
 
     <link
       rel="stylesheet"
@@ -67,139 +68,224 @@
 
       <!-- CONTENIDO -->
       <div class="contenido_principal">
-        <header class="encabezado">
-          <div class="titulo_encabezado">
-            <h1>Gestión de libros</h1>
-          </div>
-
-          <div class="acciones_encabezado">
-            <a href="{{ url_for('agregar_libro') }}" class="boton_nuevo_lector">
-              <i class="bi bi-plus-lg"></i>
-
-              Nuevo libro
-            </a>
-          </div>
-        </header>
-
-        <main style="padding: 35px;">
-          <div style="margin-bottom: 25px;">
-            <a href="{{ url_for('gestion') }}">
-              <i class="bi bi-arrow-left"></i>
-              Volver al panel
-            </a>
-          </div>
-
-          {% with mensajes = get_flashed_messages() %}
-
-            {% if mensajes %}
-
-              {% for mensaje in mensajes %}
-                <p>{{ mensaje }}</p>
-              {% endfor %}
-            {% endif %}
-          {% endwith %}
-
-          <h2>Libros registrados</h2>
-
-          <p style="margin-bottom: 25px;">
-            Desde aquí puedes agregar, editar o eliminar libros.
-          </p>
-
-          <div style="overflow-x: auto;">
-            <table
-              style="
-                    width: 100%;
-                    background-color: white;
-                    border-collapse: collapse;
-                "
-            >
-              <thead>
-                <tr>
-                  <th>ID</th>
-                  <th>ISBN</th>
-                  <th>Título</th>
-                  <th>Autor</th>
-                  <th>Editorial</th>
-                  <th>Año</th>
-                  <th>Disponible</th>
-                  <th>Total</th>
-                  <th>Acciones</th>
-                </tr>
-              </thead>
-
-              <tbody>
-                {% for libro in libros %}
-                  <tr>
-                    <td>{{ libro.id }}</td>
-
-                    <td>{{ libro.isbn or "-" }}</td>
-
-                    <td>{{ libro.titulo }}</td>
-
-                    <td>{{ libro.autor }}</td>
-
-                    <td>{{ libro.editorial or "-" }}</td>
-
-                    <td>{{ libro.anio or "-" }}</td>
-
-                    <td>{{ libro.cantidad_disponible }}</td>
-
-                    <td>{{ libro.cantidad_total }}</td>
-
-                    <td>
-                      <!-- EDITAR -->
-                      <a
-                        href="{{
-                          url_for(
-                              'editar_libro',
-                              libro_id=libro.id
-                          )
-                        }}"
-                      >
-                        <i class="bi bi-pencil"></i>
-                        Editar
-                      </a>
-
-                      <!-- ELIMINAR -->
-                      <form
-                        action="{{
-                          url_for(
-                              'eliminar_libro',
-                              libro_id=libro.id
-                          )
-                        }}"
-                        method="POST"
-                        style="display: inline;"
-                      >
-                        <button
-                          type="submit"
-                          onclick="return confirm(
-                                                '¿Seguro que deseas eliminar este libro?'
-                                            )"
-                        >
-                          <i class="bi bi-trash"></i>
-                          Eliminar
-                        </button>
-                      </form>
-                    </td>
-                  </tr>
-                {% else %}
-                  <tr>
-                    <td
-                      colspan="9"
-                      style="
-                                        text-align: center;
-                                        padding: 30px;
-                                    "
-                    >
-                      No hay libros registrados.
-                    </td>
-                  </tr>
-                {% endfor %}
-              </tbody>
-            </table>
-          </div>
-        </main>
+      
+          <header class="encabezado">
+          
+              <div class="titulo_encabezado">
+                  <h1>Gestión de libros</h1>
+                  <p>Administra los libros disponibles en Libroteca.</p>
+              </div>
+            
+              <div class="acciones_encabezado">
+                  <a href="{{ url_for('agregar_libro') }}" class="boton_nuevo_libro">
+                      <i class="bi bi-plus-lg"></i>
+                      Nuevo libro
+                  </a>
+              </div>
+            
+          </header>
+        
+        
+          <main class="contenido_gestion_libros">
+          
+              <div class="barra_superior_libros">
+              
+                  <a href="{{ url_for('gestion') }}" class="boton_volver_panel">
+                      <i class="bi bi-arrow-left"></i>
+                      Volver al panel
+                  </a>
+                
+              </div>
+            
+            
+              {% with mensajes = get_flashed_messages() %}
+            
+                  {% if mensajes %}
+            
+                      <div class="contenedor_mensajes">
+                      
+                          {% for mensaje in mensajes %}
+                      
+                              <p class="mensaje_flash">
+                                  <i class="bi bi-check-circle"></i>
+                                  {{ mensaje }}
+                              </p>
+                            
+                          {% endfor %}
+                            
+                      </div>
+                    
+                  {% endif %}
+                    
+              {% endwith %}
+                    
+                    
+              <section class="tarjeta_libros">
+              
+                  <div class="titulo_tabla_libros">
+                  
+                      <div>
+                          <h2>Libros registrados</h2>
+                      
+                          <p>
+                              Desde aquí puedes agregar, editar o eliminar libros.
+                          </p>
+                      </div>
+                    
+                      <div class="contador_libros">
+                          <i class="bi bi-book"></i>
+                          {{ libros|length }} libros
+                      </div>
+                    
+                  </div>
+                
+                
+                  <div class="contenedor_tabla">
+                  
+                      <table class="tabla_libros">
+                      
+                          <thead>
+                              <tr>
+                                  <th>ID</th>
+                                  <th>ISBN</th>
+                                  <th>Título</th>
+                                  <th>Autor</th>
+                                  <th>Editorial</th>
+                                  <th>Año</th>
+                                  <th>Disponible</th>
+                                  <th>Total</th>
+                                  <th>Acciones</th>
+                              </tr>
+                          </thead>
+                        
+                        
+                          <tbody>
+                          
+                              {% for libro in libros %}
+                          
+                                  <tr>
+                                  
+                                      <td>
+                                          <span class="id_libro">
+                                              #{{ libro.id }}
+                                          </span>
+                                      </td>
+                                    
+                                      <td>
+                                          {{ libro.isbn or "-" }}
+                                      </td>
+                                    
+                                      <td class="titulo_libro_tabla">
+                                          <i class="bi bi-book"></i>
+                                          {{ libro.titulo }}
+                                      </td>
+                                    
+                                      <td>
+                                          {{ libro.autor }}
+                                      </td>
+                                    
+                                      <td>
+                                          {{ libro.editorial or "-" }}
+                                      </td>
+                                    
+                                      <td>
+                                          {{ libro.anio or "-" }}
+                                      </td>
+                                    
+                                      <td>
+                                          <span class="cantidad_disponible">
+                                              {{ libro.cantidad_disponible }}
+                                          </span>
+                                      </td>
+                                    
+                                      <td>
+                                          {{ libro.cantidad_total }}
+                                      </td>
+                                    
+                                    
+                                      <td>
+                                      
+                                          <div class="acciones_libro_tabla">
+                                          
+                                              <!-- EDITAR -->
+                                          
+                                              <a
+                                                  href="{{ url_for(
+                                                      'editar_libro',
+                                                      libro_id=libro.id
+                                                  ) }}"
+                                                  class="boton_editar"
+                                              >
+                                                  <i class="bi bi-pencil"></i>
+                                                  Editar
+                                              </a>
+                                            
+                                            
+                                              <!-- ELIMINAR -->
+                                            
+                                              <form
+                                                  action="{{ url_for(
+                                                      'eliminar_libro',
+                                                      libro_id=libro.id
+                                                  ) }}"
+                                                  method="POST"
+                                              >
+                                                  
+                                                  <button
+                                                      type="submit"
+                                                      class="boton_eliminar"
+                                                      onclick="return confirm(
+                                                          '¿Seguro que deseas eliminar este libro?'
+                                                      )"
+                                                  >
+                                                  
+                                                      <i class="bi bi-trash"></i>
+                                                      Eliminar
+                                                  
+                                                  </button>
+                                                
+                                              </form>
+                                            
+                                          </div>
+                                        
+                                      </td>
+                                    
+                                  </tr>
+                                
+                                
+                              {% else %}
+                                
+                                  <tr>
+                                  
+                                      <td colspan="9">
+                                      
+                                          <div class="sin_libros">
+                                          
+                                              <i class="bi bi-journal-x"></i>
+                                          
+                                              <h3>No hay libros registrados</h3>
+                                          
+                                              <p>
+                                                  Agrega el primer libro a la colección.
+                                              </p>
+                                            
+                                          </div>
+                                        
+                                      </td>
+                                    
+                                  </tr>
+                                
+                              {% endfor %}
+                                
+                          </tbody>
+                        
+                      </table>
+                    
+                  </div>
+                
+              </section>
+            
+          </main>
       </div>
     </div>
 

@@ -130,7 +130,10 @@
 
       {% if session.get("tipo_usuario") == "admin" %}
       <section class="card nuevo-prestamo">
-        <h3>Nuevo préstamo</h3>
+        <h3>
+          <i class="bi bi-journal-plus"></i>
+          Nuevo préstamo
+        </h3>
 
         <form action="{{ url_for('crear_prestamo') }}" method="POST" class="formulario-prestamo">
           <!-- LECTOR -->

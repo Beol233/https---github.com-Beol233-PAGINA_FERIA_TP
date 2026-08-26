@@ -16,61 +16,69 @@
     <div class="app">
 
         <!-- Barra lateral -->
-        <aside class="barra_lateral">
+    <aside class="barra_lateral">
+      <div>
+        <h1 class="titulo_barra_lateral">Libroteca</h1>
 
-            <div>
-                <h1 class="titulo_barra_lateral">Libroteca</h1>
-                <p class="subtitulo_barra">Tu rincón de lectura</p>
+        <p class="subtitulo_barra">Tu rincón de lectura</p>
 
-                {% if session.get("tipo_usuario") == "admin" %}
+        <!-- Solo administrador -->
+        {% if session.get("tipo_usuario") == "admin" %}
+        <a href="{{ url_for('agregar_usuario') }}" class="boton_nuevo_lector">
+          <i class="bi bi-plus-lg"></i>
+          Nuevo lector
+        </a>
+        {% endif %}
 
-                <a href="{{ url_for('agregar_usuario') }}" class="boton_nuevo_lector">
-                    <i class="bi bi-plus-lg"></i>
-                    Nuevo lector
-                </a>
+        <nav class="menu_lateral">
+          <a href="{{ url_for('libros') }}">
+            <i class="bi bi-book"></i>
 
-                {% endif %}
+            Colección
+          </a>
 
-                <nav class="menu_lateral">
+          <a href="{{ url_for('escaner') }}" class="opcion_activa">
+            <i class="bi bi-upc-scan" ></i>
 
-                    <a href="{{ url_for('libros') }}">
-                        <i class="bi bi-book"></i>
-                        Colección
-                    </a>
+            Escáner
+          </a>
 
-                    <a href="{{url_for('escaner')}}" class="opcion_activa">
-                        <i class="bi bi-upc-scan"></i>
-                        Escaner
-                    </a>
+          <a href="{{ url_for('prestamo') }}" >
+            <i class="bi bi-arrow-left-right"></i>
 
-                    <a href="{{ url_for('prestamo') }}">
-                        <i class="bi bi-arrow-left-right"></i>
-                        Préstamos
-                    </a>
+            Préstamos
+          </a>
 
-                    <a href="#">
-                        <i class="bi bi-people"></i>
-                        Lectores
-                    </a>
+          {% if session.get("tipo_usuario") == "admin" %}
+          <a href="{{ url_for('gestion_usuarios') }}">
+            <i class="bi bi-people"></i>
 
-                </nav>
-            </div>
+            Lectores
+          </a>
 
-            <nav class="menu_inferior">
+          <a href="{{ url_for('gestion') }}">
+            <i class="bi bi-speedometer2"></i>
 
-                <a href="{{ url_for('ajustes') }}">
-                    <i class="bi bi-gear"></i>
-                    Ajustes
-                </a>
+            Gestión
+          </a>
+          {% endif %}
+        </nav>
+      </div>
 
-                <a href="{{ url_for('login') }}">
-                    <i class="bi bi-box-arrow-left"></i>
-                    Cerrar sesión
-                </a>
+      <nav class="menu_inferior">
+        <a href="{{ url_for('ajustes') }}">
+          <i class="bi bi-gear"></i>
 
-            </nav>
+          Ajustes
+        </a>
 
-        </aside>
+        <a href="{{ url_for('logout') }}">
+          <i class="bi bi-box-arrow-left"></i>
+
+          Cerrar sesión
+        </a>
+      </nav>
+    </aside>
 
         <!-- Contenido -->
         <main class="content">
@@ -89,16 +97,6 @@
 
                 </div>
 
-                <div class="camera-status">
-
-                    Estado de Cámara:
-
-                    <span>
-                        <b></b>
-                        ACTIVA
-                    </span>
-
-                </div>
 
             </section>
 
@@ -150,14 +148,6 @@
                     </div>
 
 
-
-                    <button class="upload">
-
-                        <i class="fa-solid fa-file-arrow-up"></i>
-
-                        Cargar desde archivo
-
-                    </button>
 
                 </aside>
 

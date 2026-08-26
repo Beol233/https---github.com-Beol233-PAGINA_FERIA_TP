@@ -17,6 +17,7 @@
     </title>
 
     <link rel="stylesheet" href="/static/css/style.css">
+    <link rel="stylesheet" href="/static/css/Formulario_Libro.css">
 
     <link rel="stylesheet"
         href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
@@ -26,49 +27,46 @@
 <body>
 
 
-<main
-    style="
-        max-width: 700px;
-        margin: 50px auto;
-        background: white;
-        padding: 35px;
-        border-radius: 10px;
-    "
->
+<main class="contenedor-libro">
 
-
-    <a href="{{ url_for('gestion_libros') }}">
-
+    <a href="{{ url_for('gestion_libros') }}" class="boton-volver">
         <i class="bi bi-arrow-left"></i>
-
         Volver
-
     </a>
 
+    <div class="encabezado-libro">
 
-    <h1 style="margin-top: 25px;">
+        <div class="icono-libro">
+            <i class="bi bi-book"></i>
+        </div>
 
-        {% if libro %}
+        <div>
+            <h1>
+                {% if libro %}
+                    Editar libro
+                {% else %}
+                    Agregar nuevo libro
+                {% endif %}
+            </h1>
 
-            Editar libro
+            <p>
+                {% if libro %}
+                    Modifica la información del libro.
+                {% else %}
+                    Registra un nuevo libro en la colección de Libroteca.
+                {% endif %}
+            </p>
+        </div>
 
-        {% else %}
-
-            Agregar nuevo libro
-
-        {% endif %}
-
-    </h1>
+    </div>
 
 
     {% if libro %}
 
         <form
-            action="{{ url_for(
-                'editar_libro',
-                libro_id=libro.id
-            ) }}"
+            action="{{ url_for('editar_libro', libro_id=libro.id) }}"
             method="POST"
+            class="formulario-libro"
         >
 
     {% else %}
@@ -76,14 +74,16 @@
         <form
             action="{{ url_for('agregar_libro') }}"
             method="POST"
+            class="formulario-libro"
         >
 
     {% endif %}
 
 
-        <div>
+        <div class="campo-libro">
 
             <label for="titulo">
+                <i class="bi bi-book"></i>
                 Título *
             </label>
 
@@ -92,15 +92,17 @@
                 id="titulo"
                 name="titulo"
                 value="{{ libro.titulo if libro else '' }}"
+                placeholder="Nombre del libro"
                 required
             >
 
         </div>
 
 
-        <div>
+        <div class="campo-libro">
 
             <label for="autor">
+                <i class="bi bi-person"></i>
                 Autor *
             </label>
 
@@ -109,15 +111,17 @@
                 id="autor"
                 name="autor"
                 value="{{ libro.autor if libro else '' }}"
+                placeholder="Nombre del autor"
                 required
             >
 
         </div>
 
 
-        <div>
+        <div class="campo-libro">
 
             <label for="isbn">
+                <i class="bi bi-upc-scan"></i>
                 ISBN
             </label>
 
@@ -126,14 +130,16 @@
                 id="isbn"
                 name="isbn"
                 value="{{ libro.isbn if libro and libro.isbn else '' }}"
+                placeholder="Ej: 978956..."
             >
 
         </div>
 
 
-        <div>
+        <div class="campo-libro">
 
             <label for="editorial">
+                <i class="bi bi-building"></i>
                 Editorial
             </label>
 
@@ -142,14 +148,16 @@
                 id="editorial"
                 name="editorial"
                 value="{{ libro.editorial if libro and libro.editorial else '' }}"
+                placeholder="Nombre de la editorial"
             >
 
         </div>
 
 
-        <div>
+        <div class="campo-libro">
 
             <label for="anio">
+                <i class="bi bi-calendar3"></i>
                 Año
             </label>
 
@@ -158,14 +166,16 @@
                 id="anio"
                 name="anio"
                 value="{{ libro.anio if libro and libro.anio else '' }}"
+                placeholder="Ej: 2024"
             >
 
         </div>
 
 
-        <div>
+        <div class="campo-libro">
 
             <label for="cantidad_total">
+                <i class="bi bi-stack"></i>
                 Cantidad total
             </label>
 
@@ -181,9 +191,10 @@
         </div>
 
 
-        <div>
+        <div class="campo-libro campo-completo">
 
             <label for="categoria_id">
+                <i class="bi bi-tags"></i>
                 Categoría
             </label>
 
@@ -197,19 +208,15 @@
                     Seleccionar categoría
                 </option>
 
-
                 {% for categoria in categorias %}
 
                     <option
                         value="{{ categoria.id }}"
-
                         {% if libro and libro.categoria_id == categoria.id %}
                             selected
                         {% endif %}
                     >
-
                         {{ categoria.nombre }}
-
                     </option>
 
                 {% endfor %}
@@ -219,9 +226,10 @@
         </div>
 
 
-        <div>
+        <div class="campo-libro campo-completo">
 
             <label for="portada_url">
+                <i class="bi bi-image"></i>
                 URL de portada
             </label>
 
@@ -236,23 +244,31 @@
         </div>
 
 
-        <button
-            type="submit"
-            style="margin-top: 25px;"
-        >
+        <div class="acciones-libro">
 
-            {% if libro %}
+            <a
+                href="{{ url_for('gestion_libros') }}"
+                class="boton-cancelar"
+            >
+                Cancelar
+            </a>
 
-                Guardar cambios
+            <button
+                type="submit"
+                class="boton-guardar-libro"
+            >
 
-            {% else %}
+                <i class="bi bi-check-lg"></i>
 
-                Agregar libro
+                {% if libro %}
+                    Guardar cambios
+                {% else %}
+                    Agregar libro
+                {% endif %}
 
-            {% endif %}
+            </button>
 
-        </button>
-
+        </div>
 
     </form>
 

@@ -9,6 +9,7 @@
 
     <link rel="stylesheet" href="/static/css/style.css" />
     <link rel="stylesheet" href="/static/css/libros.css" />
+    <link rel="stylesheet" href="/static/css/gestion_usuarios.css">
 
     <link
       rel="stylesheet"
@@ -82,118 +83,243 @@
         </nav>
       </aside>
 
-      <div class="contenido_principal">
-        <header class="encabezado">
-          <div class="titulo_encabezado">
-            <h1>Gestión de lectores</h1>
-          </div>
-        </header>
+<div class="contenido_principal">
 
-        <main style="padding: 40px;">
-          {% with mensajes = get_flashed_messages() %}
+    <header class="encabezado">
+
+        <div class="titulo_encabezado">
+            <h1>Gestión de lectores</h1>
+            <p>Administra los usuarios registrados en Libroteca.</p>
+        </div>
+
+        <div class="acciones_encabezado">
+
+            <a
+                href="{{ url_for('agregar_usuario') }}"
+                class="boton_nuevo_lector"
+            >
+                <i class="bi bi-person-plus"></i>
+                Nuevo lector
+            </a>
+
+        </div>
+
+    </header>
+
+
+    <main class="contenido_gestion_lectores">
+
+        {% with mensajes = get_flashed_messages() %}
 
             {% if mensajes %}
 
-              {% for mensaje in mensajes %}
-                <p>{{ mensaje }}</p>
-              {% endfor %}
+                <div class="contenedor_mensajes">
+
+                    {% for mensaje in mensajes %}
+
+                        <p class="mensaje_flash">
+                            <i class="bi bi-check-circle"></i>
+                            {{ mensaje }}
+                        </p>
+
+                    {% endfor %}
+
+                </div>
+
             {% endif %}
-          {% endwith %}
 
-          <div style="overflow-x: auto;">
-            <table
-              style="
-                        width: 100%;
-                        border-collapse: collapse;
-                        background: white;
-                    "
-            >
-              <thead>
-                <tr>
-                  <th>ID</th>
-                  <th>Nombre</th>
-                  <th>Apellido</th>
-                  <th>Correo</th>
-                  <th>Matrícula</th>
-                  <th>Rol</th>
-                  <th>Acciones</th>
-                </tr>
-              </thead>
+        {% endwith %}
 
-              <tbody>
-                {% for usuario in usuarios %}
-                  <tr>
-                    <td>{{ usuario.id }}</td>
 
-                    <td>{{ usuario.nombre }}</td>
+        <section class="tarjeta_lectores">
 
-                    <td>{{ usuario.apellido }}</td>
+            <div class="titulo_tabla_lectores">
 
-                    <td>{{ usuario.correo }}</td>
+                <div>
 
-                    <td>{{ usuario.matricula or "-" }}</td>
+                    <h2>Lectores registrados</h2>
 
-                    <td>{{ usuario.tipo_usuario }}</td>
+                    <p>
+                        Desde aquí puedes editar o eliminar los usuarios.
+                    </p>
 
-                    <td>
-                      <a
-                        href="{{
-                          url_for(
-                              'editar_usuario',
-                              usuario_id=usuario.id
-                          )
-                        }}"
-                      >
-                        <i class="bi bi-pencil"></i>
+                </div>
 
-                        Editar
-                      </a>
+                <div class="contador_lectores">
+                    <i class="bi bi-people"></i>
+                    {{ usuarios|length }} lectores
+                </div>
 
-                      <form
-                        action="{{
-                          url_for(
-                              'eliminar_usuario',
-                              usuario_id=usuario.id
-                          )
-                        }}"
-                        method="POST"
-                        style="display: inline;"
-                        onsubmit="return confirm(
-                                            '¿Seguro que quieres eliminar este usuario?'
-                                        );"
-                      >
-                        <button
-                          type="submit"
-                          style="
-                                                border: none;
-                                                background: none;
-                                                cursor: pointer;
-                                            "
-                        >
-                          <i class="bi bi-trash"></i>
+            </div>
 
-                          Eliminar
-                        </button>
-                      </form>
-                    </td>
-                  </tr>
-                {% else %}
-                  <tr>
-                    <td
-                      colspan="7"
-                      style="
-                                        text-align: center;
-                                        padding: 30px;
-                                    "
-                    >
-                      No hay usuarios registrados.
-                    </td>
-                  </tr>
-                {% endfor %}
-              </tbody>
-            </table>
-          </div>
-        </main>
+
+            <div class="contenedor_tabla_lectores">
+
+                <table class="tabla_lectores">
+
+                    <thead>
+
+                        <tr>
+                            <th>ID</th>
+                            <th>Nombre</th>
+                            <th>Apellido</th>
+                            <th>Correo</th>
+                            <th>Matrícula</th>
+                            <th>Rol</th>
+                            <th>Acciones</th>
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody>
+
+                        {% for usuario in usuarios %}
+
+                            <tr>
+
+                                <td>
+                                    <span class="id_lector">
+                                        #{{ usuario.id }}
+                                    </span>
+                                </td>
+
+
+                                <td class="nombre_lector">
+
+                                    <div class="lector_info">
+
+                                        <div class="avatar_lector">
+                                            {{ usuario.nombre[0]|upper }}
+                                        </div>
+
+                                        <span>
+                                            {{ usuario.nombre }}
+                                        </span>
+
+                                    </div>
+
+                                </td>
+
+
+                                <td>
+                                    {{ usuario.apellido }}
+                                </td>
+
+
+                                <td>
+                                    {{ usuario.correo }}
+                                </td>
+
+
+                                <td>
+                                    {{ usuario.matricula or "-" }}
+                                </td>
+
+
+                                <td>
+
+                                    <span class="
+                                        etiqueta_rol
+                                        {% if usuario.tipo_usuario == 'admin' %}
+                                            rol_admin
+                                        {% elif usuario.tipo_usuario == 'profesor' %}
+                                            rol_profesor
+                                        {% else %}
+                                            rol_alumno
+                                        {% endif %}
+                                    ">
+                                        {{ usuario.tipo_usuario }}
+                                    </span>
+
+                                </td>
+
+
+                                <td>
+
+                                    <div class="acciones_lector">
+
+                                        <a
+                                            href="{{ url_for(
+                                                'editar_usuario',
+                                                usuario_id=usuario.id
+                                            ) }}"
+                                            class="boton_editar_lector"
+                                        >
+
+                                            <i class="bi bi-pencil"></i>
+
+                                            Editar
+
+                                        </a>
+
+
+                                        <form
+                                            action="{{ url_for(
+                                                'eliminar_usuario',
+                                                usuario_id=usuario.id
+                                            ) }}"
+                                            method="POST"
+                                            onsubmit="return confirm(
+                                                '¿Seguro que quieres eliminar este usuario?'
+                                            );"
+                                        >
+
+                                            <button
+                                                type="submit"
+                                                class="boton_eliminar_lector"
+                                            >
+
+                                                <i class="bi bi-trash"></i>
+
+                                                Eliminar
+
+                                            </button>
+
+                                        </form>
+
+                                    </div>
+
+                                </td>
+
+                            </tr>
+
+
+                        {% else %}
+
+                            <tr>
+
+                                <td colspan="7">
+
+                                    <div class="sin_lectores">
+
+                                        <i class="bi bi-people"></i>
+
+                                        <h3>No hay usuarios registrados</h3>
+
+                                        <p>
+                                            Agrega el primer lector a Libroteca.
+                                        </p>
+
+                                    </div>
+
+                                </td>
+
+                            </tr>
+
+                        {% endfor %}
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </section>
+
+    </main>
+
+</div>
       </div>
     </div>
 

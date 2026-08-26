@@ -17,52 +17,69 @@
     <div class="app">
 
         <!-- Barra lateral -->
-        <aside class="barra_lateral">
+            <aside class="barra_lateral">
+      <div>
+        <h1 class="titulo_barra_lateral">Libroteca</h1>
 
-            <div>
-                <h1 class="titulo_barra_lateral">Libroteca</h1>
-                <p class="subtitulo_barra">Tu rincón de lectura</p>
+        <p class="subtitulo_barra">Tu rincón de lectura</p>
 
-                <nav class="menu_lateral">
+        <!-- Solo administrador -->
+        {% if session.get("tipo_usuario") == "admin" %}
+        <a href="{{ url_for('agregar_usuario') }}" class="boton_nuevo_lector">
+          <i class="bi bi-plus-lg"></i>
+          Nuevo lector
+        </a>
+        {% endif %}
 
-                    <a href="{{ url_for('libros') }}">
-                        <i class="bi bi-book"></i>
-                        Colección
-                    </a>
+        <nav class="menu_lateral">
+          <a href="{{ url_for('libros') }}">
+            <i class="bi bi-book"></i>
 
-                    <a href="{{ url_for('escaner') }}">
-                        <i class="bi bi-upc-scan"></i>
-                        Escáner
-                    </a>
+            Colección
+          </a>
 
-                    <a href="{{ url_for('prestamo') }}">
-                        <i class="bi bi-arrow-left-right"></i>
-                        Préstamos
-                    </a>
+          <a href="{{ url_for('escaner') }}">
+            <i class="bi bi-upc-scan"></i>
 
-                    <a href="{{ url_for('perfil') }}" class="opcion_activa">
-                        <i class="bi bi-person"></i>
-                        Mi perfil
-                    </a>
+            Escáner
+          </a>
 
-                </nav>
-            </div>
+          <a href="{{ url_for('prestamo') }}" >
+            <i class="bi bi-arrow-left-right"></i>
 
-            <nav class="menu_inferior">
+            Préstamos
+          </a>
 
-                <a href="{{ url_for('ajustes') }}">
-                    <i class="bi bi-gear"></i>
-                    Ajustes
-                </a>
+          {% if session.get("tipo_usuario") == "admin" %}
+          <a href="{{ url_for('gestion_usuarios') }}">
+            <i class="bi bi-people"></i>
 
-                <a href="{{ url_for('logout') }}">
-                    <i class="bi bi-box-arrow-left"></i>
-                    Cerrar sesión
-                </a>
+            Lectores
+          </a>
 
-            </nav>
+          <a href="{{ url_for('gestion') }}">
+            <i class="bi bi-speedometer2"></i>
 
-        </aside>
+            Gestión
+          </a>
+          {% endif %}
+        </nav>
+      </div>
+
+      <nav class="menu_inferior">
+        <a href="{{ url_for('ajustes') }}">
+          <i class="bi bi-gear"></i>
+
+          Ajustes
+        </a>
+
+        <a href="{{ url_for('logout') }}">
+          <i class="bi bi-box-arrow-left"></i>
+
+          Cerrar sesión
+        </a>
+      </nav>
+    </aside>
 
         <!-- Contenido -->
         <main class="contenido">

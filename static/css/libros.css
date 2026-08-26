@@ -83,7 +83,7 @@ button {
     width: 100%;
     margin-top: 25px;
     padding: 12px;
-
+    display: block;
     color: white;
     background-color: #ae2d0a;
 
@@ -507,3 +507,91 @@ body.oscuro .informacion_libro small {
 }
 
 
+/* =========================================
+   PAGINACIÓN FUNCIONAL
+========================================= */
+
+.oculto_paginacion {
+    display: none !important;
+}
+
+.paginacion {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    gap: 7px;
+
+    margin-top: 30px;
+}
+
+.numeros_paginacion {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+}
+
+.paginacion button {
+    width: 38px;
+    height: 38px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    color: #555;
+    background-color: white;
+
+    border: 1px solid #ddd;
+    border-radius: 6px;
+
+    cursor: pointer;
+
+    transition: 0.2s ease;
+}
+
+.paginacion button:hover:not(:disabled):not(.pagina_actual) {
+    color: #ae2d0a;
+    border-color: #ae2d0a;
+
+    background-color: #fff5f1;
+}
+
+.paginacion .pagina_actual {
+    color: white;
+    background-color: #ae2d0a;
+    border-color: #ae2d0a;
+}
+
+.paginacion button:disabled {
+    opacity: 0.35;
+    cursor: not-allowed;
+}
+
+
+/* =========================================
+   VISTA LISTA
+========================================= */
+
+.contenedor_libros.vista_lista {
+    display: flex;
+    flex-direction: column;
+}
+
+.contenedor_libros.vista_lista .tarjeta_libro {
+    max-width: 100%;
+    width: 100%;
+
+    display: flex;
+}
+
+.contenedor_libros.vista_lista .portada_libro,
+.contenedor_libros.vista_lista .portada_vacia {
+    width: 150px;
+    min-width: 150px;
+    height: 190px;
+}
+
+.contenedor_libros.vista_lista .informacion_libro {
+    flex: 1;
+}

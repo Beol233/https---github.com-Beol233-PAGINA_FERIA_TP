@@ -1,0 +1,580 @@
+/* ==========================================
+   CONTENIDO PRINCIPAL
+========================================== */
+
+.contenido_principal {
+    min-height: 100vh;
+    background-color: #fbf2ee;
+}
+
+
+/* ==========================================
+   ENCABEZADO
+========================================== */
+
+.encabezado {
+    min-height: 110px;
+
+    padding: 25px 40px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    background-color: #fffaf8;
+
+    border-bottom: 1px solid #eadbd4;
+}
+
+
+.titulo_encabezado h1 {
+    margin: 0;
+
+    color: #202733;
+
+    font-size: 29px;
+
+    font-weight: 700;
+}
+
+
+.titulo_encabezado p {
+    margin: 7px 0 0;
+
+    color: #7c6f69;
+
+    font-size: 14px;
+}
+
+
+/* ==========================================
+   BOTÓN NUEVO LECTOR
+========================================== */
+
+.boton_nuevo_lector {
+    height: 48px;
+
+    padding: 0 20px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 8px;
+
+    background-color: #bd3109;
+
+    color: #ffffff;
+
+    border-radius: 10px;
+
+    text-decoration: none;
+
+    font-size: 15px;
+
+    font-weight: 600;
+
+    transition:
+        background-color 0.2s ease,
+        transform 0.15s ease,
+        box-shadow 0.2s ease;
+}
+
+
+.boton_nuevo_lector:hover {
+    background-color: #9f2908;
+
+    transform: translateY(-1px);
+
+    box-shadow: 0 5px 12px rgba(189, 49, 9, 0.22);
+}
+
+
+.boton_nuevo_lector i {
+    font-size: 18px;
+}
+
+
+/* ==========================================
+   CONTENIDO
+========================================== */
+
+.contenido_gestion_lectores {
+    padding: 32px 40px 50px;
+}
+
+
+/* ==========================================
+   MENSAJES FLASH
+========================================== */
+
+.contenedor_mensajes {
+    margin-bottom: 20px;
+}
+
+
+.mensaje_flash {
+    display: flex;
+
+    align-items: center;
+
+    gap: 9px;
+
+    margin: 0;
+
+    padding: 13px 16px;
+
+    background-color: #effaf1;
+
+    color: #23723a;
+
+    border: 1px solid #cce8d1;
+
+    border-radius: 10px;
+
+    font-size: 14px;
+}
+
+
+/* ==========================================
+   TARJETA DE LECTORES
+========================================== */
+
+.tarjeta_lectores {
+    background-color: #ffffff;
+
+    border: 1px solid #e4d6cf;
+
+    border-radius: 20px;
+
+    overflow: hidden;
+
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.05);
+}
+
+
+/* ==========================================
+   ENCABEZADO DE TABLA
+========================================== */
+
+.titulo_tabla_lectores {
+    padding: 26px 28px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 20px;
+
+    border-bottom: 1px solid #eee2dc;
+}
+
+
+.titulo_tabla_lectores h2 {
+    margin: 0;
+
+    color: #202733;
+
+    font-size: 24px;
+
+    font-weight: 700;
+}
+
+
+.titulo_tabla_lectores p {
+    margin: 6px 0 0;
+
+    color: #776b66;
+
+    font-size: 14px;
+}
+
+
+/* ==========================================
+   CONTADOR
+========================================== */
+
+.contador_lectores {
+    display: flex;
+
+    align-items: center;
+
+    gap: 7px;
+
+    padding: 9px 13px;
+
+    background-color: #fff1eb;
+
+    color: #bd3109;
+
+    border-radius: 9px;
+
+    font-size: 13px;
+
+    font-weight: 600;
+
+    white-space: nowrap;
+}
+
+
+/* ==========================================
+   TABLA
+========================================== */
+
+.contenedor_tabla_lectores {
+    width: 100%;
+
+    overflow-x: auto;
+}
+
+
+.tabla_lectores {
+    width: 100%;
+
+    min-width: 950px;
+
+    border-collapse: collapse;
+
+    background-color: #ffffff;
+}
+
+
+.tabla_lectores thead {
+    background-color: #faf5f2;
+}
+
+
+.tabla_lectores th {
+    padding: 15px 18px;
+
+    color: #554943;
+
+    font-size: 13px;
+
+    font-weight: 700;
+
+    text-align: left;
+
+    border-bottom: 1px solid #e8dbd5;
+}
+
+
+.tabla_lectores td {
+    padding: 15px 18px;
+
+    color: #3d3734;
+
+    font-size: 14px;
+
+    vertical-align: middle;
+
+    border-bottom: 1px solid #f0e6e1;
+}
+
+
+.tabla_lectores tbody tr {
+    transition: background-color 0.2s ease;
+}
+
+
+.tabla_lectores tbody tr:hover {
+    background-color: #fffaf8;
+}
+
+
+.tabla_lectores tbody tr:last-child td {
+    border-bottom: none;
+}
+
+
+/* ==========================================
+   ID
+========================================== */
+
+.id_lector {
+    color: #93827a;
+
+    font-size: 13px;
+
+    font-weight: 600;
+}
+
+
+/* ==========================================
+   USUARIO + AVATAR
+========================================== */
+
+.lector_info {
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+}
+
+
+.avatar_lector {
+    width: 34px;
+
+    height: 34px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    flex-shrink: 0;
+
+    background-color: #fff1eb;
+
+    color: #bd3109;
+
+    border-radius: 50%;
+
+    font-size: 13px;
+
+    font-weight: 700;
+}
+
+
+.nombre_lector {
+    color: #202733 !important;
+
+    font-weight: 600;
+}
+
+
+/* ==========================================
+   ROLES
+========================================== */
+
+.etiqueta_rol {
+    display: inline-flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    padding: 5px 10px;
+
+    border-radius: 7px;
+
+    font-size: 12px;
+
+    font-weight: 700;
+
+    text-transform: capitalize;
+}
+
+
+/* Alumno */
+
+.rol_alumno {
+    background-color: #fff1eb;
+
+    color: #bd3109;
+}
+
+
+/* Profesor */
+
+.rol_profesor {
+    background-color: #eef4ff;
+
+    color: #315ea8;
+}
+
+
+/* Admin */
+
+.rol_admin {
+    background-color: #f3ecff;
+
+    color: #7345a6;
+}
+
+
+/* ==========================================
+   ACCIONES
+========================================== */
+
+.acciones_lector {
+    display: flex;
+
+    align-items: center;
+
+    gap: 8px;
+}
+
+
+.acciones_lector form {
+    margin: 0;
+}
+
+
+/* Editar */
+
+.boton_editar_lector {
+    min-height: 35px;
+
+    padding: 0 11px;
+
+    display: inline-flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 6px;
+
+    background-color: #fff3ed;
+
+    color: #bd3109;
+
+    border: 1px solid #efc6b9;
+
+    border-radius: 8px;
+
+    text-decoration: none;
+
+    font-size: 13px;
+
+    font-weight: 600;
+
+    transition: 0.2s ease;
+}
+
+
+.boton_editar_lector:hover {
+    background-color: #bd3109;
+
+    color: #ffffff;
+
+    border-color: #bd3109;
+}
+
+
+/* Eliminar */
+
+.boton_eliminar_lector {
+    min-height: 35px;
+
+    padding: 0 11px;
+
+    display: inline-flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 6px;
+
+    background-color: #ffffff;
+
+    color: #b32626;
+
+    border: 1px solid #e5bbbb;
+
+    border-radius: 8px;
+
+    font-size: 13px;
+
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition: 0.2s ease;
+}
+
+
+.boton_eliminar_lector:hover {
+    background-color: #b32626;
+
+    color: #ffffff;
+
+    border-color: #b32626;
+}
+
+
+/* ==========================================
+   SIN USUARIOS
+========================================== */
+
+.sin_lectores {
+    padding: 50px;
+
+    text-align: center;
+}
+
+
+.sin_lectores i {
+    display: block;
+
+    margin-bottom: 12px;
+
+    color: #bd3109;
+
+    font-size: 40px;
+}
+
+
+.sin_lectores h3 {
+    margin: 0 0 7px;
+
+    color: #202733;
+}
+
+
+.sin_lectores p {
+    margin: 0;
+
+    color: #81756f;
+
+    font-size: 14px;
+}
+
+
+/* ==========================================
+   RESPONSIVE
+========================================== */
+
+@media (max-width: 800px) {
+
+    .encabezado {
+        padding: 22px;
+
+        flex-direction: column;
+
+        align-items: flex-start;
+
+        gap: 18px;
+    }
+
+
+    .contenido_gestion_lectores {
+        padding: 25px 16px;
+    }
+
+
+    .boton_nuevo_lector {
+        width: 100%;
+
+        box-sizing: border-box;
+    }
+
+
+    .titulo_tabla_lectores {
+        flex-direction: column;
+
+        align-items: flex-start;
+    }
+
+
+    .tarjeta_lectores {
+        border-radius: 15px;
+    }
+
+}

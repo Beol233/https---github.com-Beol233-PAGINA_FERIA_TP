@@ -45,7 +45,7 @@ body{
     width: 100%;
     margin-top: 25px;
     padding: 12px;
-
+    display: block;
     color: white;
     background-color: #ae2d0a;
 
@@ -357,3 +357,182 @@ td a{
     }
 }
 
+
+
+/* ===========================
+   NUEVO PRÉSTAMO
+=========================== */
+
+.nuevo-prestamo {
+    background-color: #ffffff;
+    border: 1px solid #e4d6cf;
+    border-radius: 22px;
+    padding: 28px 32px;
+    margin-bottom: 25px;
+    box-shadow: 0 3px 12px rgba(0, 0, 0, 0.04);
+}
+
+/* Título */
+.nuevo-prestamo h3 {
+    margin: 0 0 22px 0;
+    color: #202733;
+    font-size: 25px;
+    font-weight: 700;
+}
+
+
+/* ===========================
+   FORMULARIO
+=========================== */
+
+.formulario-prestamo {
+    display: grid;
+    grid-template-columns: 1.1fr 1.4fr 1.2fr auto;
+    gap: 18px;
+    align-items: end;
+}
+
+
+/* Cada campo */
+.campo-prestamo {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+
+/* Labels */
+.campo-prestamo label {
+    color: #453a36;
+    font-size: 15px;
+    font-weight: 600;
+}
+
+
+/* SELECT E INPUT */
+.campo-prestamo select,
+.campo-prestamo input {
+    width: 100%;
+    height: 46px;
+
+    padding: 0 14px;
+
+    border: 1px solid #d8c8c0;
+    border-radius: 10px;
+
+    background-color: #fffaf8;
+    color: #252525;
+
+    font-size: 15px;
+    font-family: inherit;
+
+    outline: none;
+
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease,
+        background-color 0.2s ease;
+}
+
+
+/* Cuando haces clic */
+.campo-prestamo select:focus,
+.campo-prestamo input:focus {
+    border-color: #bd3109;
+    background-color: #ffffff;
+
+    box-shadow: 0 0 0 3px rgba(189, 49, 9, 0.12);
+}
+
+
+/* Hover */
+.campo-prestamo select:hover,
+.campo-prestamo input:hover {
+    border-color: #ba806d;
+}
+
+
+/* ===========================
+   BOTÓN CREAR PRÉSTAMO
+=========================== */
+
+.boton-crear-prestamo {
+    height: 46px;
+
+    padding: 0 22px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+
+    border: none;
+    border-radius: 10px;
+
+    background-color: #bd3109;
+    color: #ffffff;
+
+    font-size: 15px;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    white-space: nowrap;
+
+    transition:
+        background-color 0.2s ease,
+        transform 0.15s ease,
+        box-shadow 0.2s ease;
+}
+
+
+.boton-crear-prestamo:hover {
+    background-color: #9f2908;
+    box-shadow: 0 5px 12px rgba(189, 49, 9, 0.22);
+
+    transform: translateY(-1px);
+}
+
+
+.boton-crear-prestamo:active {
+    transform: translateY(0);
+}
+
+
+/* Icono */
+.boton-crear-prestamo i {
+    font-size: 17px;
+}
+
+
+/* ===========================
+   RESPONSIVE
+=========================== */
+
+@media (max-width: 1200px) {
+
+    .formulario-prestamo {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .boton-crear-prestamo {
+        width: 100%;
+    }
+}
+
+
+@media (max-width: 700px) {
+
+    .nuevo-prestamo {
+        padding: 22px 18px;
+        border-radius: 16px;
+    }
+
+    .formulario-prestamo {
+        grid-template-columns: 1fr;
+    }
+
+    .boton-crear-prestamo {
+        width: 100%;
+    }
+}
