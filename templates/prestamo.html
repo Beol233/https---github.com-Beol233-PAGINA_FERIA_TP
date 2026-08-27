@@ -96,7 +96,12 @@
         <h2>Panel de Préstamos</h2>
 
         <div class="topbar-derecha">
-          <input type="text" placeholder="Buscar préstamo o estudiante" />
+          <input
+            type="text"
+            id="buscadorPrestamos"
+            placeholder="Buscar lector o libro..."
+            autocomplete="off"
+          />
 
           <span>
             <i class="bi bi-bell"></i>
@@ -264,9 +269,15 @@
             </tr>
           </thead>
 
-          <tbody>
+          <tbody id="tablaPrestamos">
+
             {% for prestamo in prestamos %}
-            <tr>
+
+            <tr
+              class="fila-prestamo"
+              data-usuario="{{ prestamo.usuario }}"
+              data-libro="{{ prestamo.titulo }}"
+            >
               <!-- USUARIO -->
 
               <td>{{ prestamo.usuario }}</td>
@@ -380,7 +391,8 @@
     </main>
   </div>
 
-  <script src="/static/js/tema.js"></script>
+<script src="/static/js/tema.js"></script>
+<script src="/static/js/prestamo.js"></script>
 </body>
 
 </html>
