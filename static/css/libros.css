@@ -595,3 +595,13 @@ body.oscuro .informacion_libro small {
 .contenedor_libros.vista_lista .informacion_libro {
     flex: 1;
 }
+
+.enlace_libro {
+    text-decoration: none;
+    color: inherit;
+    cursor: pointer;
+}
+
+.enlace_libro:hover {
+    color: inherit;
+}

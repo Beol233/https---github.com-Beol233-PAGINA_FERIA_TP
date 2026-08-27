@@ -1,0 +1,345 @@
+/* =========================================
+   PÁGINA DETALLE LIBRO
+========================================= */
+
+.pagina_detalle_libro {
+    padding: 35px 45px 70px;
+}
+
+
+/* =========================================
+   VOLVER
+========================================= */
+
+.volver_coleccion {
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+
+    margin-bottom: 28px;
+
+    color: #ae2d0a;
+
+    font-size: 15px;
+    font-weight: 600;
+
+    text-decoration: none;
+
+    transition: 0.2s ease;
+}
+
+
+.volver_coleccion:hover {
+    color: #7f2108;
+    transform: translateX(-3px);
+}
+
+
+/* =========================================
+   TARJETA PRINCIPAL
+========================================= */
+
+.detalle_libro {
+    display: grid;
+
+    grid-template-columns:
+        minmax(300px, 430px)
+        1fr;
+
+    gap: 60px;
+
+    max-width: 1250px;
+
+    padding: 45px;
+
+    background-color: #ffffff;
+
+    border: 1px solid #e7d9d2;
+
+    border-radius: 22px;
+
+    box-shadow:
+        0 5px 18px
+        rgba(73, 45, 33, 0.07);
+}
+
+
+/* =========================================
+   PORTADA
+========================================= */
+
+.zona_portada {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+}
+
+
+.portada_grande {
+    width: 100%;
+    max-width: 390px;
+    height: 560px;
+
+    object-fit: contain;
+
+    background-color: #f7f1ed;
+
+    border-radius: 16px;
+
+    box-shadow:
+        0 12px 28px
+        rgba(0, 0, 0, 0.14);
+}
+
+
+.portada_grande_vacia {
+    width: 100%;
+    max-width: 390px;
+    height: 560px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    background-color: #f5ebe6;
+
+    border: 1px solid #e3d3cb;
+
+    border-radius: 16px;
+
+    color: #ae2d0a;
+
+    font-size: 90px;
+}
+
+
+/* =========================================
+   INFORMACIÓN DERECHA
+========================================= */
+
+.datos_libro {
+    padding-top: 10px;
+}
+
+
+.datos_libro h1 {
+    margin-top: 20px;
+
+    max-width: 650px;
+
+    color: #272727;
+
+    font-size: 44px;
+    line-height: 1.1;
+}
+
+
+.autor_detalle {
+    margin-top: 12px;
+
+    color: #755f55;
+
+    font-size: 21px;
+}
+
+
+.linea_detalle {
+    width: 100%;
+    height: 1px;
+
+    margin: 30px 0;
+
+    background-color: #eadfd9;
+}
+
+
+/* =========================================
+   ESTADO
+========================================= */
+
+.estado_detalle {
+    width: fit-content;
+
+    display: inline-flex;
+    align-items: center;
+
+    gap: 7px;
+
+    padding: 8px 14px;
+
+    border-radius: 30px;
+
+    font-size: 14px;
+    font-weight: 600;
+}
+
+
+.disponible_detalle {
+    color: #28783d;
+    background-color: #e8f5eb;
+}
+
+
+.prestado_detalle {
+    color: #a52a22;
+    background-color: #fbe9e7;
+}
+
+
+/* =========================================
+   DATOS
+========================================= */
+
+.informacion_detalle {
+    display: grid;
+
+    grid-template-columns:
+        repeat(2, minmax(180px, 1fr));
+
+    gap: 18px;
+}
+
+
+.dato {
+    padding: 18px 20px;
+
+    background-color: #faf6f3;
+
+    border: 1px solid #eadfd9;
+
+    border-radius: 12px;
+}
+
+
+.dato span {
+    display: block;
+
+    margin-bottom: 7px;
+
+    color: #87736a;
+
+    font-size: 13px;
+}
+
+
+.dato strong {
+    color: #372f2b;
+
+    font-size: 16px;
+}
+
+
+/* =========================================
+   DISPONIBILIDAD
+========================================= */
+
+.caja_disponibilidad {
+    display: flex;
+    align-items: center;
+
+    gap: 18px;
+
+    margin-top: 30px;
+
+    padding: 20px;
+
+    background-color: #fbf2ee;
+
+    border-radius: 14px;
+}
+
+
+.icono_disponibilidad {
+    width: 50px;
+    height: 50px;
+
+    flex-shrink: 0;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    color: #ffffff;
+    background-color: #ae2d0a;
+
+    border-radius: 12px;
+
+    font-size: 23px;
+}
+
+
+.caja_disponibilidad h3 {
+    margin-bottom: 5px;
+
+    color: #352d29;
+
+    font-size: 17px;
+}
+
+
+.caja_disponibilidad p {
+    color: #786760;
+
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+
+/* =========================================
+   RESPONSIVE
+========================================= */
+
+@media (max-width: 1050px) {
+
+    .detalle_libro {
+        grid-template-columns: 320px 1fr;
+
+        gap: 35px;
+
+        padding: 30px;
+    }
+
+
+    .portada_grande,
+    .portada_grande_vacia {
+        height: 470px;
+    }
+
+
+    .datos_libro h1 {
+        font-size: 35px;
+    }
+
+}
+
+
+@media (max-width: 800px) {
+
+    .pagina_detalle_libro {
+        padding: 25px 20px 50px;
+    }
+
+
+    .detalle_libro {
+        grid-template-columns: 1fr;
+    }
+
+
+    .portada_grande,
+    .portada_grande_vacia {
+        max-width: 330px;
+
+        height: 470px;
+    }
+
+
+    .informacion_detalle {
+        grid-template-columns: 1fr;
+    }
+
+
+    .datos_libro h1 {
+        font-size: 32px;
+    }
+
+}

@@ -225,7 +225,10 @@
 
     {% for libro in libros %}
 
-        <article class="tarjeta_libro">
+        <a
+          href="{{ url_for('detalle_libro', libro_id=libro.id) }}"
+          class="tarjeta_libro enlace_libro"
+        >
 
             <!-- PORTADA DEL LIBRO -->
             {% if libro.isbn %}
@@ -292,7 +295,7 @@
 
             </div>
 
-        </article>
+        </a>
 
     {% else %}
 

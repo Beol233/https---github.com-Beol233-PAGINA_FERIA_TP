@@ -266,6 +266,28 @@ def libros():
         disponibilidad_seleccionada="todos"
     )
 
+# =========================================================
+# DETALLE DE UN LIBRO
+# =========================================================
+
+@app.route("/libros/<int:libro_id>")
+@login_required
+def detalle_libro(libro_id):
+
+    libro = Libro.get_by_id(libro_id)
+
+    if not libro:
+
+        flash("El libro no existe.")
+
+        return redirect(
+            url_for("libros")
+        )
+
+    return render_template(
+        "detalle_libro.html",
+        libro=libro
+    )
 
 # =========================================================
 # BUSCADOR DE LIBROS
