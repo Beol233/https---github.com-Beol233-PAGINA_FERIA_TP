@@ -343,3 +343,86 @@
     }
 
 }
+
+/* =========================================
+   RESERVAR LIBRO
+========================================= */
+
+.acciones_reserva {
+    margin-left: auto;
+
+    display: flex;
+    align-items: center;
+}
+
+
+.boton_reserva {
+    min-width: 170px;
+    height: 46px;
+
+    padding: 0 20px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 8px;
+
+    border: none;
+    border-radius: 10px;
+
+    background-color: #bd3109;
+    color: white;
+
+    font-size: 14px;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition:
+        background-color 0.2s ease,
+        transform 0.15s ease,
+        box-shadow 0.2s ease;
+}
+
+
+.boton_reserva:hover {
+    background-color: #982607;
+
+    transform: translateY(-1px);
+
+    box-shadow:
+        0 5px 12px
+        rgba(189, 49, 9, 0.20);
+}
+
+
+.boton_reserva i {
+    font-size: 17px;
+}
+
+
+/* Ya reservado */
+
+.boton_reserva.pendiente {
+    background-color: #f1e1b7;
+    color: #735610;
+
+    cursor: default;
+}
+
+
+/* Sin disponibilidad */
+
+.boton_reserva.no_disponible {
+    background-color: #e6e2e0;
+    color: #777;
+
+    cursor: not-allowed;
+}
+
+
+.boton_reserva:disabled {
+    transform: none;
+    box-shadow: none;
+}

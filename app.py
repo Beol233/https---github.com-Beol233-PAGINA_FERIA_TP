@@ -23,6 +23,7 @@ from config import DB_NAME
 from usuario import Usuario
 from libro import Libro
 from prestamo import Prestamo
+from reserva import Reserva
 from categorias import Categoria
 from roles import Rol
 
@@ -284,11 +285,154 @@ def detalle_libro(libro_id):
             url_for("libros")
         )
 
+
+    reserva_pendiente = None
+
+
+    # Solo alumnos/profesores necesitan esta comprobación
+    if session.get("tipo_usuario") != "admin":
+
+        reserva_pendiente = Reserva.get_pendiente(
+            session["usuario_id"],
+            libro_id
+        )
+
+
     return render_template(
         "detalle_libro.html",
-        libro=libro
+
+        libro=libro,
+
+        reserva_pendiente=reserva_pendiente
     )
 
+
+# =========================================================
+# RESERVAR LIBRO
+# =========================================================
+
+@app.route(
+    "/libros/<int:libro_id>/reservar",
+    methods=["POST"]
+)
+@login_required
+def reservar_libro(libro_id):
+
+
+    # -----------------------------------------------------
+    # El administrador no necesita reservar
+    # -----------------------------------------------------
+
+    if session.get("tipo_usuario") == "admin":
+
+        flash(
+            "Los administradores no pueden reservar libros."
+        )
+
+        return redirect(
+            url_for(
+                "detalle_libro",
+                libro_id=libro_id
+            )
+        )
+
+
+    # -----------------------------------------------------
+    # Comprobar que exista el libro
+    # -----------------------------------------------------
+
+    libro = Libro.get_by_id(
+        libro_id
+    )
+
+
+    if not libro:
+
+        flash(
+            "El libro no existe."
+        )
+
+        return redirect(
+            url_for("libros")
+        )
+
+
+    # -----------------------------------------------------
+    # Comprobar disponibilidad
+    # -----------------------------------------------------
+
+    if libro.cantidad_disponible <= 0:
+
+        flash(
+            "Este libro no se encuentra disponible."
+        )
+
+        return redirect(
+            url_for(
+                "detalle_libro",
+                libro_id=libro_id
+            )
+        )
+
+
+    # -----------------------------------------------------
+    # Evitar reserva duplicada
+    # -----------------------------------------------------
+
+    reserva_existente = Reserva.get_pendiente(
+        session["usuario_id"],
+        libro_id
+    )
+
+
+    if reserva_existente:
+
+        flash(
+            "Ya tienes una reserva pendiente para este libro."
+        )
+
+        return redirect(
+            url_for(
+                "detalle_libro",
+                libro_id=libro_id
+            )
+        )
+
+
+    # -----------------------------------------------------
+    # Crear reserva
+    # -----------------------------------------------------
+
+    resultado = Reserva.crear({
+
+        "usuario_id":
+            session["usuario_id"],
+
+        "libro_id":
+            libro_id
+
+    })
+
+
+    if resultado is False:
+
+        flash(
+            "No se pudo realizar la reserva."
+        )
+
+    else:
+
+        flash(
+            "Libro reservado correctamente."
+        )
+
+
+    return redirect(
+        url_for(
+            "detalle_libro",
+            libro_id=libro_id
+        )
+    )
 # =========================================================
 # BUSCADOR DE LIBROS
 # =========================================================
@@ -405,6 +549,7 @@ def prestamo():
         lista_prestamos = Prestamo.get_all()
         lista_usuarios = Usuario.get_all()
         lista_libros = Libro.get_all()
+        lista_reservas = Reserva.get_pendientes()
 
     # ALUMNO / PROFESOR: solo ve sus préstamos
     else:
@@ -415,6 +560,7 @@ def prestamo():
 
         lista_usuarios = []
         lista_libros = []
+        lista_reservas = []
 
 
     activos = 0
@@ -435,12 +581,14 @@ def prestamo():
         prestamos=lista_prestamos,
         usuarios=lista_usuarios,
         libros=lista_libros,
+        reservas=lista_reservas,
 
         activos=activos,
         atrasados=atrasados,
 
         libro_id_seleccionado=libro_id_seleccionado
     )
+
 
 
 # =========================================================
@@ -476,7 +624,7 @@ def crear_prestamo():
     })
 
 
-    if resultado:
+    if resultado["ok"]:
 
         flash(
             "Préstamo realizado correctamente."
@@ -485,7 +633,7 @@ def crear_prestamo():
     else:
 
         flash(
-            "No se pudo realizar el préstamo."
+            resultado["mensaje"]
         )
 
 
@@ -525,6 +673,167 @@ def devolver_libro(prestamo_id):
         url_for("prestamo")
     )
 
+# =========================================================
+# APROBAR RESERVA
+# =========================================================
+
+@app.route(
+    "/reservas/<int:reserva_id>/aprobar",
+    methods=["POST"]
+)
+@admin_required
+def aprobar_reserva(reserva_id):
+
+    reserva = Reserva.get_by_id(
+        reserva_id
+    )
+
+
+    # Comprobar que exista
+    if not reserva:
+
+        flash(
+            "La reserva no existe."
+        )
+
+        return redirect(
+            url_for("prestamo")
+        )
+
+
+    # Comprobar que siga pendiente
+    if reserva.estado != "pendiente":
+
+        flash(
+            "Esta reserva ya fue procesada."
+        )
+
+        return redirect(
+            url_for("prestamo")
+        )
+
+
+    # Fecha que eligió el administrador
+    fecha_dev_esperada = request.form.get(
+        "fecha_dev_esperada"
+    )
+
+
+    if not fecha_dev_esperada:
+
+        flash(
+            "Debes seleccionar una fecha de devolución."
+        )
+
+        return redirect(
+            url_for("prestamo")
+        )
+
+
+    # =============================================
+    # CREAR EL PRÉSTAMO
+    # =============================================
+
+    resultado = Prestamo.crear({
+
+        "usuario_id":
+            reserva.usuario_id,
+
+        "libro_id":
+            reserva.libro_id,
+
+        "fecha_dev_esperada":
+            fecha_dev_esperada
+
+    })
+
+
+    # =============================================
+    # SI SE PUDO CREAR
+    # =============================================
+
+    if resultado["ok"]:
+
+        Reserva.cambiar_estado(
+            reserva_id,
+            "aprobada"
+        )
+
+        flash(
+            "Reserva aprobada y préstamo creado correctamente."
+        )
+
+    else:
+
+        flash(
+            resultado["mensaje"]
+        )
+
+
+    return redirect(
+        url_for("prestamo")
+    )
+
+# =========================================================
+# RECHAZAR RESERVA
+# =========================================================
+
+@app.route(
+    "/reservas/<int:reserva_id>/rechazar",
+    methods=["POST"]
+)
+@admin_required
+def rechazar_reserva(reserva_id):
+
+    reserva = Reserva.get_by_id(
+        reserva_id
+    )
+
+
+    if not reserva:
+
+        flash(
+            "La reserva no existe."
+        )
+
+        return redirect(
+            url_for("prestamo")
+        )
+
+
+    if reserva.estado != "pendiente":
+
+        flash(
+            "Esta reserva ya fue procesada."
+        )
+
+        return redirect(
+            url_for("prestamo")
+        )
+
+
+    resultado = Reserva.cambiar_estado(
+        reserva_id,
+        "rechazada"
+    )
+
+
+    if resultado is False:
+
+        flash(
+            "No se pudo rechazar la reserva."
+        )
+
+    else:
+
+        flash(
+            "Reserva rechazada."
+        )
+
+
+    return redirect(
+        url_for("prestamo")
+    )
 # =========================================================
 # PERFIL
 # =========================================================

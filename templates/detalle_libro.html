@@ -456,6 +456,72 @@
                                     ejemplares disponibles.
                                 </p>
 
+                                {% if session.get("tipo_usuario") != "admin" %}
+
+                                    <div class="acciones_reserva">
+                                
+                                        {% if reserva_pendiente %}
+                                
+                                            <button
+                                                type="button"
+                                                class="boton_reserva pendiente"
+                                                disabled
+                                            >
+                                
+                                                <i class="bi bi-clock"></i>
+                                
+                                                Reserva pendiente
+                                
+                                            </button>
+                                
+                                
+                                        {% elif libro.cantidad_disponible > 0 %}
+                                
+                                            <form
+                                                action="{{ url_for('reservar_libro', libro_id=libro.id) }}"
+                                                method="POST"
+                                            >
+                                
+                                                <button
+                                                    type="submit"
+                                                    class="boton_reserva"
+                                                    onclick="
+                                                        return confirm(
+                                                            '¿Quieres reservar este libro?'
+                                                        )
+                                                    "
+                                                >
+                                
+                                                    <i class="bi bi-bookmark-plus"></i>
+                                
+                                                    Reservar libro
+                                
+                                                </button>
+                                
+                                            </form>
+                                
+                                
+                                        {% else %}
+                                
+                                            <button
+                                                type="button"
+                                                class="boton_reserva no_disponible"
+                                                disabled
+                                            >
+                                
+                                                <i class="bi bi-x-circle"></i>
+                                
+                                                No disponible
+                                
+                                            </button>
+                                
+                                        {% endif %}
+                                
+                                    </div>
+                                
+                                {% endif %}
+
+
                             {% else %}
 
                                 <h3>

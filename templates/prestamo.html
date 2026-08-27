@@ -126,6 +126,187 @@
         {% endfor %}
       </section>
       {% endif %}
+      {% if session.get("tipo_usuario") == "admin" %}
+
+      <section class="reservas_panel">
+            <div class="titulo_reservas">
+
+                <div>
+                    <h2>
+                        <i class="bi bi-bookmark"></i>
+                        Solicitudes de reserva
+                    </h2>
+
+                    <p>
+                        Revisa las reservas realizadas por los lectores.
+                    </p>
+                </div>
+
+                <span class="contador_reservas">
+                    {{ reservas|length }}
+                </span>
+
+            </div>
+
+
+            {% if reservas %}
+
+                <div class="lista_reservas">
+
+                    {% for reserva in reservas %}
+
+                    <div class="tarjeta_reserva">
+
+
+                        <!-- USUARIO -->
+
+                        <div class="dato_reserva">
+
+                            <span class="etiqueta_reserva">
+                                Lector
+                            </span>
+
+                            <strong>
+                                {{ reserva.usuario }}
+                            </strong>
+
+                            <small>
+                                {{ reserva.correo }}
+                            </small>
+
+                        </div>
+
+
+                        <!-- LIBRO -->
+
+                        <div class="dato_reserva">
+
+                            <span class="etiqueta_reserva">
+                                Libro
+                            </span>
+
+                            <strong>
+                                {{ reserva.titulo }}
+                            </strong>
+
+                            <small>
+                                {{ reserva.autor }}
+                            </small>
+
+                        </div>
+
+
+                        <!-- FECHA RESERVA -->
+
+                        <div class="dato_reserva">
+
+                            <span class="etiqueta_reserva">
+                                Reservado
+                            </span>
+
+                            <strong>
+
+                                {% if reserva.fecha_reserva %}
+
+                                    {{ reserva.fecha_reserva.strftime('%d/%m/%Y') }}
+
+                                {% else %}
+
+                                    -
+
+                                {% endif %}
+
+                            </strong>
+
+                        </div>
+
+
+                        <!-- APROBAR -->
+
+                        <form
+                            action="{{ url_for('aprobar_reserva', reserva_id=reserva.id) }}"
+                            method="POST"
+                            class="form_aprobar_reserva"
+                        >
+
+                            <label>
+                                Devolución
+                            </label>
+
+                            <input
+                                type="datetime-local"
+                                name="fecha_dev_esperada"
+                                required
+                            >
+
+                            <button
+                                type="submit"
+                                class="boton_aprobar"
+                                onclick="
+                                    return confirm(
+                                        '¿Aprobar esta reserva y crear el préstamo?'
+                                    )
+                                "
+                            >
+
+                                <i class="bi bi-check-lg"></i>
+
+                                Aceptar
+
+                            </button>
+
+                        </form>
+
+
+                        <!-- RECHAZAR -->
+
+                        <form
+                            action="{{ url_for('rechazar_reserva', reserva_id=reserva.id) }}"
+                            method="POST"
+                        >
+
+                            <button
+                                type="submit"
+                                class="boton_rechazar"
+                                onclick="
+                                    return confirm(
+                                        '¿Seguro que quieres rechazar esta reserva?'
+                                    )
+                                "
+                            >
+
+                                <i class="bi bi-x-lg"></i>
+
+                                Rechazar
+
+                            </button>
+
+                        </form>
+
+                    </div>
+
+                    {% endfor %}
+
+                </div>
+
+
+            {% else %}
+
+                <div class="sin_reservas">
+
+                    <i class="bi bi-bookmark-check"></i>
+
+                    <p>
+                        No hay solicitudes de reserva pendientes.
+                    </p>
+
+                </div>
+
+            {% endif %}
+
+      </section>
+
+      {% endif %}
       {% endwith %}
 
       <!-- ===================================== -->
